@@ -7,6 +7,8 @@ import jugador.Jugador;
 import tablero.Tablero;
 import combate.SistemaCombate;
 import movimiento.SistemaMovimiento;
+import entidades.edificios.Torre;
+import entidades.edificios.TorrePrincesa;
 
 /**
  * Clase principal que maneja el estado y flujo de una partida
@@ -57,6 +59,11 @@ public class Partida {
                 configuracion.getNivelJugador2()
         );
 
+        // Definir zonas de despliegue iniciales
+        jugador1.getZonaDespliegue().definirZonaInicial(0, 0, Tablero.ANCHO - 1, 14);
+        jugador2.getZonaDespliegue().definirZonaInicial(0, 17, Tablero.ANCHO - 1, Tablero.ALTO - 1);
+
+
         // Mostrar información inicial
         mostrarInformacionInicial();
 
@@ -89,6 +96,10 @@ public class Partida {
 
         // 5. Limpiar entidades muertas
         tablero.limpiarEntidadesMuertas();
+
+        // 5.1. Procesar torres destruidas para actualizar zonas
+        procesarTorresDestruidas();
+
 
         // 6. Verificar condiciones de victoria
         verificarCondicionesVictoria();
@@ -124,7 +135,38 @@ public class Partida {
         jugador2.jugarCartaIA(tablero, tickActual);
     }
 
-    
+    private void procesarTorresDestruidas() {
+        for (Torre torre : sistemaCombate.getTorresMuertas()) {
+            if (torre instanceof TorrePrincesa) {
+                int idDefensor = torre.getJugadorId();
+                int idAtacante = (idDefensor == 1) ? 2 : 1;
+                Jugador atacante = (idAtacante == 1) ? jugador1 : jugador2;
+                Jugador defensor = (idDefensor == 1) ? jugador1 : jugador2;
+
+                boolean esLadoIzquierdo = torre.getPosicion().getX() < 9;
+
+                // Crear la nueva zona de 9x5 y la zona del puente
+                tablero.ZonaDespliegue.RectanguloZona nuevaZona;
+                tablero.ZonaDespliegue.RectanguloZona zonaPuente;
+
+                if (idAtacante == 1) { // J1 ataca a J2 (despliega en la parte de abajo)
+                    nuevaZona = esLadoIzquierdo ? new tablero.ZonaDespliegue.RectanguloZona(0, 17, 8, 21) : new tablero.ZonaDespliegue.RectanguloZona(9, 17, 17, 21);
+                    zonaPuente = esLadoIzquierdo ? new tablero.ZonaDespliegue.RectanguloZona(Tablero.PUENTE_X1, 15, Tablero.PUENTE_X1, 16) : new tablero.ZonaDespliegue.RectanguloZona(Tablero.PUENTE_X2, 15, Tablero.PUENTE_X2, 16);
+                } else { // J2 ataca a J1 (despliega en la parte de arriba)
+                    nuevaZona = esLadoIzquierdo ? new tablero.ZonaDespliegue.RectanguloZona(0, 10, 8, 14) : new tablero.ZonaDespliegue.RectanguloZona(9, 10, 17, 14);
+                    zonaPuente = esLadoIzquierdo ? new tablero.ZonaDespliegue.RectanguloZona(Tablero.PUENTE_X1, 15, Tablero.PUENTE_X1, 16) : new tablero.ZonaDespliegue.RectanguloZona(Tablero.PUENTE_X2, 15, Tablero.PUENTE_X2, 16);
+                }
+
+                // Actualizar zonas para ambos jugadores
+                atacante.getZonaDespliegue().agregarZona(nuevaZona);
+                atacante.getZonaDespliegue().agregarZona(zonaPuente);
+                defensor.getZonaDespliegue().restringirZona(nuevaZona);
+
+                System.out.println("¡Torre Princesa del Jugador " + idDefensor + " destruida!");
+                System.out.println("¡Jugador " + idAtacante + " ahora puede desplegar más allá del río!");
+            }
+        }
+    }
 
     private void verificarCondicionesVictoria() {
         // Verificar torres rey

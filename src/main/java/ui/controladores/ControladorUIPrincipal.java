@@ -328,7 +328,7 @@ public class ControladorUIPrincipal {
         panelJugador2.actualizar(partida.getJugador2(), partida.getTablero());
 
         // Actualizar arena
-        componenteArena.actualizar(partida.getTablero(), gestorAnimaciones);
+        componenteArena.actualizar(partida, gestorAnimaciones);
     }
 
     /**

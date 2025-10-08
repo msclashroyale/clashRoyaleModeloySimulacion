@@ -8,6 +8,7 @@ import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.FontWeight;
+import juego.Partida;
 import tablero.Tablero;
 import tablero.Posicion;
 import tablero.TipoTerreno;
@@ -112,7 +113,8 @@ public class ComponenteArena {
      * @param tablero Tablero del juego con el estado actual
      * @param gestorAnimaciones Gestor para verificar animaciones activas
      */
-    public void actualizar(Tablero tablero, GestorAnimaciones gestorAnimaciones) {
+    public void actualizar(Partida partida, GestorAnimaciones gestorAnimaciones) {
+        Tablero tablero = partida.getTablero();
         for (int y = 0; y < Tablero.ALTO; y++) {
             for (int x = 0; x < Tablero.ANCHO; x++) {
                 Posicion pos = new Posicion(x, y);
@@ -122,7 +124,7 @@ public class ComponenteArena {
                     continue;
                 }
 
-                actualizarCasilla(pos, tablero);
+                actualizarCasilla(pos, partida);
             }
         }
     }
@@ -132,13 +134,15 @@ public class ComponenteArena {
      * @param posicion Posición a actualizar
      * @param tablero Tablero del juego
      */
-    private void actualizarCasilla(Posicion posicion, Tablero tablero) {
+    private void actualizarCasilla(Posicion posicion, Partida partida) {
         int x = posicion.getX();
         int y = posicion.getY();
 
         String simbolo = "";
         Color colorFondo = Color.LIGHTGRAY;
         boolean hayEntidad = false;
+
+        Tablero tablero = partida.getTablero();
 
         // Prioridad: Tropa > Torre > Terreno
         Tropa tropa = tablero.obtenerTropaEnPosicion(posicion);
@@ -160,7 +164,7 @@ public class ComponenteArena {
                 }
             } else {
                 // Verificar tipo de terreno
-                configurarTerreno(posicion, tablero);
+                configurarTerreno(posicion, partida);
                 return; // El método configurarTerreno ya maneja la actualización visual
             }
         }
@@ -178,11 +182,11 @@ public class ComponenteArena {
      * @param posicion Posición del terreno
      * @param tablero Tablero del juego
      */
-    private void configurarTerreno(Posicion posicion, Tablero tablero) {
+    private void configurarTerreno(Posicion posicion, Partida partida) {
         int x = posicion.getX();
         int y = posicion.getY();
 
-        TipoTerreno terreno = tablero.getTipoTerreno(x, y);
+        TipoTerreno terreno = partida.getTablero().getTipoTerreno(x, y);
         String simbolo = "";
         Color colorFondo;
 
@@ -197,7 +201,7 @@ public class ComponenteArena {
             }
             case VACIO -> {
                 simbolo = "";
-                colorFondo = obtenerColorZona(y);
+                colorFondo = obtenerColorZona(posicion, partida);
             }
             default -> {
                 simbolo = "";
@@ -211,17 +215,24 @@ public class ComponenteArena {
     }
 
     /**
-     * Obtiene el color según la zona del tablero
-     * @param y Coordenada Y
+     * Obtiene el color según la zona del tablero, considerando las zonas de despliegue dinámicas.
+     * @param posicion Posición a colorear
+     * @param partida Estado de la partida
      * @return Color correspondiente a la zona
      */
-    private Color obtenerColorZona(int y) {
-        if (y <= 14) {
-            return ConstantesUI.Colores.ARENA_ZONA_J1; // Zona J1
-        } else if (y >= 17) {
-            return ConstantesUI.Colores.ARENA_ZONA_J2; // Zona J2
+    private Color obtenerColorZona(Posicion posicion, Partida partida) {
+        boolean desplegableJ1 = partida.getJugador1().getZonaDespliegue().puedeDesplegarEn(posicion);
+        boolean desplegableJ2 = partida.getJugador2().getZonaDespliegue().puedeDesplegarEn(posicion);
+
+        if (desplegableJ1 && desplegableJ2) {
+            return ConstantesUI.Colores.ARENA_ZONA_NEUTRAL; // Ambos pueden (puentes)
+        } else if (desplegableJ1) {
+            return ConstantesUI.Colores.ARENA_ZONA_J1;
+        } else if (desplegableJ2) {
+            return ConstantesUI.Colores.ARENA_ZONA_J2;
         } else {
-            return ConstantesUI.Colores.ARENA_ZONA_NEUTRAL; // Zona neutral
+            // Ni J1 ni J2 pueden desplegar aquí (ej. zona restringida del defensor)
+            return Color.DARKGRAY; // Un color para indicar zona no desplegable
         }
     }
 

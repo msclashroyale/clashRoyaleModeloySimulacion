@@ -16,10 +16,12 @@ import java.util.List;
 public class SistemaCombate {
     private Tablero tablero;
     private List<EntidadJuego> entidadesMuertas;
+    private List<Torre> torresMuertas;
 
     public SistemaCombate(Tablero tablero) {
         this.tablero = tablero;
         this.entidadesMuertas = new ArrayList<>();
+        this.torresMuertas = new ArrayList<>();
     }
 
     /**
@@ -28,6 +30,7 @@ public class SistemaCombate {
      */
     public void ejecutarCombate(int tickActual) {
         entidadesMuertas.clear();
+        torresMuertas.clear();
 
         // Torres atacan
         ejecutarAtaquesTorres(tickActual);
@@ -165,12 +168,18 @@ public class SistemaCombate {
             if (entidadJuego instanceof Tropa) {
                 System.out.println("→ " + ((Tropa)entidadJuego).getNombre() +
                         " J" + entidadJuego.getJugadorId() + " eliminada del campo");
+            } else if (entidadJuego instanceof Torre) {
+                torresMuertas.add((Torre) entidadJuego);
             }
         }
     }
 
     public List<EntidadJuego> getEntidadesMuertas() {
         return new ArrayList<>(entidadesMuertas);
+    }
+
+    public List<Torre> getTorresMuertas() {
+        return new ArrayList<>(torresMuertas);
     }
 }
 
