@@ -1,15 +1,13 @@
-// ==========================================
-// ZONA DE DESPLIEGUE
-// ==========================================
+//Zona de despliegue 
 package tablero;
 
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Maneja las zonas donde cada jugador puede desplegar tropas
- * Se expande cuando se destruyen torres princesa enemigas
- */
+
+ //Maneja las zonas donde cada jugador puede desplegar tropas
+ // Se expande cuando se destruyen torres princesa enemigas
+
 public class ZonaDespliegue {
 
     private final int jugadorId;
@@ -20,22 +18,22 @@ public class ZonaDespliegue {
         this.zonasPermitidas = new ArrayList<>();
     }
 
-    /**
-     * Define la zona inicial de despliegue (tu lado del río)
-     */
+    
+     //Define la zona inicial de despliegue (tu lado del río)
+     
     public void definirZonaInicial(int x1, int y1, int x2, int y2) {
         zonasPermitidas.clear();
         zonasPermitidas.add(new RectanguloZona(x1, y1, x2, y2));
     }
 
-    /**
-     * Expande la zona cuando se destruye una torre princesa enemiga
-     */
+    
+     //Expande la zona cuando se destruye una torre princesa enemiga
+     
     public void expandirZona(Posicion torrePrincesaDestruida) {
         // Determinar qué lado del tablero expandir
         boolean esLadoIzquierdo = torrePrincesaDestruida.getX() < 9; // Centro del tablero
 
-        if (jugadorId == 1) {
+        if (jugadorId == 1) { 
             // Jugador 1 puede expandirse hacia abajo
             if (esLadoIzquierdo) {
                 zonasPermitidas.add(new RectanguloZona(0, 15, 8, 24)); // Lado izquierdo
@@ -52,17 +50,17 @@ public class ZonaDespliegue {
         }
     }
 
-    /**
-     * Verifica si se puede desplegar en la posición especificada
-     */
+    
+     // Verifica si se puede desplegar en la posición especificada
+     
     public boolean puedeDesplegarEn(Posicion posicion) {
         return zonasPermitidas.stream()
                 .anyMatch(zona -> zona.contiene(posicion));
     }
 
-    /**
-     * Obtiene todas las posiciones válidas para despliegue
-     */
+    
+     //Obtiene todas las posiciones válidas para despliegue
+     
     public List<Posicion> obtenerPosicionesValidas() {
         List<Posicion> posiciones = new ArrayList<>();
         for (RectanguloZona zona : zonasPermitidas) {
