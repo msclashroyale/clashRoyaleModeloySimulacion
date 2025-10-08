@@ -98,10 +98,10 @@ public class ConstantesUI {
 
     // DIMENSIONES
     public static final class Dimensiones {
-        public static final double ANCHO_VENTANA = 1400;
-        public static final double ALTO_VENTANA = 900;
-        public static final double ANCHO_PANEL_JUGADOR = 290;
-        public static final double TAMANO_CELDA_ARENA = 18;
+        public static final double ANCHO_VENTANA = 1200;
+        public static final double ALTO_VENTANA = 800;
+        public static final double ANCHO_PANEL_JUGADOR = 400;
+        public static final double TAMANO_CELDA_ARENA = 20;
         public static final double ESPACIADO_PANEL = 15;
         public static final double ESPACIADO_PEQUENO = 8;
         public static final double ESPACIADO_DIMINUTO = 3;
