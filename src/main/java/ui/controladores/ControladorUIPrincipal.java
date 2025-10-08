@@ -115,8 +115,8 @@ public class ControladorUIPrincipal {
         HBox contenidoPrincipal = crearContenidoPrincipal();
         contenedorPrincipal.getChildren().add(contenidoPrincipal);
 
-        // Panel de control
-        contenedorPrincipal.getChildren().add(componentePanelControl.obtenerComponente());
+        // El panel de control ahora está en el HBox principal
+
 
         // Barra de estado
         contenedorPrincipal.getChildren().add(componenteBarraEstado.obtenerComponente());
@@ -131,7 +131,8 @@ public class ControladorUIPrincipal {
         contenidoPrincipal.getChildren().addAll(
                 panelJugador1.obtenerComponente(),
                 componenteArena.obtenerComponente(),
-                panelJugador2.obtenerComponente()
+                panelJugador2.obtenerComponente(),
+                componentePanelControl.obtenerComponente()
         );
 
         return contenidoPrincipal;
@@ -328,7 +329,7 @@ public class ControladorUIPrincipal {
         panelJugador2.actualizar(partida.getJugador2(), partida.getTablero());
 
         // Actualizar arena
-        componenteArena.actualizar(partida.getTablero(), gestorAnimaciones);
+        componenteArena.actualizar(partida, gestorAnimaciones);
     }
 
     /**

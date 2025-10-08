@@ -5,7 +5,7 @@ import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.Separator;
-import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import ui.constantes.ConstantesUI;
 
@@ -15,7 +15,7 @@ import ui.constantes.ConstantesUI;
  */
 public class ComponentePanelControl {
 
-    private HBox contenedorControles;
+    private VBox contenedorControles;
     private Button botonPlayPause;
     private Button botonReset;
     private Button botonPaso;
@@ -36,8 +36,8 @@ public class ComponentePanelControl {
      * Inicializa todos los elementos del panel de control
      */
     private void inicializarComponente() {
-        contenedorControles = new HBox(10);
-        contenedorControles.setAlignment(Pos.CENTER);
+        contenedorControles = new VBox(10);
+        contenedorControles.setAlignment(Pos.TOP_CENTER);
         contenedorControles.setPadding(new Insets(10));
 
         crearBotones();
@@ -152,7 +152,7 @@ public class ComponentePanelControl {
      * Obtiene el componente JavaFX para agregarlo a la interfaz
      * @return HBox contenedor de los controles
      */
-    public HBox obtenerComponente() {
+    public VBox obtenerComponente() {
         return contenedorControles;
     }
 }

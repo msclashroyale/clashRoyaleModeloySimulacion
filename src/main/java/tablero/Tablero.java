@@ -5,6 +5,7 @@ import entidades.edificios.TorreRey;
 import entidades.edificios.TorrePrincesa;
 import entidades.tropas.Tropa;
 import entidades.base.EntidadJuego;
+import jugador.Jugador;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -37,15 +38,12 @@ public class Tablero {
     private final TipoTerreno[][] terreno;
     private final List<Torre> torres;
     private final List<Tropa> tropas;
-    private final ZonaDespliegue zonaDespliegueJ1;
-    private final ZonaDespliegue zonaDespliegueJ2;
+
 
     public Tablero() {
         this.terreno = new TipoTerreno[ANCHO][ALTO];
         this.torres = new ArrayList<>();
         this.tropas = new ArrayList<>();
-        this.zonaDespliegueJ1 = new ZonaDespliegue(1);
-        this.zonaDespliegueJ2 = new ZonaDespliegue(2);
 
         inicializarTerreno();
     }
@@ -57,17 +55,16 @@ public class Tablero {
         limpiarTorres();
         colocarTorresJugador(1, nivelJugador1);
         colocarTorresJugador(2, nivelJugador2);
-        actualizarZonasDespliegue();
         marcarTorresEnTerreno();
     }
 
     /**
      * Intenta desplegar una tropa en la posición especificada
      */
-    public boolean desplegarTropa(Tropa tropa, int x, int y) {
+    public boolean desplegarTropa(Jugador jugador, Tropa tropa, int x, int y) {
         Posicion posicion = new Posicion(x, y);
 
-        if (!puedeDesplegarTropa(tropa.getJugadorId(), posicion)) {
+        if (!puedeDesplegarTropa(jugador, posicion)) {
             return false;
         }
 
@@ -79,7 +76,7 @@ public class Tablero {
     /**
      * Verifica si se puede desplegar una tropa en la posición
      */
-    public boolean puedeDesplegarTropa(int jugadorId, Posicion posicion) {
+    public boolean puedeDesplegarTropa(Jugador jugador, Posicion posicion) {
         // Verificar límites del tablero
         if (!esPosicionValida(posicion)) {
             return false;
@@ -95,9 +92,8 @@ public class Tablero {
             return false;
         }
 
-        // Verificar zona de despliegue
-        ZonaDespliegue zona = (jugadorId == 1) ? zonaDespliegueJ1 : zonaDespliegueJ2;
-        return zona.puedeDesplegarEn(posicion);
+        // Verificar zona de despliegue del jugador
+        return jugador.getZonaDespliegue().puedeDesplegarEn(posicion);
     }
 
     /**
@@ -250,15 +246,7 @@ public class Tablero {
         }
     }
 
-    private void actualizarZonasDespliegue() {
-        // Zona inicial del jugador 1 (parte superior)
-        zonaDespliegueJ1.definirZonaInicial(0, 0, ANCHO-1, 14);
 
-        // Zona inicial del jugador 2 (parte inferior)
-        zonaDespliegueJ2.definirZonaInicial(0, 17, ANCHO-1, ALTO-1);
-
-        // TODO: Expandir zonas cuando se destruyan torres princesa
-    }
 
     private boolean esPosicionValida(Posicion posicion) {
         return posicion.getX() >= 0 && posicion.getX() < ANCHO &&
@@ -308,7 +296,5 @@ public class Tablero {
         return terreno[x][y];
     }
 
-    public ZonaDespliegue getZonaDespliegue(int jugadorId) {
-        return (jugadorId == 1) ? zonaDespliegueJ1 : zonaDespliegueJ2;
-    }
+
 }

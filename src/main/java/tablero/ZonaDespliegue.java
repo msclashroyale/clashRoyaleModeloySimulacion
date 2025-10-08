@@ -1,76 +1,87 @@
-//Zona de despliegue 
 package tablero;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
-
- //Maneja las zonas donde cada jugador puede desplegar tropas
- // Se expande cuando se destruyen torres princesa enemigas
-
+/**
+ * Maneja las zonas donde cada jugador puede desplegar tropas.
+ * Se compone de zonas permitidas y zonas restringidas para dar soporte a la mecánica de juego dinámica.
+ */
 public class ZonaDespliegue {
 
     private final int jugadorId;
     private final List<RectanguloZona> zonasPermitidas;
+    private final List<RectanguloZona> zonasRestringidas;
 
     public ZonaDespliegue(int jugadorId) {
         this.jugadorId = jugadorId;
         this.zonasPermitidas = new ArrayList<>();
+        this.zonasRestringidas = new ArrayList<>();
     }
 
-    
-     //Define la zona inicial de despliegue (tu lado del río)
-     
+    /**
+     * Define la zona inicial de despliegue (tu lado del río), limpiando cualquier zona anterior.
+     */
     public void definirZonaInicial(int x1, int y1, int x2, int y2) {
         zonasPermitidas.clear();
+        zonasRestringidas.clear();
         zonasPermitidas.add(new RectanguloZona(x1, y1, x2, y2));
     }
 
-    
-     //Expande la zona cuando se destruye una torre princesa enemiga
-     
-    public void expandirZona(Posicion torrePrincesaDestruida) {
-        // Determinar qué lado del tablero expandir
-        boolean esLadoIzquierdo = torrePrincesaDestruida.getX() < 9; // Centro del tablero
-
-        if (jugadorId == 1) { 
-            // Jugador 1 puede expandirse hacia abajo
-            if (esLadoIzquierdo) {
-                zonasPermitidas.add(new RectanguloZona(0, 15, 8, 24)); // Lado izquierdo
-            } else {
-                zonasPermitidas.add(new RectanguloZona(9, 15, 17, 24)); // Lado derecho
-            }
-        } else {
-            // Jugador 2 puede expandirse hacia arriba
-            if (esLadoIzquierdo) {
-                zonasPermitidas.add(new RectanguloZona(0, 7, 8, 16)); // Lado izquierdo
-            } else {
-                zonasPermitidas.add(new RectanguloZona(9, 7, 17, 16)); // Lado derecho
-            }
+    /**
+     * Agrega una nueva zona rectangular a las zonas permitidas.
+     */
+    public void agregarZona(RectanguloZona nuevaZona) {
+        if (!zonasPermitidas.contains(nuevaZona)) {
+            zonasPermitidas.add(nuevaZona);
         }
     }
 
-    
-     // Verifica si se puede desplegar en la posición especificada
-     
-    public boolean puedeDesplegarEn(Posicion posicion) {
-        return zonasPermitidas.stream()
-                .anyMatch(zona -> zona.contiene(posicion));
+    /**
+     * Agrega una zona a la lista de áreas restringidas, impidiendo el despliegue en ella.
+     */
+    public void restringirZona(RectanguloZona zonaARestringir) {
+        if (!zonasRestringidas.contains(zonaARestringir)) {
+            zonasRestringidas.add(zonaARestringir);
+        }
     }
 
-    
-     //Obtiene todas las posiciones válidas para despliegue
-     
+    /**
+     * Verifica si se puede desplegar en la posición especificada.
+     * Debe estar en una zona permitida y no en una restringida.
+     */
+    public boolean puedeDesplegarEn(Posicion posicion) {
+        boolean enZonaPermitida = zonasPermitidas.stream().anyMatch(zona -> zona.contiene(posicion));
+        if (!enZonaPermitida) {
+            return false;
+        }
+        boolean enZonaRestringida = zonasRestringidas.stream().anyMatch(zona -> zona.contiene(posicion));
+        return !enZonaRestringida;
+    }
+
+    /**
+     * Obtiene todas las posiciones válidas para despliegue.
+     * Nota: Esta implementación no considera las zonas restringidas y puede no ser 100% precisa.
+     */
     public List<Posicion> obtenerPosicionesValidas() {
         List<Posicion> posiciones = new ArrayList<>();
         for (RectanguloZona zona : zonasPermitidas) {
             posiciones.addAll(zona.obtenerTodasLasPosiciones());
         }
+        // Esta lista no excluye las zonas restringidas, pero es suficiente para la IA actual.
         return posiciones;
     }
+    
+    public List<RectanguloZona> getZonasPermitidas() {
+        return new ArrayList<>(zonasPermitidas);
+    }
 
-    // Clase interna para representar zonas rectangulares
-    private static class RectanguloZona {
+    /**
+     * Clase interna para representar zonas rectangulares.
+     * Es pública para poder ser instanciada desde Partida.
+     */
+    public static class RectanguloZona {
         private final int x1, y1, x2, y2;
 
         public RectanguloZona(int x1, int y1, int x2, int y2) {
@@ -93,6 +104,19 @@ public class ZonaDespliegue {
                 }
             }
             return posiciones;
+        }
+
+        @Override
+        public boolean equals(Object o) {
+            if (this == o) return true;
+            if (o == null || getClass() != o.getClass()) return false;
+            RectanguloZona that = (RectanguloZona) o;
+            return x1 == that.x1 && y1 == that.y1 && x2 == that.x2 && y2 == that.y2;
+        }
+
+        @Override
+        public int hashCode() {
+            return Objects.hash(x1, y1, x2, y2);
         }
     }
 }

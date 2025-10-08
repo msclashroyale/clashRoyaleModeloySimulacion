@@ -6,6 +6,7 @@ import tablero.Tablero;
 import tablero.Posicion;
 import entidades.tropas.Tropa;
 import factoria.FactoriaTropas;
+import tablero.ZonaDespliegue;
 
 /**
  * Clase Jugador refactorizada con responsabilidades más claras
@@ -22,6 +23,8 @@ public class Jugador {
     private final SistemaElixir sistemaElixir;
     private final EstadisticasJugador estadisticas;
     private final EstrategiaIA estrategiaIA;
+    private final ZonaDespliegue zonaDespliegue;
+
 
     /**
      * Constructor con mazo por defecto
@@ -41,6 +44,7 @@ public class Jugador {
         this.sistemaElixir = new SistemaElixir();
         this.estadisticas = new EstadisticasJugador();
         this.estrategiaIA = new EstrategiaIA();
+        this.zonaDespliegue = new ZonaDespliegue(id);
     }
 
     /**
@@ -66,7 +70,7 @@ public class Jugador {
         }
 
         // Verificar si puede desplegar en esa posición
-        if (!tablero.puedeDesplegarTropa(id, new Posicion(x, y))) {
+        if (!tablero.puedeDesplegarTropa(this, new Posicion(x, y))) {
             return false;
         }
 
@@ -77,7 +81,7 @@ public class Jugador {
         }
 
         // Desplegar en el tablero
-        if (tablero.desplegarTropa(tropa, x, y)) {
+        if (tablero.desplegarTropa(this, tropa, x, y)) {
             // Consumir recursos
             sistemaElixir.gastar(carta.getCostoElixir());
             mazo.jugarCarta(carta);
@@ -162,6 +166,7 @@ public class Jugador {
     public Mazo getMazo() { return mazo; }
     public SistemaElixir getSistemaElixir() { return sistemaElixir; }
     public EstadisticasJugador getEstadisticas() { return estadisticas; }
+    public ZonaDespliegue getZonaDespliegue() { return zonaDespliegue; }
 
     @Override
     public String toString() {

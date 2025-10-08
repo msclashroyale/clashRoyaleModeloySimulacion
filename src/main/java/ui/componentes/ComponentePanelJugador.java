@@ -26,6 +26,8 @@ public class ComponentePanelJugador {
     private final int jugadorId;
     private VBox contenedorPrincipal;
 
+    private Label etiquetaTitulo;
+
     // Elementos de información del jugador
     private ProgressBar barraElixir;
     private Label etiquetaElixirTexto;
@@ -110,14 +112,14 @@ public class ComponentePanelJugador {
      */
     private Label crearTituloJugador() {
         String textoTitulo = jugadorId == 1 ?
-                ConstantesUI.Estilos.PANEL_JUGADOR_1 :
-                ConstantesUI.Estilos.PANEL_JUGADOR_2;
+                ConstantesUI.Etiquetas.TITULO_JUGADOR_1 :
+                ConstantesUI.Etiquetas.TITULO_JUGADOR_2;
 
-        Label titulo = new Label(textoTitulo);
-        titulo.setFont(ConstantesUI.Fuentes.TITULO_PEQUENO);
-        titulo.setTextFill(Color.WHITE);
+        etiquetaTitulo = new Label(textoTitulo);
+        etiquetaTitulo.setFont(ConstantesUI.Fuentes.TITULO_PEQUENO);
+        etiquetaTitulo.setTextFill(Color.WHITE);
 
-        return titulo;
+        return etiquetaTitulo;
     }
 
     /**
@@ -297,6 +299,9 @@ public class ComponentePanelJugador {
      * CORREGIDO: Ahora usa Tablero en lugar de Arena
      */
     private void actualizarInfoBasica(Jugador jugador, Tablero tablero) {
+        // Actualizar título con nombre y nivel del jugador
+        etiquetaTitulo.setText(jugador.getNombre() + " (Nv. " + jugador.getNivel() + ")");
+
         // Actualizar barra de elixir
         int elixirActual = jugador.getSistemaElixir().getElixirActual();
         int elixirMaximo = jugador.getSistemaElixir().getElixirMaximo();

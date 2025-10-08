@@ -78,16 +78,15 @@ public class EstrategiaIA {
      * Mantiene la lógica original de posiciones aleatorias en zona propia
      */
     public Posicion seleccionarPosicionDespliegue(Jugador jugador, Tablero tablero) {
-        List<Posicion> zonasValidas = tablero.getZonaDespliegue(jugador.getId())
-                .obtenerPosicionesValidas();
+        List<Posicion> zonasValidas = jugador.getZonaDespliegue().obtenerPosicionesValidas();
 
-        return buscarPosicionValidaAleatoria(zonasValidas, tablero);
+        return buscarPosicionValidaAleatoria(zonasValidas, tablero, jugador);
     }
 
     /**
      * Busca una posición válida aleatoria dentro de las zonas permitidas
      */
-    private Posicion buscarPosicionValidaAleatoria(List<Posicion> zonasPermitidas, Tablero tablero) {
+    private Posicion buscarPosicionValidaAleatoria(List<Posicion> zonasPermitidas, Tablero tablero, Jugador jugador) {
         if (zonasPermitidas.isEmpty()) {
             return null;
         }
@@ -98,7 +97,7 @@ public class EstrategiaIA {
             Posicion candidata = zonasPermitidas.get(indiceAleatorio);
 
             // Verificar si es una posición libre y válida
-            if (esPosicionLibreParaDespliegue(candidata, tablero)) {
+            if (tablero.puedeDesplegarTropa(jugador, candidata)) {
                 return candidata;
             }
         }
@@ -107,23 +106,7 @@ public class EstrategiaIA {
         return obtenerPosicionFallback(zonasPermitidas);
     }
 
-    /**
-     * Verifica si una posición está libre para desplegar una tropa
-     */
-    private boolean esPosicionLibreParaDespliegue(Posicion posicion, Tablero tablero) {
-        // Verificar que no hay tropas en la posición
-        if (tablero.obtenerTropaEnPosicion(posicion) != null) {
-            return false;
-        }
 
-        // Verificar que no hay torres en la posición
-        if (tablero.obtenerTorreEnPosicion(posicion) != null) {
-            return false;
-        }
-
-        // Verificar que el terreno es transitable
-        return tablero.getTipoTerreno(posicion.getX(), posicion.getY()).esTransitable();
-    }
 
     /**
      * Obtiene una posición de fallback si no encuentra posiciones libres
