@@ -1,0 +1,372 @@
+package ui.controladores;
+
+import juego.Partida;
+import juego.ConfiguracionPartida;
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
+import javafx.application.Platform;
+import javafx.geometry.Insets;
+import javafx.scene.Scene;
+import javafx.scene.layout.VBox;
+import javafx.scene.layout.HBox;
+import javafx.stage.Stage;
+import javafx.util.Duration;
+import ui.componentes.*;
+import ui.constantes.ConstantesUI;
+import ui.gestores.GestorAnimaciones;
+
+/**
+ * Controlador principal de la interfaz de usuario
+ * Orquesta todos los componentes y gestiona el ciclo de vida de la aplicación
+ */
+public class ControladorUIPrincipal {
+
+    // Partida del juego
+    private Partida partida;
+
+    // Componentes principales de la UI
+    private ComponenteCabecera componenteCabecera;
+    private ComponentePanelJugador panelJugador1;
+    private ComponentePanelJugador panelJugador2;
+    private ComponenteArena componenteArena;
+    private ComponentePanelControl componentePanelControl;
+    private ComponenteBarraEstado componenteBarraEstado;
+
+    // Gestores
+    private GestorAnimaciones gestorAnimaciones;
+
+    // Estado del juego
+    private Timeline bucleJuego;
+    private boolean estaEjecutandose = false;
+
+    // Contenedores principales
+    private VBox contenedorPrincipal;
+    private Stage escenarioPrincipal;
+
+    /**
+     * Constructor
+     */
+    public ControladorUIPrincipal() {
+        inicializarJuego();
+    }
+
+    /**
+     * Inicializa la partida del juego
+     */
+    private void inicializarJuego() {
+        ConfiguracionPartida configuracion = ConfiguracionPartida.partidaEstandar();
+        partida = new Partida(configuracion);
+        partida.inicializar();
+    }
+
+    /**
+     * Inicializa la interfaz de usuario
+     */
+    public void inicializarUI(Stage escenario) {
+        this.escenarioPrincipal = escenario;
+
+        // Crear componentes principales
+        crearComponentesUI();
+
+        // Construir layout principal
+        construirLayoutPrincipal();
+
+        // Configurar la escena
+        configurarEscena();
+
+        // Inicializar gestor de animaciones
+        inicializarGestorAnimaciones();
+
+        // Configurar eventos
+        configurarManejadoresEventos();
+
+        // Actualización inicial de la vista
+        actualizarTodosLosComponentes();
+    }
+
+    /**
+     * Crea todos los componentes de la UI
+     */
+    private void crearComponentesUI() {
+        componenteCabecera = new ComponenteCabecera();
+
+        panelJugador1 = new ComponentePanelJugador(1);
+        panelJugador2 = new ComponentePanelJugador(2);
+
+        componenteArena = new ComponenteArena();
+
+        componentePanelControl = new ComponentePanelControl();
+
+        componenteBarraEstado = new ComponenteBarraEstado();
+    }
+
+    /**
+     * Construye el layout principal de la aplicación
+     */
+    private void construirLayoutPrincipal() {
+        contenedorPrincipal = new VBox(ConstantesUI.Dimensiones.ESPACIADO_PANEL);
+        contenedorPrincipal.setPadding(new Insets(10));
+        contenedorPrincipal.setStyle(ConstantesUI.Estilos.GRADIENTE_FONDO);
+
+        // Cabecera
+        contenedorPrincipal.getChildren().add(componenteCabecera.obtenerComponente());
+
+        // Contenido principal (paneles de jugador + arena)
+        HBox contenidoPrincipal = crearContenidoPrincipal();
+        contenedorPrincipal.getChildren().add(contenidoPrincipal);
+
+        // Panel de control
+        contenedorPrincipal.getChildren().add(componentePanelControl.obtenerComponente());
+
+        // Barra de estado
+        contenedorPrincipal.getChildren().add(componenteBarraEstado.obtenerComponente());
+    }
+
+    /**
+     * Crea el contenido principal con los paneles de jugador y arena
+     */
+    private HBox crearContenidoPrincipal() {
+        HBox contenidoPrincipal = new HBox(ConstantesUI.Dimensiones.ESPACIADO_PANEL);
+
+        contenidoPrincipal.getChildren().addAll(
+                panelJugador1.obtenerComponente(),
+                componenteArena.obtenerComponente(),
+                panelJugador2.obtenerComponente()
+        );
+
+        return contenidoPrincipal;
+    }
+
+    /**
+     * Configura la escena y la ventana principal
+     */
+    private void configurarEscena() {
+        Scene escena = new Scene(contenedorPrincipal,
+                ConstantesUI.Dimensiones.ANCHO_VENTANA,
+                ConstantesUI.Dimensiones.ALTO_VENTANA);
+
+        // Configurar teclas de atajo
+        escena.setOnKeyPressed(evento -> {
+            switch (evento.getCode()) {
+                case SPACE -> alternarPlayPause();
+                case ENTER -> ejecutarPaso();
+                case R -> reiniciarJuego();
+            }
+        });
+
+        escenarioPrincipal.setTitle(ConstantesUI.Etiquetas.TITULO_APP);
+        escenarioPrincipal.setScene(escena);
+
+        escenarioPrincipal.setOnCloseRequest(e -> {
+            limpiezaFinal();
+            Platform.exit();
+        });
+    }
+
+    /**
+     * Inicializa el gestor de animaciones
+     */
+    private void inicializarGestorAnimaciones() {
+        gestorAnimaciones = new GestorAnimaciones(
+                componenteArena.obtenerGrillaArena(),
+                partida
+        );
+    }
+
+    /**
+     * Configura los manejadores de eventos para los componentes
+     */
+    private void configurarManejadoresEventos() {
+        // Eventos del panel de control
+        componentePanelControl.configurarAccionPlayPause(this::alternarPlayPause);
+        componentePanelControl.configurarAccionPaso(this::ejecutarPaso);
+        componentePanelControl.configurarAccionReiniciar(this::reiniciarJuego);
+    }
+
+    /**
+     * Inicia o pausa el juego
+     */
+    public void alternarPlayPause() {
+        if (estaEjecutandose) {
+            pausarJuego();
+        } else {
+            iniciarJuego();
+        }
+    }
+
+    /**
+     * Inicia el juego
+     */
+    private void iniciarJuego() {
+        bucleJuego = new Timeline(new KeyFrame(
+                Duration.millis(ConstantesUI.Tiempos.DURACION_TICK_JUEGO_MS),
+                e -> ejecutarTickJuego()));
+
+        bucleJuego.setCycleCount(Timeline.INDEFINITE);
+        bucleJuego.play();
+
+        estaEjecutandose = true;
+        componentePanelControl.actualizarBotonPlayPause(true);
+        componenteBarraEstado.establecerEstadoJuego(ConstantesUI.Etiquetas.JUEGO_EJECUTANDO);
+    }
+
+    /**
+     * Pausa el juego
+     */
+    private void pausarJuego() {
+        if (bucleJuego != null) {
+            bucleJuego.stop();
+        }
+
+        // Limpiar animaciones al pausar
+        gestorAnimaciones.limpiarTodasLasAnimaciones();
+
+        estaEjecutandose = false;
+        componentePanelControl.actualizarBotonPlayPause(false);
+        componenteBarraEstado.establecerEstadoJuego(ConstantesUI.Etiquetas.JUEGO_PAUSADO);
+    }
+
+    /**
+     * Ejecuta un tick individual del juego
+     */
+    public void ejecutarPaso() {
+        ejecutarTickJuego();
+    }
+
+    /**
+     * Ejecuta un tick del juego y actualiza la vista
+     */
+    private void ejecutarTickJuego() {
+        if (partida.isPartidaTerminada()) {
+            manejarFinDelJuego();
+            return;
+        }
+
+        // Ejecutar un tick del juego
+        partida.ejecutarTick();
+
+        // Actualizar la vista en el hilo de JavaFX
+        Platform.runLater(() -> {
+            actualizarTodosLosComponentes();
+
+            // Detectar y activar animaciones de combate
+            gestorAnimaciones.detectarEventosCombate();
+
+            // Actualizar animaciones existentes
+            gestorAnimaciones.actualizarAnimaciones();
+        });
+    }
+
+    /**
+     * Maneja el final del juego
+     */
+    private void manejarFinDelJuego() {
+        // Detener el bucle del juego
+        if (bucleJuego != null) {
+            bucleJuego.stop();
+        }
+
+        estaEjecutandose = false;
+        componentePanelControl.actualizarBotonPlayPause(false);
+        componenteBarraEstado.establecerEstadoJuego(ConstantesUI.Etiquetas.JUEGO_TERMINADO);
+
+        // Mostrar ganador
+        int ganador = partida.getGanador();
+        String textoGanador = switch (ganador) {
+            case 1 -> ConstantesUI.Etiquetas.JUGADOR_1_GANA;
+            case 2 -> ConstantesUI.Etiquetas.JUGADOR_2_GANA;
+            default -> ConstantesUI.Etiquetas.EMPATE;
+        };
+
+        componenteCabecera.mostrarGanador(textoGanador);
+
+        // Mostrar estadísticas finales en consola
+        System.out.println("Partida terminada - Ganador: " + (ganador == 0 ? "Empate" : "Jugador " + ganador));
+        System.out.println("Tiempo total: " + obtenerTiempoFormateado());
+    }
+
+    /**
+     * Reinicia el juego
+     */
+    public void reiniciarJuego() {
+        if (bucleJuego != null) {
+            bucleJuego.stop();
+        }
+
+        // Limpiar animaciones
+        gestorAnimaciones.limpiarTodasLasAnimaciones();
+
+        estaEjecutandose = false;
+        componentePanelControl.actualizarBotonPlayPause(false);
+        componenteBarraEstado.establecerEstadoJuego(ConstantesUI.Etiquetas.JUEGO_PAUSADO);
+        componenteCabecera.limpiarGanador();
+
+        // Reinicializar partida
+        inicializarJuego();
+
+        // Reinicializar gestor de animaciones
+        inicializarGestorAnimaciones();
+
+        // Actualizar vista
+        actualizarTodosLosComponentes();
+    }
+
+    /**
+     * Actualiza todos los componentes de la interfaz
+     */
+    private void actualizarTodosLosComponentes() {
+        // Actualizar cabecera
+        componenteCabecera.actualizar(
+                obtenerTiempoFormateado(),
+                partida.getTickActual()
+        );
+
+        // Actualizar paneles de jugadores (necesitan Arena, no Tablero)
+        // Nota: ComponentePanelJugador.actualizar() espera Arena, pero tienes Tablero
+        // Necesitas actualizar ComponentePanelJugador para usar Tablero en lugar de Arena
+        panelJugador1.actualizar(partida.getJugador1(), partida.getTablero());
+        panelJugador2.actualizar(partida.getJugador2(), partida.getTablero());
+
+        // Actualizar arena
+        componenteArena.actualizar(partida.getTablero(), gestorAnimaciones);
+    }
+
+    /**
+     * Obtiene el tiempo formateado de la partida
+     */
+    private String obtenerTiempoFormateado() {
+        int tickActual = partida.getTickActual();
+        int minutos = tickActual / 60;
+        int segundos = tickActual % 60;
+        return String.format("%d:%02d", minutos, segundos);
+    }
+
+    /**
+     * Limpieza final al cerrar la aplicación
+     */
+    private void limpiezaFinal() {
+        if (bucleJuego != null) {
+            bucleJuego.stop();
+        }
+
+        if (gestorAnimaciones != null) {
+            gestorAnimaciones.limpiarTodasLasAnimaciones();
+        }
+    }
+
+    /**
+     * Muestra la ventana principal
+     */
+    public void mostrar() {
+        escenarioPrincipal.show();
+    }
+
+    // Getters para acceso desde otros componentes si es necesario
+    public Partida obtenerPartida() {
+        return partida;
+    }
+
+    public boolean estaEjecutandose() {
+        return estaEjecutandose;
+    }
+}
