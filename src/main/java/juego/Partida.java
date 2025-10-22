@@ -9,12 +9,20 @@ import combate.SistemaCombate;
 import movimiento.SistemaMovimiento;
 import entidades.edificios.Torre;
 import entidades.edificios.TorrePrincesa;
+import juego.events.EntidadDestruidaEvent;
+import juego.events.GameEvent;
+import juego.events.GameEventListener;
+import juego.events.EventManager;
+import entidades.base.EntidadJuego;
+import entidades.tropas.Tropa;
+import juego.events.TropaDesplegadaEvent;
+import juego.events.PartidaTerminadaEvent;
 
 /**
  * Clase principal que maneja el estado y flujo de una partida
  * Reemplaza al ControladorJuegoConCartas con responsabilidades más claras
  */
-public class Partida {
+public class Partida implements GameEventListener {
 
     private final ConfiguracionPartida configuracion;
     private final EstadoPartida estado;
@@ -25,6 +33,7 @@ public class Partida {
     private final Tablero tablero;
     private final SistemaCombate sistemaCombate;
     private final SistemaMovimiento sistemaMovimiento;
+    private final EventManager eventManager;
 
     // Temporizador y control de juego
     private int tickActual;
@@ -34,6 +43,7 @@ public class Partida {
     public Partida(ConfiguracionPartida configuracion) {
         this.configuracion = configuracion;
         this.estado = new EstadoPartida();
+        this.eventManager = new EventManager();
 
         // Crear jugadores
         this.jugador1 = new Jugador(1, "Jugador 1", configuracion.getNivelJugador1());
@@ -41,12 +51,15 @@ public class Partida {
 
         // Crear tablero y sistemas
         this.tablero = new Tablero();
-        this.sistemaCombate = new SistemaCombate(tablero);
+        this.sistemaCombate = new SistemaCombate(tablero, eventManager);
         this.sistemaMovimiento = new SistemaMovimiento(tablero);
 
         this.tickActual = 0;
         this.partidaTerminada = false;
         this.ganador = 0;
+
+        // Suscribirse a eventos
+        eventManager.subscribe(EntidadDestruidaEvent.class, this);
     }
 
     /**
@@ -62,10 +75,6 @@ public class Partida {
         // Definir zonas de despliegue iniciales
         jugador1.getZonaDespliegue().definirZonaInicial(0, 0, Tablero.ANCHO - 1, 14);
         jugador2.getZonaDespliegue().definirZonaInicial(0, 17, Tablero.ANCHO - 1, Tablero.ALTO - 1);
-
-
-        // Mostrar información inicial
-        mostrarInformacionInicial();
 
         // Marcar como inicializada
         estado.marcarComoInicializada();
@@ -97,20 +106,11 @@ public class Partida {
         // 5. Limpiar entidades muertas
         tablero.limpiarEntidadesMuertas();
 
-        // 5.1. Procesar torres destruidas para actualizar zonas
-        procesarTorresDestruidas();
-
-
         // 6. Verificar condiciones de victoria
         verificarCondicionesVictoria();
 
         // 7. Verificar tiempo límite
         verificarTiempo();
-
-        // 8. Mostrar estado (cada cierto tiempo)
-        if (tickActual % 10 == 0) {
-            mostrarEstadoActual();
-        }
     }
 
     /**
@@ -122,49 +122,61 @@ public class Partida {
         }
 
         Jugador jugador = (idJugador == 1) ? jugador1 : jugador2;
-        return jugador.intentarDesplegarCarta(nombreCarta, x, y, tablero);
+        Tropa tropaDesplegada = jugador.intentarDesplegarCarta(nombreCarta, x, y, tablero);
+
+        if (tropaDesplegada != null) {
+            eventManager.notify(new TropaDesplegadaEvent(jugador, tropaDesplegada, tropaDesplegada.getPosicion()));
+            return true;
+        }
+        return false;
     }
 
-    // ==========================================
-    // MÉTODOS PRIVADOS
-    // ==========================================
+    @Override
+    public void onGameEvent(GameEvent event) {
+        if (event instanceof EntidadDestruidaEvent) {
+            procesarTorreDestruida((EntidadDestruidaEvent) event);
+        }
+    }
+
+    private void procesarTorreDestruida(EntidadDestruidaEvent event) {
+        if (event.getEntidad() instanceof TorrePrincesa) {
+            Torre torre = (Torre) event.getEntidad();
+            int idDefensor = torre.getJugadorId();
+            int idAtacante = (idDefensor == 1) ? 2 : 1;
+            Jugador atacante = (idAtacante == 1) ? jugador1 : jugador2;
+            Jugador defensor = (idDefensor == 1) ? jugador1 : jugador2;
+
+            boolean esLadoIzquierdo = torre.getPosicion().getX() < 9;
+
+            // Crear la nueva zona de 9x5 y la zona del puente
+            tablero.ZonaDespliegue.RectanguloZona nuevaZona;
+            tablero.ZonaDespliegue.RectanguloZona zonaPuente;
+
+            if (idAtacante == 1) { // J1 ataca a J2 (despliega en la parte de abajo)
+                nuevaZona = esLadoIzquierdo ? new tablero.ZonaDespliegue.RectanguloZona(0, 17, 8, 21) : new tablero.ZonaDespliegue.RectanguloZona(9, 17, 17, 21);
+                zonaPuente = esLadoIzquierdo ? new tablero.ZonaDespliegue.RectanguloZona(Tablero.PUENTE_X1, 15, Tablero.PUENTE_X1, 16) : new tablero.ZonaDespliegue.RectanguloZona(Tablero.PUENTE_X2, 15, Tablero.PUENTE_X2, 16);
+            } else { // J2 ataca a J1 (despliega en la parte de arriba)
+                nuevaZona = esLadoIzquierdo ? new tablero.ZonaDespliegue.RectanguloZona(0, 10, 8, 14) : new tablero.ZonaDespliegue.RectanguloZona(9, 10, 17, 14);
+                zonaPuente = esLadoIzquierdo ? new tablero.ZonaDespliegue.RectanguloZona(Tablero.PUENTE_X1, 15, Tablero.PUENTE_X1, 16) : new tablero.ZonaDespliegue.RectanguloZona(Tablero.PUENTE_X2, 15, Tablero.PUENTE_X2, 16);
+            }
+
+            // Actualizar zonas para ambos jugadores
+            atacante.getZonaDespliegue().agregarZona(nuevaZona);
+            atacante.getZonaDespliegue().agregarZona(zonaPuente);
+            defensor.getZonaDespliegue().restringirZona(nuevaZona);
+        }
+    }
 
     private void procesarDecisionesJugadores() {
         // La IA de cada jugador decide si juega una carta
-        jugador1.jugarCartaIA(tablero, tickActual);
-        jugador2.jugarCartaIA(tablero, tickActual);
-    }
+        Tropa tropaJ1 = jugador1.jugarCartaIA(tablero, tickActual);
+        if (tropaJ1 != null) {
+            eventManager.notify(new TropaDesplegadaEvent(jugador1, tropaJ1, tropaJ1.getPosicion()));
+        }
 
-    private void procesarTorresDestruidas() {
-        for (Torre torre : sistemaCombate.getTorresMuertas()) {
-            if (torre instanceof TorrePrincesa) {
-                int idDefensor = torre.getJugadorId();
-                int idAtacante = (idDefensor == 1) ? 2 : 1;
-                Jugador atacante = (idAtacante == 1) ? jugador1 : jugador2;
-                Jugador defensor = (idDefensor == 1) ? jugador1 : jugador2;
-
-                boolean esLadoIzquierdo = torre.getPosicion().getX() < 9;
-
-                // Crear la nueva zona de 9x5 y la zona del puente
-                tablero.ZonaDespliegue.RectanguloZona nuevaZona;
-                tablero.ZonaDespliegue.RectanguloZona zonaPuente;
-
-                if (idAtacante == 1) { // J1 ataca a J2 (despliega en la parte de abajo)
-                    nuevaZona = esLadoIzquierdo ? new tablero.ZonaDespliegue.RectanguloZona(0, 17, 8, 21) : new tablero.ZonaDespliegue.RectanguloZona(9, 17, 17, 21);
-                    zonaPuente = esLadoIzquierdo ? new tablero.ZonaDespliegue.RectanguloZona(Tablero.PUENTE_X1, 15, Tablero.PUENTE_X1, 16) : new tablero.ZonaDespliegue.RectanguloZona(Tablero.PUENTE_X2, 15, Tablero.PUENTE_X2, 16);
-                } else { // J2 ataca a J1 (despliega en la parte de arriba)
-                    nuevaZona = esLadoIzquierdo ? new tablero.ZonaDespliegue.RectanguloZona(0, 10, 8, 14) : new tablero.ZonaDespliegue.RectanguloZona(9, 10, 17, 14);
-                    zonaPuente = esLadoIzquierdo ? new tablero.ZonaDespliegue.RectanguloZona(Tablero.PUENTE_X1, 15, Tablero.PUENTE_X1, 16) : new tablero.ZonaDespliegue.RectanguloZona(Tablero.PUENTE_X2, 15, Tablero.PUENTE_X2, 16);
-                }
-
-                // Actualizar zonas para ambos jugadores
-                atacante.getZonaDespliegue().agregarZona(nuevaZona);
-                atacante.getZonaDespliegue().agregarZona(zonaPuente);
-                defensor.getZonaDespliegue().restringirZona(nuevaZona);
-
-                System.out.println("¡Torre Princesa del Jugador " + idDefensor + " destruida!");
-                System.out.println("¡Jugador " + idAtacante + " ahora puede desplegar más allá del río!");
-            }
+        Tropa tropaJ2 = jugador2.jugarCartaIA(tablero, tickActual);
+        if (tropaJ2 != null) {
+            eventManager.notify(new TropaDesplegadaEvent(jugador2, tropaJ2, tropaJ2.getPosicion()));
         }
     }
 
@@ -213,40 +225,7 @@ public class Partida {
     private void terminarPartida(int ganadorId, String motivo) {
         this.partidaTerminada = true;
         this.ganador = ganadorId;
-
-        System.out.println("\n" + "=".repeat(50));
-        if (ganadorId == 0) {
-            System.out.println("           EMPATE");
-        } else {
-            System.out.println("       JUGADOR " + ganadorId + " GANA");
-        }
-        System.out.println("Motivo: " + motivo);
-        System.out.println("Tiempo: " + obtenerTiempoFormateado());
-        System.out.println("=".repeat(50));
-    }
-
-    private void mostrarInformacionInicial() {
-        System.out.println("\n" + "=".repeat(60));
-        System.out.println("                 INICIANDO PARTIDA");
-        System.out.println("=".repeat(60));
-        System.out.println("Configuración:");
-        System.out.println("- Duración: " + configuracion.getTiempoPartida() + "s + " +
-                configuracion.getTiempoOvertime() + "s overtime");
-        System.out.println("- Niveles: J1=" + configuracion.getNivelJugador1() +
-                ", J2=" + configuracion.getNivelJugador2());
-        System.out.println("=".repeat(60));
-    }
-
-    private void mostrarEstadoActual() {
-        System.out.println("\n--- TICK " + tickActual + " (" + obtenerTiempoFormateado() + ") ---");
-        System.out.println("Tropas: J1=" + tablero.contarTropasVivas(1) +
-                " | J2=" + tablero.contarTropasVivas(2));
-        System.out.println("Elixir: J1=" + jugador1.getSistemaElixir().getElixirActual() +
-                "/" + jugador1.getSistemaElixir().getElixirMaximo() +
-                " | J2=" + jugador2.getSistemaElixir().getElixirActual() +
-                "/" + jugador2.getSistemaElixir().getElixirMaximo());
-        System.out.println("Torres: J1=" + tablero.contarTorresVivas(1) +
-                "/3 | J2=" + tablero.contarTorresVivas(2) + "/3");
+        eventManager.notify(new PartidaTerminadaEvent(ganadorId, motivo));
     }
 
     private String obtenerTiempoFormateado() {
@@ -272,4 +251,5 @@ public class Partida {
     public boolean isPartidaTerminada() { return partidaTerminada; }
     public int getGanador() { return ganador; }
     public EstadoPartida getEstado() { return estado; }
+    public EventManager getEventManager() { return eventManager; }
 }
