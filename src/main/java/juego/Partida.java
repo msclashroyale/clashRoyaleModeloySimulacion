@@ -3,7 +3,7 @@
 // ==========================================
 package juego;
 
-import jugador.Jugador;
+import jugador.*;
 import tablero.Tablero;
 import combate.SistemaCombate;
 import movimiento.SistemaMovimiento;
@@ -17,6 +17,10 @@ import entidades.base.EntidadJuego;
 import entidades.tropas.Tropa;
 import juego.events.TropaDesplegadaEvent;
 import juego.events.PartidaTerminadaEvent;
+
+import java.util.Arrays;
+import java.util.List;
+import java.util.Random;
 
 /**
  * Clase principal que maneja el estado y flujo de una partida
@@ -45,9 +49,22 @@ public class Partida implements GameEventListener {
         this.estado = new EstadoPartida();
         this.eventManager = new EventManager();
 
-        // Crear jugadores
-        this.jugador1 = new Jugador(1, "Jugador 1", configuracion.getNivelJugador1());
-        this.jugador2 = new Jugador(2, "Jugador 2", configuracion.getNivelJugador2());
+        // --- Selección Aleatoria de Estrategias ---
+        List<EstrategiaIA> estrategias = Arrays.asList(
+                new EstrategiaMenorCosto(),
+                new EstrategiaAgresiva(),
+                new EstrategiaDefensiva(),
+                new EstrategiaAleatoria()
+        );
+        Random random = new Random();
+        EstrategiaIA estrategiaJ1 = estrategias.get(random.nextInt(estrategias.size()));
+        EstrategiaIA estrategiaJ2 = estrategias.get(random.nextInt(estrategias.size()));
+
+        // ----------------------------------------
+
+        // Crear jugadores con la estrategia asignada
+        this.jugador1 = new Jugador(1, "Jugador 1", configuracion.getNivelJugador1(), estrategiaJ1);
+        this.jugador2 = new Jugador(2, "Jugador 2", configuracion.getNivelJugador2(), estrategiaJ2);
 
         // Crear tablero y sistemas
         this.tablero = new Tablero();
@@ -60,6 +77,7 @@ public class Partida implements GameEventListener {
 
         // Suscribirse a eventos
         eventManager.subscribe(EntidadDestruidaEvent.class, this);
+        eventManager.subscribe(PartidaTerminadaEvent.class, this);
     }
 
     /**

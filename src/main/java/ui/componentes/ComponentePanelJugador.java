@@ -34,6 +34,7 @@ public class ComponentePanelJugador {
     private Label etiquetaTropas;
     private Label etiquetaTorres;
     private Label etiquetaCartas;
+    private Label etiquetaEstrategia;
 
     // Paneles de contenido
     private VBox panelCartas;
@@ -134,9 +135,10 @@ public class ComponentePanelJugador {
         etiquetaTropas = new Label("Tropas: 0");
         etiquetaTorres = new Label("Torres: 3/3");
         etiquetaCartas = new Label("Cartas jugadas: 0");
+        etiquetaEstrategia = new Label("Estrategia: N/A");
 
         // Aplicar estilo a las etiquetas
-        Label[] etiquetas = {etiquetaTropas, etiquetaTorres, etiquetaCartas};
+        Label[] etiquetas = {etiquetaTropas, etiquetaTorres, etiquetaCartas, etiquetaEstrategia};
         for (Label etiqueta : etiquetas) {
             etiqueta.setTextFill(Color.WHITE);
             etiqueta.setFont(ConstantesUI.Fuentes.TEXTO_PEQUENO);
@@ -358,6 +360,7 @@ public class ComponentePanelJugador {
         etiquetaTropas.setText("Tropas: " + tablero.contarTropasVivas(jugadorId));
         etiquetaTorres.setText("Torres: " + contarTorresVivas(tablero.getTorresJugador(jugadorId)) + "/3");
         etiquetaCartas.setText("Cartas jugadas: " + jugador.getEstadisticas().getCartasJugadas());
+        etiquetaEstrategia.setText("Estrategia: " + jugador.getEstrategiaIA().getClass().getSimpleName());
     }
 
     /**

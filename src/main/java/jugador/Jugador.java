@@ -30,20 +30,34 @@ public class Jugador {
      * Constructor con mazo por defecto
      */
     public Jugador(int id, String nombre, int nivel) {
-        this(id, nombre, nivel, Mazo.crearMazoPorDefecto());
+        this(id, nombre, nivel, Mazo.crearMazoPorDefecto(), new EstrategiaMenorCosto());
     }
 
     /**
-     * Constructor con mazo personalizado
+     * Constructor con mazo personalizado y estrategia por defecto
      */
     public Jugador(int id, String nombre, int nivel, Mazo mazoPersonalizado) {
+        this(id, nombre, nivel, mazoPersonalizado, new EstrategiaMenorCosto());
+    }
+
+    /**
+     * Constructor con mazo por defecto y estrategia personalizada
+     */
+    public Jugador(int id, String nombre, int nivel, EstrategiaIA estrategia) {
+        this(id, nombre, nivel, Mazo.crearMazoPorDefecto(), estrategia);
+    }
+
+    /**
+     * Constructor principal que permite inyectar todas las dependencias.
+     */
+    public Jugador(int id, String nombre, int nivel, Mazo mazo, EstrategiaIA estrategia) {
         this.id = id;
         this.nombre = nombre;
         this.nivel = nivel;
-        this.mazo = mazoPersonalizado;
+        this.mazo = mazo;
         this.sistemaElixir = new SistemaElixir();
         this.estadisticas = new EstadisticasJugador();
-        this.estrategiaIA = new EstrategiaIA();
+        this.estrategiaIA = estrategia;
         this.zonaDespliegue = new ZonaDespliegue(id);
     }
 
@@ -165,6 +179,7 @@ public class Jugador {
     public SistemaElixir getSistemaElixir() { return sistemaElixir; }
     public EstadisticasJugador getEstadisticas() { return estadisticas; }
     public ZonaDespliegue getZonaDespliegue() { return zonaDespliegue; }
+    public EstrategiaIA getEstrategiaIA() { return estrategiaIA; }
 
     @Override
     public String toString() {

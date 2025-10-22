@@ -4,7 +4,6 @@ import tablero.Posicion;
 
 /**
  * Clase base abstracta para todas las entidades del juego
- * Refactorizada desde Entidad.java con nombres más claros
  */
 public abstract class EntidadJuego {
 

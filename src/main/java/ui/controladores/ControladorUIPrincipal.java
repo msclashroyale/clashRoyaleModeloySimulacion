@@ -280,10 +280,6 @@ public class ControladorUIPrincipal {
         };
 
         componenteCabecera.mostrarGanador(textoGanador);
-
-        // Mostrar estadísticas finales en consola
-        System.out.println("Partida terminada - Ganador: " + (ganador == 0 ? "Empate" : "Jugador " + ganador));
-        System.out.println("Tiempo total: " + obtenerTiempoFormateado());
     }
 
     /**
