@@ -13,7 +13,17 @@ public class EventManager {
     private final Map<Class<? extends GameEvent>, List<GameEventListener>> listeners = new HashMap<>();
 
     public void subscribe(Class<? extends GameEvent> eventType, GameEventListener listener) {
-        listeners.computeIfAbsent(eventType, k -> new ArrayList<>()).add(listener);
+        // Buscar si existe la lista
+        List<GameEventListener> lista = listeners.get(eventType);
+
+        // Si no existe, crearla y guardarla
+        if (lista == null) {
+            lista = new ArrayList<>();
+            listeners.put(eventType, lista);
+        }
+
+        // Agregar el listener a la lista
+        lista.add(listener);
     }
 
     public void unsubscribe(Class<? extends GameEvent> eventType, GameEventListener listener) {

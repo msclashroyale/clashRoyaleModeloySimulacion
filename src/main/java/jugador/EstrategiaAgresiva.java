@@ -43,8 +43,8 @@ public class EstrategiaAgresiva implements EstrategiaIA {
 
         // Criterio de agresividad: priorizar la carta que invoca la tropa con más daño.
         return Collections.max(cartasJugables, Comparator.comparing(carta -> {
-            // Obtenemos un prototipo de la tropa para ver sus estadísticas.
-            Tropa tropaPrototipo = FactoriaTropas.crearTropa(carta.getNombre(), null, 0, 0);
+            // Obtenemos el prototipo de la tropa para ver sus estadísticas sin crear un objeto nuevo.
+            Tropa tropaPrototipo = FactoriaTropas.getPrototipo(carta.getNombre());
             if (tropaPrototipo != null) {
                 return tropaPrototipo.getDanioAtaque();
             }

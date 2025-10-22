@@ -116,7 +116,8 @@ public class SistemaCombate {
 
         for (Tropa tropa : tablero.getTropasJugador(jugadorEnemigo)) {
             if (tropa.estaViva()) {
-                double distancia = torre.getPosicion().calcularDistancia(tropa.getPosicion());
+                // CORREGIDO: Usar el cálculo de distancia a la entidad
+                double distancia = torre.getPosicion().calcularDistancia(tropa);
                 if (distancia <= torre.getRangoAtaque() && distancia < menorDistancia) {
                     menorDistancia = distancia;
                     objetivoMasCercano = tropa;
@@ -132,14 +133,16 @@ public class SistemaCombate {
 
         // Añadir tropas enemigas en el área
         for (Tropa tropa : tablero.getTropasJugador(jugadorEnemigo)) {
-            if (tropa.estaViva() && centro.calcularDistancia(tropa.getPosicion()) <= radio) {
+            // CORREGIDO: Usar el cálculo de distancia a la entidad
+            if (tropa.estaViva() && centro.calcularDistancia(tropa) <= radio) {
                 entidadesEnArea.add(tropa);
             }
         }
 
         // Añadir torres enemigas en el área
         for (Torre torre : tablero.getTorresJugador(jugadorEnemigo)) {
-            if (torre.estaViva() && centro.calcularDistancia(torre.getPosicion()) <= radio) {
+            // CORREGIDO: Usar el cálculo de distancia a la entidad
+            if (torre.estaViva() && centro.calcularDistancia(torre) <= radio) {
                 entidadesEnArea.add(torre);
             }
         }

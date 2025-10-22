@@ -24,7 +24,6 @@ import java.util.Random;
 
 /**
  * Clase principal que maneja el estado y flujo de una partida
- * Reemplaza al ControladorJuegoConCartas con responsabilidades más claras
  */
 public class Partida implements GameEventListener {
 
@@ -131,23 +130,6 @@ public class Partida implements GameEventListener {
         verificarTiempo();
     }
 
-    /**
-     * Permite a un jugador desplegar una carta manualmente
-     */
-    public boolean desplegarCarta(int idJugador, String nombreCarta, int x, int y) {
-        if (partidaTerminada) {
-            return false;
-        }
-
-        Jugador jugador = (idJugador == 1) ? jugador1 : jugador2;
-        Tropa tropaDesplegada = jugador.intentarDesplegarCarta(nombreCarta, x, y, tablero);
-
-        if (tropaDesplegada != null) {
-            eventManager.notify(new TropaDesplegadaEvent(jugador, tropaDesplegada, tropaDesplegada.getPosicion()));
-            return true;
-        }
-        return false;
-    }
 
     @Override
     public void onGameEvent(GameEvent event) {

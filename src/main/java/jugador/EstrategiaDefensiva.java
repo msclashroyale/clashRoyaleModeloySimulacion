@@ -43,7 +43,7 @@ public class EstrategiaDefensiva implements EstrategiaIA {
 
         // Criterio de defensa: priorizar la carta que invoca la tropa con más vida (más resistente).
         return Collections.max(cartasJugables, Comparator.comparing(carta -> {
-            Tropa tropaPrototipo = FactoriaTropas.crearTropa(carta.getNombre(), null, 0, 0);
+            Tropa tropaPrototipo = FactoriaTropas.getPrototipo(carta.getNombre());
             if (tropaPrototipo != null) {
                 return tropaPrototipo.getVidaMaxima();
             }
