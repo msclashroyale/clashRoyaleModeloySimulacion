@@ -81,13 +81,14 @@ public class Tropa extends EntidadJuego {
     public boolean puedeAtacar(EntidadJuego objetivo, int tickActual) {
         if (!estaViva() || !objetivo.estaViva()) return false;
         if (tickActual - ticksUltimoAtaque < cooldownAtaque) return false;
-        double distancia = getPosicion().calcularDistancia(objetivo.getPosicion());
-        return distancia <= rangoAtaque;
+        // Usa el nuevo cálculo de distancia a la entidad
+        return getPosicion().calcularDistancia(objetivo) <= rangoAtaque;
     }
 
-    public boolean estaEnRangoDeAtaque(Posicion posicionObjetivo) {
-        if (posicionObjetivo == null) return false;
-        return getPosicion().calcularDistancia(posicionObjetivo) <= rangoAtaque;
+    public boolean estaEnRangoDeAtaque(EntidadJuego objetivo) {
+        if (objetivo == null) return false;
+        // Usa el nuevo cálculo de distancia a la entidad
+        return getPosicion().calcularDistancia(objetivo) <= rangoAtaque;
     }
 
     public EntidadJuego buscarEnemigoEnRango(tablero.Tablero tablero) {
@@ -104,7 +105,8 @@ public class Tropa extends EntidadJuego {
 
         for (EntidadJuego enemigo : posiblesObjetivos) {
             if (enemigo.getJugadorId() != this.getJugadorId() && enemigo.estaViva()) {
-                double distancia = this.getPosicion().calcularDistancia(enemigo.getPosicion());
+                // Usa el nuevo cálculo de distancia a la entidad
+                double distancia = this.getPosicion().calcularDistancia(enemigo);
                 if (distancia <= this.rangoAtaque && distancia < distanciaMinima) {
                     distanciaMinima = distancia;
                     enemigoMasCercano = enemigo;
@@ -117,6 +119,16 @@ public class Tropa extends EntidadJuego {
     @Override
     public char getSimboloConsola() {
         return nombre.charAt(0);
+    }
+
+    @Override
+    public int getAncho() {
+        return 1;
+    }
+
+    @Override
+    public int getAlto() {
+        return 1;
     }
 
     // Getters

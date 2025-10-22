@@ -108,10 +108,12 @@ public abstract class EdificioBase extends EntidadJuego {
         return rangoAtaque;
     }
 
+    @Override
     public int getAncho() {
         return ancho;
     }
 
+    @Override
     public int getAlto() {
         return alto;
     }

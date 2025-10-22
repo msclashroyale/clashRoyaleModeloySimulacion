@@ -41,19 +41,23 @@ public class SistemaMovimiento {
         }
 
         // Si ya estamos en rango, no hay necesidad de moverse. El sistema de combate se encargará.
-        if (tropa.estaEnRangoDeAtaque(tropa.getObjetivo().getPosicion())) {
+        if (tropa.estaEnRangoDeAtaque(tropa.getObjetivo())) {
             return;
         }
 
         // Moverse hacia el objetivo según la velocidad de la tropa.
         if (tickActual % tropa.getTicksParaMover() == 0) {
-            Posicion siguientePaso = buscadorCaminos.encontrarSiguientePaso(tropa, tropa.getObjetivo().getPosicion());
+            Posicion siguientePaso = buscadorCaminos.encontrarSiguientePaso(tropa, tropa.getObjetivo());
 
             if (siguientePaso != null && !hayObstaculoEn(siguientePaso, tropa)) {
                 tropa.setPosicion(siguientePaso);
             } else {
-                // Si el camino está bloqueado, invalidar el objetivo para forzar una nueva búsqueda en el siguiente tick.
-                tropa.setObjetivo(null);
+                // Si el camino principal está bloqueado, buscar una ruta alternativa para rodear el obstáculo.
+                Posicion pasoAlternativo = buscadorCaminos.buscarRutaAlternativa(tropa.getPosicion(), tropa.getObjetivo().getPosicion());
+                if (pasoAlternativo != null) {
+                    tropa.setPosicion(pasoAlternativo);
+                }
+                // Si no hay ruta alternativa, la tropa simplemente espera al siguiente tick sin invalidar su objetivo.
             }
         }
     }
@@ -78,7 +82,7 @@ public class SistemaMovimiento {
                 if (torre instanceof TorreRey && hayTorresPrincesaVivas(jugadorEnemigo)) {
                     continue;
                 }
-                double distancia = origen.calcularDistancia(torre.getPosicion());
+                double distancia = origen.calcularDistancia(torre);
                 if (distancia < menorDistancia) {
                     menorDistancia = distancia;
                     torreMasCercana = torre;
@@ -95,7 +99,7 @@ public class SistemaMovimiento {
         // Buscar en tropas enemigas
         for (Tropa tropaEnemiga : tablero.getTropasJugador(jugadorEnemigo)) {
             if (tropaEnemiga.estaViva()) {
-                double distancia = tropa.getPosicion().calcularDistancia(tropaEnemiga.getPosicion());
+                double distancia = tropa.getPosicion().calcularDistancia(tropaEnemiga);
                 if (distancia < menorDistancia) {
                     menorDistancia = distancia;
                     objetivoMasCercano = tropaEnemiga;
@@ -106,7 +110,7 @@ public class SistemaMovimiento {
         // Buscar en torres enemigas
         Torre torreObjetivo = encontrarTorreObjetivo(tropa.getPosicion(), jugadorEnemigo);
         if (torreObjetivo != null) {
-            double distancia = tropa.getPosicion().calcularDistancia(torreObjetivo.getPosicion());
+            double distancia = tropa.getPosicion().calcularDistancia(torreObjetivo);
             if (distancia < menorDistancia) {
                 objetivoMasCercano = torreObjetivo;
             }

@@ -85,6 +85,16 @@ public abstract class EntidadJuego {
      */
     public abstract char getSimboloConsola();
 
+    /**
+     * Ancho de la entidad en casillas del tablero
+     */
+    public abstract int getAncho();
+
+    /**
+     * Alto de la entidad en casillas del tablero
+     */
+    public abstract int getAlto();
+
     @Override
     public String toString() {
         return getClass().getSimpleName() +
