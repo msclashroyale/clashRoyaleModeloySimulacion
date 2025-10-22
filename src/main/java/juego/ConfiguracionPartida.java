@@ -62,7 +62,6 @@ public class ConfiguracionPartida {
     public int getTiempoTotal() { return tiempoPartida + tiempoOvertime; }
     public int getNivelJugador1() { return nivelJugador1; }
     public int getNivelJugador2() { return nivelJugador2; }
-    public boolean esModoIA() { return modoIA; }
 
     @Override
     public String toString() {

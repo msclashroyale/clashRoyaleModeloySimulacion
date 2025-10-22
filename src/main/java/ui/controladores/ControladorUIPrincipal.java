@@ -11,6 +11,9 @@ import javafx.scene.layout.VBox;
 import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
 import javafx.util.Duration;
+import juego.events.GameEvent;
+import juego.events.GameEventListener;
+import juego.events.PartidaTerminadaEvent;
 import ui.componentes.*;
 import ui.constantes.ConstantesUI;
 import ui.gestores.GestorAnimaciones;
@@ -19,7 +22,7 @@ import ui.gestores.GestorAnimaciones;
  * Controlador principal de la interfaz de usuario
  * Orquesta todos los componentes y gestiona el ciclo de vida de la aplicación
  */
-public class ControladorUIPrincipal {
+public class ControladorUIPrincipal implements GameEventListener {
 
     // Partida del juego
     private Partida partida;
@@ -38,6 +41,8 @@ public class ControladorUIPrincipal {
     // Estado del juego
     private Timeline bucleJuego;
     private boolean estaEjecutandose = false;
+    private int ticksParaTerminar = -1; // Contador para el retardo de fin de juego
+    private PartidaTerminadaEvent infoPartidaTerminada = null;
 
     // Contenedores principales
     private VBox contenedorPrincipal;
@@ -56,7 +61,20 @@ public class ControladorUIPrincipal {
     private void inicializarJuego() {
         ConfiguracionPartida configuracion = ConfiguracionPartida.partidaEstandar();
         partida = new Partida(configuracion);
+        partida.getEventManager().subscribe(PartidaTerminadaEvent.class, this);
         partida.inicializar();
+    }
+
+    @Override
+    public void onGameEvent(GameEvent event) {
+        if (event instanceof PartidaTerminadaEvent) {
+            // No terminar el juego de inmediato. Iniciar el contador.
+            if (ticksParaTerminar == -1) { // Asegurarse de que solo se active una vez
+                this.infoPartidaTerminada = (PartidaTerminadaEvent) event;
+                // Retardo de 2 segundos (2000 ms / DURACION_TICK_JUEGO_MS)
+                this.ticksParaTerminar = (int) (2000 / ConstantesUI.Tiempos.DURACION_TICK_JUEGO_MS);
+            }
+        }
     }
 
     /**
@@ -238,13 +256,10 @@ public class ControladorUIPrincipal {
      * Ejecuta un tick del juego y actualiza la vista
      */
     private void ejecutarTickJuego() {
-        if (partida.isPartidaTerminada()) {
-            manejarFinDelJuego();
-            return;
+        // La lógica de la partida se detiene por su cuenta, pero el bucle de UI sigue.
+        if (!partida.isPartidaTerminada()) {
+            partida.ejecutarTick();
         }
-
-        // Ejecutar un tick del juego
-        partida.ejecutarTick();
 
         // Actualizar la vista en el hilo de JavaFX
         Platform.runLater(() -> {
@@ -255,13 +270,21 @@ public class ControladorUIPrincipal {
 
             // Actualizar animaciones existentes
             gestorAnimaciones.actualizarAnimaciones();
+
+            // Gestionar el contador de fin de partida
+            if (ticksParaTerminar > 0) {
+                ticksParaTerminar--;
+            } else if (ticksParaTerminar == 0) {
+                manejarFinDelJuego(infoPartidaTerminada);
+                ticksParaTerminar = -1; // Desactivar el contador
+            }
         });
     }
 
     /**
      * Maneja el final del juego
      */
-    private void manejarFinDelJuego() {
+    private void manejarFinDelJuego(PartidaTerminadaEvent info) {
         // Detener el bucle del juego
         if (bucleJuego != null) {
             bucleJuego.stop();
@@ -271,8 +294,8 @@ public class ControladorUIPrincipal {
         componentePanelControl.actualizarBotonPlayPause(false);
         componenteBarraEstado.establecerEstadoJuego(ConstantesUI.Etiquetas.JUEGO_TERMINADO);
 
-        // Mostrar ganador
-        int ganador = partida.getGanador();
+        // Mostrar ganador usando la información del evento
+        int ganador = info.getGanadorId();
         String textoGanador = switch (ganador) {
             case 1 -> ConstantesUI.Etiquetas.JUGADOR_1_GANA;
             case 2 -> ConstantesUI.Etiquetas.JUGADOR_2_GANA;
@@ -280,10 +303,6 @@ public class ControladorUIPrincipal {
         };
 
         componenteCabecera.mostrarGanador(textoGanador);
-
-        // Mostrar estadísticas finales en consola
-        System.out.println("Partida terminada - Ganador: " + (ganador == 0 ? "Empate" : "Jugador " + ganador));
-        System.out.println("Tiempo total: " + obtenerTiempoFormateado());
     }
 
     /**

@@ -1,203 +1,36 @@
-// ==========================================
-// ESTRATEGIA IA REFACTORIZADA
-// ==========================================
 package jugador;
 
 import cartas.Carta;
-import tablero.Tablero;
 import tablero.Posicion;
-import java.util.Random;
-import java.util.List;
+import tablero.Tablero;
 
 /**
- * Clase refactorizada que maneja las estrategias de IA para los jugadores
- * Mantiene toda la lógica inteligente original pero con mejor organización
+ * Interfaz para definir el comportamiento de una Inteligencia Artificial.
+ * Permite implementar diferentes estrategias que pueden ser asignadas a un jugador.
  */
-public class EstrategiaIA {
-
-    private final Random generadorAleatorio;
-
-    // Constantes de estrategia
-    private static final double PROBABILIDAD_BASE = 0.8;           // 80% base por tick
-    private static final double PROBABILIDAD_ELIXIR_ALTO = 0.95;    // 95% si tiene mucho elixir
-    private static final double PROBABILIDAD_ELIXIR_MEDIO = 0.85;   // 85% si tiene elixir medio
-    private static final double MULTIPLICADOR_FINAL_PARTIDA = 1.3; // Más agresivo al final
-
-    private static final int ELIXIR_ALTO = 7;
-    private static final int ELIXIR_MEDIO = 4;
-    private static final int TICK_FINAL_PARTIDA = 120; // Últimos 2 minutos
-    private static final int MAX_INTENTOS_POSICION = 10;
-
-    public EstrategiaIA() {
-        this.generadorAleatorio = new Random();
-    }
+public interface EstrategiaIA {
 
     /**
-     * Determina si la IA debe intentar jugar una carta en este tick
-     * Mantiene la lógica original con probabilidades dinámicas
+     * Determina si la IA debe intentar jugar una carta en el tick actual.
+     * @param jugador El jugador que controla la IA.
+     * @param tickActual El tick actual de la partida.
+     * @return true si debe intentar jugar, false en caso contrario.
      */
-    public boolean debeIntentarJugarCarta(Jugador jugador, int tickActual) {
-        double probabilidad = calcularProbabilidadJugar(jugador, tickActual);
-        return generadorAleatorio.nextDouble() < probabilidad;
-    }
+    boolean debeIntentarJugarCarta(Jugador jugador, int tickActual);
 
     /**
-     * Calcula la probabilidad de jugar una carta según el estado del jugador
+     * Selecciona la carta que la IA considera mejor para jugar en el momento actual.
+     * @param jugador El jugador que controla la IA.
+     * @return La carta seleccionada, o null si no hay ninguna carta jugable.
      */
-    private double calcularProbabilidadJugar(Jugador jugador, int tickActual) {
-        double probabilidad = PROBABILIDAD_BASE;
-        int elixirActual = jugador.getSistemaElixir().getElixirActual();
-
-        // Ajustar según cantidad de elixir disponible
-        if (elixirActual >= ELIXIR_ALTO) {
-            probabilidad = PROBABILIDAD_ELIXIR_ALTO;
-        } else if (elixirActual >= ELIXIR_MEDIO) {
-            probabilidad = PROBABILIDAD_ELIXIR_MEDIO;
-        }
-
-        // Ser más agresivo en la fase final de la partida
-        if (tickActual > TICK_FINAL_PARTIDA) {
-            probabilidad *= MULTIPLICADOR_FINAL_PARTIDA;
-        }
-
-        // Limitar probabilidad máxima a 100%
-        return Math.min(probabilidad, 1.0);
-    }
+    Carta seleccionarCartaParaJugar(Jugador jugador);
 
     /**
-     * Selecciona la mejor carta disponible para jugar
-     * Mantiene la estrategia original de priorizar cartas pagables
+     * Selecciona la posición en el tablero donde se desplegará la carta.
+     * @param jugador El jugador que controla la IA.
+     * @param tablero El estado actual del tablero.
+     * @return La posición de despliegue, o null si no se encuentra una posición válida.
      */
-    public Carta seleccionarCartaParaJugar(Jugador jugador) {
-        // Usar la lógica existente del jugador para obtener la mejor carta
-        return jugador.obtenerCartaMasBarataDisponible();
-    }
+    Posicion seleccionarPosicionDespliegue(Jugador jugador, Tablero tablero);
 
-    /**
-     * Selecciona una posición estratégica para desplegar una tropa
-     * Mantiene la lógica original de posiciones aleatorias en zona propia
-     */
-    public Posicion seleccionarPosicionDespliegue(Jugador jugador, Tablero tablero) {
-        List<Posicion> zonasValidas = jugador.getZonaDespliegue().obtenerPosicionesValidas();
-
-        return buscarPosicionValidaAleatoria(zonasValidas, tablero, jugador);
-    }
-
-    /**
-     * Busca una posición válida aleatoria dentro de las zonas permitidas
-     */
-    private Posicion buscarPosicionValidaAleatoria(List<Posicion> zonasPermitidas, Tablero tablero, Jugador jugador) {
-        if (zonasPermitidas.isEmpty()) {
-            return null;
-        }
-
-        // Intentar varias posiciones aleatorias
-        for (int intento = 0; intento < MAX_INTENTOS_POSICION; intento++) {
-            int indiceAleatorio = generadorAleatorio.nextInt(zonasPermitidas.size());
-            Posicion candidata = zonasPermitidas.get(indiceAleatorio);
-
-            // Verificar si es una posición libre y válida
-            if (tablero.puedeDesplegarTropa(jugador, candidata)) {
-                return candidata;
-            }
-        }
-
-        // Si no encuentra posición después de varios intentos, usar fallback
-        return obtenerPosicionFallback(zonasPermitidas);
-    }
-
-
-
-    /**
-     * Obtiene una posición de fallback si no encuentra posiciones libres
-     */
-    private Posicion obtenerPosicionFallback(List<Posicion> zonasPermitidas) {
-        if (zonasPermitidas.isEmpty()) {
-            return null;
-        }
-
-        // Usar la primera posición disponible como fallback
-        return zonasPermitidas.get(0);
-    }
-
-    /**
-     * Evalúa la situación táctica actual y ajusta la estrategia
-     * NUEVA funcionalidad para futuras mejoras de IA
-     */
-    public EvaluacionTactica evaluarSituacionActual(Jugador jugador, Tablero tablero) {
-        int tropasAliadas = tablero.contarTropasVivas(jugador.getId());
-        int tropasEnemigas = tablero.contarTropasVivas(jugador.getId() == 1 ? 2 : 1);
-        int torresAliadas = tablero.contarTorresVivas(jugador.getId());
-        int torresEnemigas = tablero.contarTorresVivas(jugador.getId() == 1 ? 2 : 1);
-
-        return new EvaluacionTactica(tropasAliadas, tropasEnemigas, torresAliadas, torresEnemigas);
-    }
-
-    /**
-     * Clase interna para almacenar evaluación táctica
-     */
-    public static class EvaluacionTactica {
-        public final int tropasAliadas;
-        public final int tropasEnemigas;
-        public final int torresAliadas;
-        public final int torresEnemigas;
-
-        public EvaluacionTactica(int tropasAliadas, int tropasEnemigas,
-                                 int torresAliadas, int torresEnemigas) {
-            this.tropasAliadas = tropasAliadas;
-            this.tropasEnemigas = tropasEnemigas;
-            this.torresAliadas = torresAliadas;
-            this.torresEnemigas = torresEnemigas;
-        }
-
-        public boolean estaEnVentaja() {
-            return tropasAliadas > tropasEnemigas || torresAliadas > torresEnemigas;
-        }
-
-        public boolean estaEnDesventaja() {
-            return tropasAliadas < tropasEnemigas || torresAliadas < torresEnemigas;
-        }
-
-        @Override
-        public String toString() {
-            return String.format("Evaluación[Tropas: %d vs %d, Torres: %d vs %d]",
-                    tropasAliadas, tropasEnemigas, torresAliadas, torresEnemigas);
-        }
-    }
-
-    /**
-     * Método para configurar estrategias personalizadas
-     * NUEVA funcionalidad extensible
-     */
-    public void configurarEstrategia(ConfiguracionEstrategia config) {
-        // TODO: Implementar cuando se necesiten estrategias más sofisticadas
-        // Por ahora mantiene la estrategia original
-    }
-
-    /**
-     * Clase para configuraciones futuras de estrategia
-     */
-    public static class ConfiguracionEstrategia {
-        public final double agresividad;
-        public final boolean priorizarDefensa;
-        public final boolean priorizarAtaque;
-
-        public ConfiguracionEstrategia(double agresividad, boolean priorizarDefensa, boolean priorizarAtaque) {
-            this.agresividad = agresividad;
-            this.priorizarDefensa = priorizarDefensa;
-            this.priorizarAtaque = priorizarAtaque;
-        }
-
-        public static ConfiguracionEstrategia equilibrada() {
-            return new ConfiguracionEstrategia(0.5, false, false);
-        }
-
-        public static ConfiguracionEstrategia agresiva() {
-            return new ConfiguracionEstrategia(0.8, false, true);
-        }
-
-        public static ConfiguracionEstrategia defensiva() {
-            return new ConfiguracionEstrategia(0.3, true, false);
-        }
-    }
 }

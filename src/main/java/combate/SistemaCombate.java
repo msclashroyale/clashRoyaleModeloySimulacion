@@ -3,6 +3,9 @@ package combate;
 import entidades.base.EntidadJuego;
 import entidades.edificios.Torre;
 import entidades.tropas.Tropa;
+import juego.events.AtaqueRealizadoEvent;
+import juego.events.EntidadDestruidaEvent;
+import juego.events.EventManager;
 import tablero.Tablero;
 import tablero.Posicion;
 
@@ -15,13 +18,11 @@ import java.util.List;
  */
 public class SistemaCombate {
     private Tablero tablero;
-    private List<EntidadJuego> entidadesMuertas;
-    private List<Torre> torresMuertas;
+    private EventManager eventManager;
 
-    public SistemaCombate(Tablero tablero) {
+    public SistemaCombate(Tablero tablero, EventManager eventManager) {
         this.tablero = tablero;
-        this.entidadesMuertas = new ArrayList<>();
-        this.torresMuertas = new ArrayList<>();
+        this.eventManager = eventManager;
     }
 
     /**
@@ -29,17 +30,11 @@ public class SistemaCombate {
      * Todas las entidades atacan si pueden.
      */
     public void ejecutarCombate(int tickActual) {
-        entidadesMuertas.clear();
-        torresMuertas.clear();
-
         // Torres atacan
         ejecutarAtaquesTorres(tickActual);
 
         // Tropas atacan
         ejecutarAtaquesTropas(tickActual);
-
-        // Marcar entidades muertas (el tablero se encarga de limpiarlas)
-        marcarEntidadesMuertas();
     }
 
     private void ejecutarAtaquesTorres(int tickActual) {
@@ -51,14 +46,10 @@ public class SistemaCombate {
             if (objetivo != null && torre.puedeAtacar(tickActual)) {
                 int danio = torre.atacar(objetivo, tickActual);
                 if (danio > 0) {
-                    System.out.println("Torre " + torre.getClass().getSimpleName() +
-                            " J" + torre.getJugadorId() +
-                            " ataca a " + objetivo.getNombre() +
-                            " J" + objetivo.getJugadorId() +
-                            " por " + danio + " de daño");
+                    eventManager.notify(new AtaqueRealizadoEvent(torre, objetivo, danio));
 
                     if (!objetivo.estaViva()) {
-                        entidadesMuertas.add(objetivo);
+                        eventManager.notify(new EntidadDestruidaEvent(objetivo));
                     }
                 }
             }
@@ -86,15 +77,10 @@ public class SistemaCombate {
     private void ejecutarAtaqueIndividual(Tropa tropa, EntidadJuego objetivo, int tickActual) {
         int danio = tropa.atacar(objetivo, tickActual);
         if (danio > 0) {
-            String nombreObjetivo = (objetivo instanceof Tropa) ? ((Tropa)objetivo).getNombre() : objetivo.getClass().getSimpleName();
-            System.out.println(tropa.getNombre() +
-                    " J" + tropa.getJugadorId() +
-                    " ataca a " + nombreObjetivo +
-                    " J" + objetivo.getJugadorId() +
-                    " por " + danio + " de daño");
+            eventManager.notify(new AtaqueRealizadoEvent(tropa, objetivo, danio));
 
             if (!objetivo.estaViva()) {
-                entidadesMuertas.add(objetivo);
+                eventManager.notify(new EntidadDestruidaEvent(objetivo));
             }
         }
     }
@@ -112,14 +98,12 @@ public class SistemaCombate {
 
         for (EntidadJuego objetivoSecundario : objetivosEnArea) {
             if (objetivoSecundario != objetivoPrincipal && objetivoSecundario.estaViva()) {
-                objetivoSecundario.recibirDanio(tropa.getDanioAtaque());
-                String nombreObjetivo = (objetivoSecundario instanceof Tropa) ? ((Tropa)objetivoSecundario).getNombre() : objetivoSecundario.getClass().getSimpleName();
-                System.out.println("  → Daño en área a " + nombreObjetivo +
-                        " J" + objetivoSecundario.getJugadorId() +
-                        " por " + tropa.getDanioAtaque() + " de daño");
+                int danioArea = tropa.getDanioAtaque();
+                objetivoSecundario.recibirDanio(danioArea);
+                eventManager.notify(new AtaqueRealizadoEvent(tropa, objetivoSecundario, danioArea));
 
                 if (!objetivoSecundario.estaViva()) {
-                    entidadesMuertas.add(objetivoSecundario);
+                    eventManager.notify(new EntidadDestruidaEvent(objetivoSecundario));
                 }
             }
         }
@@ -132,7 +116,8 @@ public class SistemaCombate {
 
         for (Tropa tropa : tablero.getTropasJugador(jugadorEnemigo)) {
             if (tropa.estaViva()) {
-                double distancia = torre.getPosicion().calcularDistancia(tropa.getPosicion());
+                // CORREGIDO: Usar el cálculo de distancia a la entidad
+                double distancia = torre.getPosicion().calcularDistancia(tropa);
                 if (distancia <= torre.getRangoAtaque() && distancia < menorDistancia) {
                     menorDistancia = distancia;
                     objetivoMasCercano = tropa;
@@ -148,14 +133,16 @@ public class SistemaCombate {
 
         // Añadir tropas enemigas en el área
         for (Tropa tropa : tablero.getTropasJugador(jugadorEnemigo)) {
-            if (tropa.estaViva() && centro.calcularDistancia(tropa.getPosicion()) <= radio) {
+            // CORREGIDO: Usar el cálculo de distancia a la entidad
+            if (tropa.estaViva() && centro.calcularDistancia(tropa) <= radio) {
                 entidadesEnArea.add(tropa);
             }
         }
 
         // Añadir torres enemigas en el área
         for (Torre torre : tablero.getTorresJugador(jugadorEnemigo)) {
-            if (torre.estaViva() && centro.calcularDistancia(torre.getPosicion()) <= radio) {
+            // CORREGIDO: Usar el cálculo de distancia a la entidad
+            if (torre.estaViva() && centro.calcularDistancia(torre) <= radio) {
                 entidadesEnArea.add(torre);
             }
         }
@@ -163,23 +150,6 @@ public class SistemaCombate {
         return entidadesEnArea;
     }
 
-    private void marcarEntidadesMuertas() {
-        for (EntidadJuego entidadJuego : entidadesMuertas) {
-            if (entidadJuego instanceof Tropa) {
-                System.out.println("→ " + ((Tropa)entidadJuego).getNombre() +
-                        " J" + entidadJuego.getJugadorId() + " eliminada del campo");
-            } else if (entidadJuego instanceof Torre) {
-                torresMuertas.add((Torre) entidadJuego);
-            }
-        }
-    }
 
-    public List<EntidadJuego> getEntidadesMuertas() {
-        return new ArrayList<>(entidadesMuertas);
-    }
-
-    public List<Torre> getTorresMuertas() {
-        return new ArrayList<>(torresMuertas);
-    }
 }
 

@@ -53,8 +53,7 @@ public class GestorCartas {
 
     public List<Carta> getCartasTropas() {
         return new ArrayList<>(todasLasCartas.stream()
-                .filter(carta -> carta.getTipo() == TipoCarta.TROPA_TERRESTRE ||
-                        carta.getTipo() == TipoCarta.TROPA_AEREA)
+                .filter(carta -> carta.getTipo() == TipoCarta.TROPA_TERRESTRE)
                 .toList());
     }
 

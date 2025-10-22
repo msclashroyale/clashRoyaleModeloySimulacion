@@ -2,51 +2,76 @@ package cartas;
 
 import java.util.*;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
+/**
+ * Representa el conjunto de 8 cartas de un jugador y maneja la rotación de la mano.
+ */
 public class Mazo {
-    private List<Carta> cartas;
-    private List<Carta> mano;
-    private Random random;
+    private final List<Carta> mazoCompleto; // Las 8 cartas del mazo.
+    private final List<Carta> mano;           // Las 4 cartas que se pueden jugar.
+    private final List<Carta> ciclo;          // Las 4 cartas en espera.
+
     private static final int TAMAÑO_MAZO = 8;
     private static final int TAMAÑO_MANO = 4;
 
+    /**
+     * Constructor por defecto que crea un mazo aleatorio de 8 cartas únicas.
+     */
     public Mazo() {
-        this.random = new Random();
-        this.cartas = generarMazoAleatorio();
-        this.mano = new ArrayList<>();
-        inicializarMano();
-    }
+        List<Carta> todasLasCartas = new ArrayList<>(GestorCartas.getInstance().getCartasTropas());
+        Collections.shuffle(todasLasCartas);
+        this.mazoCompleto = new ArrayList<>(todasLasCartas.subList(0, Math.min(TAMAÑO_MAZO, todasLasCartas.size())));
 
-    public Mazo(List<Carta> cartasPersonalizadas) {
-        this.random = new Random();
-        this.cartas = new ArrayList<>(cartasPersonalizadas.subList(0, Math.min(TAMAÑO_MAZO, cartasPersonalizadas.size())));
-        this.mano = new ArrayList<>();
-        inicializarMano();
+        this.mano = new ArrayList<>(TAMAÑO_MANO);
+        this.ciclo = new ArrayList<>();
+        inicializarManoYCiclo();
     }
 
     /**
-     * Método estático para crear mazo por defecto (requerido por Jugador)
+     * Constructor que usa una lista de cartas personalizada para formar el mazo.
+     * @param cartasPersonalizadas La lista de cartas para el mazo.
+     */
+    public Mazo(List<Carta> cartasPersonalizadas) {
+        if (cartasPersonalizadas.size() < TAMAÑO_MAZO) {
+            throw new IllegalArgumentException("Se necesitan al menos " + TAMAÑO_MAZO + " cartas para un mazo.");
+        }
+        this.mazoCompleto = new ArrayList<>(cartasPersonalizadas.subList(0, TAMAÑO_MAZO));
+        this.mano = new ArrayList<>(TAMAÑO_MANO);
+        this.ciclo = new ArrayList<>();
+        inicializarManoYCiclo();
+    }
+
+    /**
+     * Método estático para crear un mazo por defecto, requerido por Jugador.
      */
     public static Mazo crearMazoPorDefecto() {
         return new Mazo();
     }
 
-    private List<Carta> generarMazoAleatorio() {
-        List<Carta> todasLasCartas = new ArrayList<>(GestorCartas.getInstance().getCartasTropas());
-        Collections.shuffle(todasLasCartas);
-        return new ArrayList<>(todasLasCartas.subList(0, Math.min(TAMAÑO_MAZO, todasLasCartas.size())));
-    }
-
-    private void inicializarMano() {
-        List<Carta> cartasBarajadas = new ArrayList<>(cartas);
+    /**
+     * Baraja el mazo completo y reparte las cartas iniciales en la mano y en el ciclo.
+     */
+    private void inicializarManoYCiclo() {
+        List<Carta> cartasBarajadas = new ArrayList<>(this.mazoCompleto);
         Collections.shuffle(cartasBarajadas);
 
-        for (int i = 0; i < Math.min(TAMAÑO_MANO, cartasBarajadas.size()); i++) {
-            mano.add(cartasBarajadas.get(i));
+        mano.clear();
+        ciclo.clear();
+
+        // Reparte las primeras 4 a la mano
+        for (int i = 0; i < TAMAÑO_MANO; i++) {
+            mano.add(cartasBarajadas.remove(0));
         }
+
+        // Las restantes van al ciclo
+        ciclo.addAll(cartasBarajadas);
     }
 
     /**
-     * Busca una carta específica en la mano (requerido por Jugador)
+     * Busca una carta específica en la mano actual del jugador.
      */
     public Carta buscarCartaEnMano(String nombreCarta) {
         return mano.stream()
@@ -56,82 +81,49 @@ public class Mazo {
     }
 
     /**
-     * Juega una carta específica (requerido por Jugador)
+     * Procesa el juego de una carta: la saca de la mano y hace rotar el ciclo.
      */
     public void jugarCarta(Carta cartaJugada) {
-        if (mano.remove(cartaJugada)) {
-            // Agregar nueva carta a la mano
-            agregarNuevaCartaAMano();
+        boolean cartaEstabaEnMano = mano.remove(cartaJugada);
+
+        if (cartaEstabaEnMano) {
+            // 1. La carta del principio del ciclo pasa a la mano.
+            if (!ciclo.isEmpty()) {
+                Carta siguienteCarta = ciclo.remove(0);
+                mano.add(siguienteCarta);
+            }
+            // 2. La carta jugada se va al final del ciclo.
+            ciclo.add(cartaJugada);
         }
     }
 
     /**
-     * Juega una carta aleatoria (método original)
-     */
-    public Carta jugarCartaAleatoria() {
-        if (mano.isEmpty()) {
-            reiniciarMano();
-        }
-
-        if (mano.isEmpty()) {
-            return null;
-        }
-
-        Carta cartaJugada = mano.remove(random.nextInt(mano.size()));
-        agregarNuevaCartaAMano();
-        return cartaJugada;
-    }
-
-    /**
-     * Obtiene una carta aleatoria sin jugarla
-     */
-    public Carta obtenerCartaAleatoria() {
-        if (mano.isEmpty()) {
-            reiniciarMano();
-        }
-        if (mano.isEmpty()) {
-            return null;
-        }
-        return mano.get(random.nextInt(mano.size()));
-    }
-
-    /**
-     * Actualiza el mazo (requerido por Jugador)
+     * Actualiza el estado del mazo. No se usa por ahora pero se mantiene para el futuro.
      */
     public void actualizar(int tickActual) {
-        // Por ahora no hace nada, pero está disponible para futuras funcionalidades
-        // como rotar cartas automáticamente o efectos especiales
+        // Para futuras funcionalidades como rotar cartas automáticamente.
     }
 
-    private void agregarNuevaCartaAMano() {
-        if (mano.size() < TAMAÑO_MANO) {
-            List<Carta> cartasDisponibles = new ArrayList<>(cartas);
-            // No remover las que están en mano para permitir duplicados
-            if (!cartasDisponibles.isEmpty()) {
-                mano.add(cartasDisponibles.get(random.nextInt(cartasDisponibles.size())));
-            }
-        }
-    }
-
-    private void reiniciarMano() {
-        mano.clear();
-        inicializarMano();
-    }
-
-    // Getters
-    public List<Carta> getCartas() { return new ArrayList<>(cartas); }
+    // --- GETTERS ---
 
     /**
-     * Método renombrado para compatibilidad con Jugador
+     * Devuelve una copia de la lista de 8 cartas del mazo.
      */
-    public List<Carta> getCartasEnMano() { return new ArrayList<>(mano); }
+    public List<Carta> getMazoCompleto() {
+        return new ArrayList<>(mazoCompleto);
+    }
 
     /**
-     * Método original mantenido para compatibilidad
+     * Devuelve una copia de la lista de 4 cartas en la mano.
      */
-    public List<Carta> getMano() { return new ArrayList<>(mano); }
+    public List<Carta> getCartasEnMano() {
+        return new ArrayList<>(mano);
+    }
 
+    /**
+     * Calcula el coste promedio de elixir de las 8 cartas del mazo.
+     */
     public double getCostoPromedioElixir() {
-        return cartas.stream().mapToInt(Carta::getCostoElixir).average().orElse(0.0);
+        return mazoCompleto.stream().mapToInt(Carta::getCostoElixir).average().orElse(0.0);
     }
 }

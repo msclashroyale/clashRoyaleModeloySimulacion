@@ -83,6 +83,15 @@ public abstract class EdificioBase extends EntidadJuego {
         return super.getPosicion();
     }
 
+    /**
+     * Actualiza la posición central y recalcula la esquina inferior izquierda para mantener la consistencia.
+     */
+    @Override
+    public void setPosicion(Posicion nuevoCentro) {
+        super.setPosicion(nuevoCentro);
+        this.posicionInferiorIzquierda = convertirCentralAInferiorIzquierda(nuevoCentro, this.ancho, this.alto);
+    }
+
     // Métodos abstractos
     protected abstract void calcularEstadisticasPorNivel(int vidaBase, int danioBase);
 
@@ -108,10 +117,12 @@ public abstract class EdificioBase extends EntidadJuego {
         return rangoAtaque;
     }
 
+    @Override
     public int getAncho() {
         return ancho;
     }
 
+    @Override
     public int getAlto() {
         return alto;
     }

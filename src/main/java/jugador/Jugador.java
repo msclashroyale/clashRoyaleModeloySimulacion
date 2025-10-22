@@ -30,20 +30,34 @@ public class Jugador {
      * Constructor con mazo por defecto
      */
     public Jugador(int id, String nombre, int nivel) {
-        this(id, nombre, nivel, Mazo.crearMazoPorDefecto());
+        this(id, nombre, nivel, Mazo.crearMazoPorDefecto(), new EstrategiaMenorCosto());
     }
 
     /**
-     * Constructor con mazo personalizado
+     * Constructor con mazo personalizado y estrategia por defecto
      */
     public Jugador(int id, String nombre, int nivel, Mazo mazoPersonalizado) {
+        this(id, nombre, nivel, mazoPersonalizado, new EstrategiaMenorCosto());
+    }
+
+    /**
+     * Constructor con mazo por defecto y estrategia personalizada
+     */
+    public Jugador(int id, String nombre, int nivel, EstrategiaIA estrategia) {
+        this(id, nombre, nivel, Mazo.crearMazoPorDefecto(), estrategia);
+    }
+
+    /**
+     * Constructor principal que permite inyectar todas las dependencias.
+     */
+    public Jugador(int id, String nombre, int nivel, Mazo mazo, EstrategiaIA estrategia) {
         this.id = id;
         this.nombre = nombre;
         this.nivel = nivel;
-        this.mazo = mazoPersonalizado;
+        this.mazo = mazo;
         this.sistemaElixir = new SistemaElixir();
         this.estadisticas = new EstadisticasJugador();
-        this.estrategiaIA = new EstrategiaIA();
+        this.estrategiaIA = estrategia;
         this.zonaDespliegue = new ZonaDespliegue(id);
     }
 
@@ -58,26 +72,26 @@ public class Jugador {
     /**
      * Intenta desplegar una carta en el tablero
      */
-    public boolean intentarDesplegarCarta(String nombreCarta, int x, int y, Tablero tablero) {
+    public Tropa intentarDesplegarCarta(String nombreCarta, int x, int y, Tablero tablero) {
         Carta carta = mazo.buscarCartaEnMano(nombreCarta);
         if (carta == null) {
-            return false;
+            return null;
         }
 
         // Verificar si tiene suficiente elixir
         if (!sistemaElixir.puedeGastar(carta.getCostoElixir())) {
-            return false;
+            return null;
         }
 
         // Verificar si puede desplegar en esa posición
         if (!tablero.puedeDesplegarTropa(this, new Posicion(x, y))) {
-            return false;
+            return null;
         }
 
         // Crear la tropa/entidad
         Tropa tropa = FactoriaTropas.crearTropa(nombreCarta, new Posicion(x, y), nivel, id);
         if (tropa == null) {
-            return false;
+            return null;
         }
 
         // Desplegar en el tablero
@@ -91,10 +105,10 @@ public class Jugador {
             estadisticas.incrementarElixirGastado(carta.getCostoElixir());
             estadisticas.incrementarTropasInvocadas();
 
-            return true;
+            return tropa;
         }
 
-        return false;
+        return null;
     }
 
 
@@ -103,27 +117,25 @@ public class Jugador {
      * Lógica para que la IA juegue una carta.
      * Ahora la decisión de SI jugar se toma aquí.
      */
-    public void jugarCartaIA(Tablero tablero, int tickActual) {
+    public Tropa jugarCartaIA(Tablero tablero, int tickActual) {
         if (!estrategiaIA.debeIntentarJugarCarta(this, tickActual)) {
-            return; // La IA decide no jugar en este tick
+            return null; // La IA decide no jugar en este tick
         }
 
         // 1. Seleccionar la carta a jugar
         Carta carta = estrategiaIA.seleccionarCartaParaJugar(this);
         if (carta == null || carta.getCostoElixir() > sistemaElixir.getElixirActual()) {
-            return; // No hay carta jugable o no hay elixir
+            return null; // No hay carta jugable o no hay elixir
         }
 
         // 2. Seleccionar la posición de despliegue
         Posicion posicion = estrategiaIA.seleccionarPosicionDespliegue(this, tablero);
         if (posicion == null) {
-            return; // No se encontró una posición válida
+            return null; // No se encontró una posición válida
         }
 
-        // 3. Intentar desplegar la carta
-        if (intentarDesplegarCarta(carta.getNombre(), posicion.getX(), posicion.getY(), tablero)) {
-            System.out.println("IA Jugador " + id + " jugó " + carta.getNombre() + " en " + posicion);
-        }
+        // 3. Intentar desplegar la carta y devolver la tropa desplegada
+        return intentarDesplegarCarta(carta.getNombre(), posicion.getX(), posicion.getY(), tablero);
     }
 
     /**
@@ -167,6 +179,7 @@ public class Jugador {
     public SistemaElixir getSistemaElixir() { return sistemaElixir; }
     public EstadisticasJugador getEstadisticas() { return estadisticas; }
     public ZonaDespliegue getZonaDespliegue() { return zonaDespliegue; }
+    public EstrategiaIA getEstrategiaIA() { return estrategiaIA; }
 
     @Override
     public String toString() {

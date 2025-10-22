@@ -4,7 +4,6 @@ import tablero.Posicion;
 
 /**
  * Clase base abstracta para todas las entidades del juego
- * Refactorizada desde Entidad.java con nombres más claros
  */
 public abstract class EntidadJuego {
 
@@ -85,6 +84,16 @@ public abstract class EntidadJuego {
      * Símbolo para mostrar en la consola
      */
     public abstract char getSimboloConsola();
+
+    /**
+     * Ancho de la entidad en casillas del tablero
+     */
+    public abstract int getAncho();
+
+    /**
+     * Alto de la entidad en casillas del tablero
+     */
+    public abstract int getAlto();
 
     @Override
     public String toString() {

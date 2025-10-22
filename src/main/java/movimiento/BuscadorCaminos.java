@@ -1,5 +1,6 @@
 package movimiento;
 
+import entidades.base.EntidadJuego;
 import entidades.tropas.Tropa;
 import tablero.Tablero;
 import tablero.Posicion;
@@ -23,22 +24,23 @@ public class BuscadorCaminos {
      * Encuentra el siguiente paso óptimo para una tropa hacia su destino.
      * Mantiene la lógica original pero con nombres más claros.
      */
-    public Posicion encontrarSiguientePaso(Tropa tropa, Posicion destino) {
+    public Posicion encontrarSiguientePaso(Tropa tropa, EntidadJuego destino) {
         Posicion posicionActual = tropa.getPosicion();
+        Posicion posicionDestino = destino.getPosicion();
 
         // Si ya está en el destino, no moverse
-        if (posicionActual.equals(destino)) {
+        if (posicionActual.equals(posicionDestino)) {
             return null;
         }
 
-        // Si está dentro del rango de ataque, no necesita moverse más
+        // Si está dentro del rango de ataque (usando el nuevo cálculo de distancia), no necesita moverse más.
         double distanciaAlDestino = posicionActual.calcularDistancia(destino);
         if (distanciaAlDestino <= tropa.getRangoAtaque()) {
             return null;
         }
 
         // Verificar si necesita cruzar el río usando un puente
-        if (necesitaCruzarPorPuente(posicionActual, destino)) {
+        if (necesitaCruzarPorPuente(posicionActual, posicionDestino)) {
             Posicion puente = encontrarPuenteMasCercano(posicionActual);
 
             // Si no está en el puente, ir hacia él primero
@@ -48,7 +50,7 @@ public class BuscadorCaminos {
         }
 
         // Movimiento normal hacia el destino
-        return calcularSiguientePasoHacia(posicionActual, destino);
+        return calcularSiguientePasoHacia(posicionActual, posicionDestino);
     }
 
     /**
@@ -168,8 +170,8 @@ public class BuscadorCaminos {
             return null; // No hay alternativas disponibles
         }
 
-        // De las posiciones válidas, elegir la que más se acerque al destino
-        return elegirPosicionMasCercanaAlDestino(posicionesValidas, destino);
+        // De las posiciones válidas, elegir la mejor según una heurística de puntuación.
+        return elegirMejorPasoAlternativo(posicionesValidas, destino, actual);
     }
 
     /**
@@ -193,17 +195,31 @@ public class BuscadorCaminos {
     }
 
     /**
-     * De una lista de posiciones válidas, elige la que esté más cerca del destino.
+     * Elige la mejor posición alternativa de una lista de candidatas basándose en una heurística de puntuación.
+     * Prioriza el progreso hacia el destino y permite movimientos laterales para rodear obstáculos.
      */
-    private Posicion elegirPosicionMasCercanaAlDestino(List<Posicion> posicionesValidas, Posicion destino) {
+    private Posicion elegirMejorPasoAlternativo(List<Posicion> posicionesValidas, Posicion destino, Posicion actual) {
         Posicion mejorOpcion = null;
-        double menorDistancia = Double.MAX_VALUE;
+        double mejorPuntuacion = -Double.MAX_VALUE;
 
-        for (Posicion posicion : posicionesValidas) {
-            double distancia = posicion.calcularDistancia(destino);
-            if (distancia < menorDistancia) {
-                menorDistancia = distancia;
-                mejorOpcion = posicion;
+        double distanciaActualAlDestino = actual.calcularDistancia(destino);
+
+        for (Posicion candidato : posicionesValidas) {
+            double distanciaCandidatoAlDestino = candidato.calcularDistancia(destino);
+
+            // 1. Calcular el progreso: cuánto nos acerca este paso al destino. Un número positivo es bueno.
+            double progreso = distanciaActualAlDestino - distanciaCandidatoAlDestino;
+
+            // 2. Bonus por movimiento lateral: un pequeño incentivo para los movimientos que no son ni hacia adelante ni hacia atrás.
+            // Esto ayuda a "despegarse" de las paredes y otros obstáculos.
+            double bonusLateral = 1.0 - Math.abs(progreso);
+
+            // 3. Puntuación final: priorizamos el progreso, con el bonus lateral como desempate.
+            double puntuacion = progreso + (bonusLateral * 0.1);
+
+            if (puntuacion > mejorPuntuacion) {
+                mejorPuntuacion = puntuacion;
+                mejorOpcion = candidato;
             }
         }
 

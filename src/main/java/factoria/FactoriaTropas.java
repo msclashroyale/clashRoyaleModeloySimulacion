@@ -39,4 +39,13 @@ public class FactoriaTropas {
         }
         return new Tropa(prototipo, posicion, nivel, jugadorId);
     }
+
+    /**
+     * Devuelve el prototipo base de una tropa para inspeccionar sus estadísticas sin crear una nueva instancia.
+     * @param nombreCarta El nombre de la carta de la tropa.
+     * @return El prototipo de la Tropa, o null si no se encuentra.
+     */
+    public static Tropa getPrototipo(String nombreCarta) {
+        return prototipos.get(nombreCarta.toLowerCase());
+    }
 }

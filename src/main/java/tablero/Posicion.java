@@ -1,6 +1,7 @@
 package tablero;
 
 import java.util.Objects;
+import entidades.base.EntidadJuego;
 
 public class Posicion {
     private int x;
@@ -29,8 +30,37 @@ public class Posicion {
 
     //Calcula la distancia en línea recta entre dos puntos usando el teorema de Pitágoras.
     public double calcularDistancia(Posicion otra) {
-        int deltaX = otra.x - this.x;
-        int deltaY = otra.y - this.y;
+        double deltaX = otra.x - this.x;
+        double deltaY = otra.y - this.y;
+        return Math.sqrt(deltaX * deltaX + deltaY * deltaY);
+    }
+
+    /**
+     * Calcula la distancia desde este punto hasta el borde más cercano de una EntidadJuego.
+     * Esto es crucial para que las tropas interactúen con el área de los edificios, no solo con su centro.
+     * @param entidad La entidad objetivo.
+     * @return La distancia al borde más cercano de la entidad.
+     */
+    public double calcularDistancia(EntidadJuego entidad) {
+        Posicion centroEntidad = entidad.getPosicion();
+        double ancho = entidad.getAncho();
+        double alto = entidad.getAlto();
+
+        // El centro de una casilla (x,y) está en (x,y) en un sistema de coordenadas continuas.
+        // Un edificio 3x3 centrado en (cx,cy) ocupa de (cx-1.5) a (cx+1.5).
+        double entidadIzq = centroEntidad.getX() - ancho / 2.0;
+        double entidadDer = centroEntidad.getX() + ancho / 2.0;
+        double entidadAba = centroEntidad.getY() - alto / 2.0;
+        double entidadArr = centroEntidad.getY() + alto / 2.0;
+
+        // Encontrar el punto (closestX, closestY) en el borde del rectángulo más cercano a esta posición (this.x, this.y).
+        double closestX = Math.max(entidadIzq, Math.min(this.x, entidadDer));
+        double closestY = Math.max(entidadAba, Math.min(this.y, entidadArr));
+
+        // Calcular la distancia euclidiana a ese punto más cercano.
+        double deltaX = this.x - closestX;
+        double deltaY = this.y - closestY;
+
         return Math.sqrt(deltaX * deltaX + deltaY * deltaY);
     }
 
