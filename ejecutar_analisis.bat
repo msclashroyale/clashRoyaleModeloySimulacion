@@ -15,8 +15,9 @@ echo   [2] Generar datos (ejecutar 100 partidas)
 echo   [3] Analisis completo con graficos (Python)
 echo   [4] Analisis rapido en consola (Python)
 echo   [5] Analisis estadistico avanzado (Python)
-echo   [6] Limpiar datos anteriores
-echo   [7] Ver archivos generados
+echo   [6] Machine Learning - Predictor (Python)
+echo   [7] Limpiar datos anteriores
+echo   [8] Ver archivos generados
 echo   [0] Salir
 echo.
 set /p opcion="Opcion: "
@@ -26,8 +27,9 @@ if "%opcion%"=="2" goto generar
 if "%opcion%"=="3" goto analizar_completo
 if "%opcion%"=="4" goto analizar_rapido
 if "%opcion%"=="5" goto analizar_estadistico
-if "%opcion%"=="6" goto limpiar
-if "%opcion%"=="7" goto ver_archivos
+if "%opcion%"=="6" goto machine_learning
+if "%opcion%"=="7" goto limpiar
+if "%opcion%"=="8" goto ver_archivos
 if "%opcion%"=="0" goto salir
 echo.
 echo Opcion no valida. Intenta de nuevo.
@@ -148,6 +150,32 @@ python analisis_estadistico.py
 if %ERRORLEVEL% NEQ 0 (
     echo.
     echo [ERROR] Ocurrio un error en el analisis.
+    echo.
+)
+pause
+goto menu
+
+:machine_learning
+echo.
+echo ============================================================
+echo Ejecutando Machine Learning - Predictor...
+echo ============================================================
+echo.
+
+if not exist "datos_analisis\resumen_partidas.csv" (
+    echo [ERROR] No se encontraron los archivos de datos.
+    echo Ejecuta primero la opcion [2] para generar datos.
+    echo.
+    pause
+    goto menu
+)
+
+python ml_predictor.py
+if %ERRORLEVEL% NEQ 0 (
+    echo.
+    echo [ERROR] Ocurrio un error en el Machine Learning.
+    echo Verifica que tengas scikit-learn instalado:
+    echo    pip install scikit-learn
     echo.
 )
 pause
