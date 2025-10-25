@@ -1,0 +1,217 @@
+```
+╔═══════════════════════════════════════════════════════════════════════════╗
+║                  SISTEMA DE ANÁLISIS DE DATOS                             ║
+║                   Clash Royale Simulation                                 ║
+╚═══════════════════════════════════════════════════════════════════════════╝
+
+                                  [JUEGO]
+                                     │
+                    ┌────────────────┴────────────────┐
+                    │                                 │
+                [Eventos]                        [Estado]
+                    │                                 │
+                    └────────────┬────────────────────┘
+                                 │
+                                 ▼
+                      ┌──────────────────┐
+                      │ RecolectorDatos  │  ◄─── Escucha eventos
+                      └──────────────────┘
+                                 │
+                                 ▼
+                      ┌──────────────────┐
+                      │ RegistroPartida  │  ◄─── Almacena datos
+                      └──────────────────┘
+                                 │
+                                 ▼
+                      ┌──────────────────┐
+                      │  ExportadorCSV   │  ◄─── Exporta a archivos
+                      └──────────────────┘
+                                 │
+                ┌────────────────┼────────────────┐
+                │                │                │
+                ▼                ▼                ▼
+        resumen_partidas  estadisticas_  eventos_partidas
+            .csv          jugadores.csv      .csv
+                │                │                │
+                └────────────────┴────────────────┘
+                                 │
+                ┌────────────────┼────────────────┐
+                │                │                │
+                ▼                ▼                ▼
+        analizar_datos  analisis_rapido  analisis_estadistico
+            .py             .py               .py
+                │                │                │
+                └────────────────┴────────────────┘
+                                 │
+                ┌────────────────┼────────────────┐
+                │                │                │
+                ▼                ▼                ▼
+            Gráficos        Reportes         Tests
+             (7 PNG)        Consola       Estadísticos
+
+
+═══════════════════════════════════════════════════════════════════════════
+
+                           FLUJO DE DATOS
+
+1. RECOLECCIÓN
+   ┌─────────────────────────────────────────────────┐
+   │ Partida ejecutándose → Eventos generados        │
+   │ RecolectorDatos escucha → Registra en memoria   │
+   │ Al finalizar → RegistroPartida completo         │
+   └─────────────────────────────────────────────────┘
+
+2. ALMACENAMIENTO
+   ┌─────────────────────────────────────────────────┐
+   │ GestorAnalisis acumula registros                │
+   │ ExportadorCSV genera archivos                   │
+   │ 3 CSVs creados en datos_analisis/              │
+   └─────────────────────────────────────────────────┘
+
+3. ANÁLISIS
+   ┌─────────────────────────────────────────────────┐
+   │ Scripts Python cargan CSVs                      │
+   │ Procesan datos con pandas                       │
+   │ Generan estadísticas y visualizaciones          │
+   └─────────────────────────────────────────────────┘
+
+═══════════════════════════════════════════════════════════════════════════
+
+                         TIPOS DE ANÁLISIS
+
+┌───────────────────────────────────────────────────────────────────────┐
+│                                                                       │
+│  📊 DESCRIPTIVO                                                       │
+│  ├─ Tasas de victoria por estrategia                                │
+│  ├─ Promedios y desviaciones estándar                               │
+│  ├─ Distribuciones de métricas                                      │
+│  └─ Tablas de frecuencia                                            │
+│                                                                       │
+│  📈 COMPARATIVO                                                       │
+│  ├─ Enfrentamientos entre estrategias                               │
+│  ├─ Métricas lado a lado                                            │
+│  ├─ Ranking de eficiencia                                           │
+│  └─ Análisis de ventajas                                            │
+│                                                                       │
+│  🔬 INFERENCIAL                                                       │
+│  ├─ Tests de hipótesis                                              │
+│  ├─ Intervalos de confianza                                         │
+│  ├─ Tests de significancia                                          │
+│  └─ Análisis de varianza (ANOVA)                                    │
+│                                                                       │
+│  🎯 PREDICTIVO                                                        │
+│  ├─ Correlaciones entre variables                                   │
+│  ├─ Patrones temporales                                             │
+│  ├─ Identificación de factores clave                                │
+│  └─ Base para Machine Learning                                      │
+│                                                                       │
+└───────────────────────────────────────────────────────────────────────┘
+
+═══════════════════════════════════════════════════════════════════════════
+
+                           MÉTRICAS CLAVE
+
+┌─────────────────────┬──────────────────────────────────────────────────┐
+│     CATEGORÍA       │                 MÉTRICAS                         │
+├─────────────────────┼──────────────────────────────────────────────────┤
+│                     │                                                  │
+│  🏆 RESULTADO       │ • Ganador/Perdedor/Empate                       │
+│                     │ • Motivo de victoria                             │
+│                     │ • Duración de partida                            │
+│                     │                                                  │
+├─────────────────────┼──────────────────────────────────────────────────┤
+│                     │                                                  │
+│  🃏 CARTAS          │ • Cartas jugadas                                │
+│                     │ • Elixir gastado/desperdiciado                   │
+│                     │ • Costo promedio por carta                       │
+│                     │ • Timing de cartas                               │
+│                     │                                                  │
+├─────────────────────┼──────────────────────────────────────────────────┤
+│                     │                                                  │
+│  ⚔️  COMBATE        │ • Ataques realizados                            │
+│                     │ • Daño causado/recibido                          │
+│                     │ • Daño a torres                                  │
+│                     │ • Tropas invocadas/muertas                       │
+│                     │                                                  │
+├─────────────────────┼──────────────────────────────────────────────────┤
+│                     │                                                  │
+│  🏰 OBJETIVOS       │ • Torres destruidas                             │
+│                     │ • Vida final de torres                           │
+│                     │ • Torres propias vs enemigas                     │
+│                     │                                                  │
+├─────────────────────┼──────────────────────────────────────────────────┤
+│                     │                                                  │
+│  💎 EFICIENCIA      │ • Daño por elixir                               │
+│                     │ • Ratio daño causado/recibido                    │
+│                     │ • Aprovechamiento de recursos                    │
+│                     │                                                  │
+└─────────────────────┴──────────────────────────────────────────────────┘
+
+═══════════════════════════════════════════════════════════════════════════
+
+                    COMANDOS RÁPIDOS DE REFERENCIA
+
+┌───────────────────────────────────────────────────────────────────────┐
+│                                                                       │
+│  🔧 CONFIGURACIÓN INICIAL                                            │
+│  $ pip install -r requirements.txt                                   │
+│  $ mvn clean compile                                                 │
+│                                                                       │
+│  🎮 GENERAR DATOS                                                     │
+│  $ java -cp target/classes analisis.EjemploAnalisis                  │
+│                                                                       │
+│  📊 ANÁLISIS COMPLETO (7 gráficos)                                   │
+│  $ python analizar_datos.py                                          │
+│                                                                       │
+│  ⚡ ANÁLISIS RÁPIDO (solo consola)                                   │
+│  $ python analisis_rapido.py                                         │
+│                                                                       │
+│  🔬 ANÁLISIS ESTADÍSTICO (tests)                                     │
+│  $ python analisis_estadistico.py                                    │
+│                                                                       │
+│  🖥️  MENÚ INTERACTIVO (Windows)                                      │
+│  $ ejecutar_analisis.bat                                             │
+│                                                                       │
+└───────────────────────────────────────────────────────────────────────┘
+
+═══════════════════════════════════════════════════════════════════════════
+
+                         ARCHIVOS GENERADOS
+
+datos_analisis/
+│
+├── 📄 CSVs (3)
+│   ├── resumen_partidas.csv        ~10KB por 100 partidas
+│   ├── estadisticas_jugadores.csv  ~15KB por 100 partidas
+│   └── eventos_partidas.csv        ~50KB por 100 partidas
+│
+├── 🖼️  Gráficos (7)
+│   ├── tasa_victoria.png
+│   ├── comparacion_metricas.png
+│   ├── matriz_enfrentamientos.png
+│   ├── distribucion_duracion.png
+│   ├── actividad_temporal.png
+│   ├── analisis_eficiencia.png
+│   └── distribucion_eventos.png
+│
+└── 📝 Reportes (1)
+    └── resumen_analisis.txt
+
+═══════════════════════════════════════════════════════════════════════════
+
+                          GUÍAS DISPONIBLES
+
+📖 README_ANALISIS.md      - Documentación técnica completa
+📖 GUIA_ANALISIS.md        - Tutorial paso a paso
+📖 RESUMEN_SISTEMA.md      - Resumen ejecutivo
+📖 ESTRUCTURA_VISUAL.txt   - Este archivo
+
+═══════════════════════════════════════════════════════════════════════════
+
+                          ¡SISTEMA LISTO!
+
+El sistema está completamente funcional y documentado.
+Ejecuta: ejecutar_analisis.bat para comenzar.
+
+═══════════════════════════════════════════════════════════════════════════
+```
