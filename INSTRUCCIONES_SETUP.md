@@ -19,10 +19,10 @@ Se ha agregado un **sistema completo de análisis de datos y Machine Learning** 
 
 ```bash
 # Asegúrate de estar en la rama correcta
-git checkout feature/sistema-analisis-datos
+git checkout analisis
 
 # Descarga los cambios
-git pull origin feature/sistema-analisis-datos
+git pull origin analisis
 ```
 
 ### 2. Instalar dependencias Python (OPCIONAL)
@@ -58,6 +58,9 @@ mvn clean compile
 **Windows:**
 ```cmd
 ejecutar_analisis.bat
+```
+```windows powershell
+.\ejecutar_analisis.bat
 ```
 
 Luego selecciona:
