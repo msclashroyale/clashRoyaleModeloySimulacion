@@ -256,19 +256,22 @@ public class ControladorUIPrincipal implements GameEventListener {
      * Ejecuta un tick del juego y actualiza la vista
      */
     private void ejecutarTickJuego() {
-        // La lógica de la partida se detiene por su cuenta, pero el bucle de UI sigue.
         if (!partida.isPartidaTerminada()) {
             partida.ejecutarTick();
         }
 
         // Actualizar la vista en el hilo de JavaFX
         Platform.runLater(() -> {
+            // PRIMERO: Limpiar animaciones obsoletas ANTES de detectar nuevas
+            gestorAnimaciones.limpiarAnimacionesObsoletas(partida.getTablero());
+
+            // SEGUNDO: Actualizar componentes visuales (esto incluye mover unidades)
             actualizarTodosLosComponentes();
 
-            // Detectar y activar animaciones de combate
+            // TERCERO: Detectar y activar nuevas animaciones de combate
             gestorAnimaciones.detectarEventosCombate();
 
-            // Actualizar animaciones existentes
+            // CUARTO: Actualizar animaciones existentes
             gestorAnimaciones.actualizarAnimaciones();
 
             // Gestionar el contador de fin de partida
@@ -276,10 +279,12 @@ public class ControladorUIPrincipal implements GameEventListener {
                 ticksParaTerminar--;
             } else if (ticksParaTerminar == 0) {
                 manejarFinDelJuego(infoPartidaTerminada);
-                ticksParaTerminar = -1; // Desactivar el contador
+                ticksParaTerminar = -1;
             }
         });
     }
+
+
 
     /**
      * Maneja el final del juego

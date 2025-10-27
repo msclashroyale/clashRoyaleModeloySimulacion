@@ -63,6 +63,10 @@ public class ComponenteArena {
         grillaArena.setAlignment(Pos.CENTER);
         grillaArena.setStyle(ConstantesUI.Estilos.GRILLA_ARENA);
 
+        // Añadir un poco de espaciado entre celdas para mejor visualización
+        grillaArena.setHgap(1);
+        grillaArena.setVgap(1);
+
         casillas = new Rectangle[Tablero.ALTO][Tablero.ANCHO];
         simbolos = new Label[Tablero.ALTO][Tablero.ANCHO];
 
@@ -110,29 +114,81 @@ public class ComponenteArena {
 
     /**
      * Actualiza la visualización del tablero
-     * @param tablero Tablero del juego con el estado actual
+     * @paramtablero Tablero del juego con el estado actual
      * @param gestorAnimaciones Gestor para verificar animaciones activas
      */
     public void actualizar(Partida partida, GestorAnimaciones gestorAnimaciones) {
         Tablero tablero = partida.getTablero();
+
+        // Primero limpiar todas las celdas que no tienen animaciones activas
         for (int y = 0; y < Tablero.ALTO; y++) {
             for (int x = 0; x < Tablero.ANCHO; x++) {
                 Posicion pos = new Posicion(x, y);
 
-                // Si hay animación activa en esta posición, no modificar los colores
-                if (gestorAnimaciones != null && gestorAnimaciones.tieneAnimacionActiva(pos)) {
-                    continue;
+                // Solo actualizar si no hay animación activa O si la animación no está corriendo
+                if (gestorAnimaciones == null ||
+                        !gestorAnimaciones.tieneAnimacionActiva(pos) ||
+                        (gestorAnimaciones.tieneAnimacionActiva(pos) &&
+                                !gestorAnimaciones.obtenerAnimacion(pos).estaActiva())) {
+                    actualizarCasilla(pos, partida);
                 }
-
-                actualizarCasilla(pos, partida);
             }
+        }
+    }
+
+    /**
+     * Actualiza solo el símbolo de la celda, manteniendo los efectos de animación
+     */
+    private void actualizarSoloSimbolo(Posicion posicion, Partida partida) {
+        int x = posicion.getX();
+        int y = posicion.getY();
+
+        String simbolo = "";
+        boolean hayEntidad = false;
+        Tablero tablero = partida.getTablero();
+
+        // Determinar el símbolo basado en lo que hay en la posición
+        Tropa tropa = tablero.obtenerTropaEnPosicion(posicion);
+        if (tropa != null && tropa.estaViva()) {
+            simbolo = obtenerSimboloTropa(tropa);
+            hayEntidad = true;
+        } else {
+            Torre torre = tablero.obtenerTorreEnPosicion(posicion);
+            if (torre != null && torre.estaViva()) {
+                simbolo = obtenerSimboloTorre(torre);
+                hayEntidad = true;
+            } else if (torre != null && !torre.estaViva()) {
+                simbolo = "💀";
+                hayEntidad = true;
+            } else {
+                // Para terreno, obtener símbolo apropiado
+                simbolo = obtenerSimboloTerreno(posicion, partida);
+            }
+        }
+
+        // Aplicar solo el símbolo, mantener el color actual (controlado por animación)
+        simbolos[y][x].setText(simbolo);
+        configurarTextoSimbolo(x, y, hayEntidad);
+    }
+
+    /**
+     * Obtiene el símbolo para el terreno
+     */
+    private String obtenerSimboloTerreno(Posicion posicion, Partida partida) {
+        TipoTerreno terreno = partida.getTablero().getTipoTerreno(posicion.getX(), posicion.getY());
+        switch (terreno) {
+            case RIO: return "🌊";
+            case PUENTE: return "🌉";
+            case TORRE_REY: return "🏰";
+            case TORRE_PRINCESA: return "🏯";
+            default: return "";
         }
     }
 
     /**
      * Actualiza una casilla individual
      * @param posicion Posición a actualizar
-     * @param tablero Tablero del juego
+     * @paramtablero Tablero del juego
      */
     private void actualizarCasilla(Posicion posicion, Partida partida) {
         int x = posicion.getX();
@@ -147,7 +203,8 @@ public class ComponenteArena {
         // Prioridad: Tropa > Torre > Terreno
         Tropa tropa = tablero.obtenerTropaEnPosicion(posicion);
         if (tropa != null && tropa.estaViva()) {
-            simbolo = String.valueOf(tropa.getSimboloConsola());
+            // Usar símbolos más descriptivos
+            simbolo = obtenerSimboloTropa(tropa);
             colorFondo = obtenerColorJugador(tropa.getJugadorId(), true);
             hayEntidad = true;
         } else {
@@ -156,16 +213,16 @@ public class ComponenteArena {
             if (torre != null) {
                 hayEntidad = true;
                 if (torre.estaViva()) {
-                    simbolo = String.valueOf(torre.getSimboloConsola());
+                    simbolo = obtenerSimboloTorre(torre);
                     colorFondo = obtenerColorJugador(torre.getJugadorId(), false);
                 } else {
-                    simbolo = "X";
+                    simbolo = "💀"; // Símbolo más claro para destruido
                     colorFondo = ConstantesUI.Colores.VIDA_DESTRUIDA;
                 }
             } else {
                 // Verificar tipo de terreno
                 configurarTerreno(posicion, partida);
-                return; // El método configurarTerreno ya maneja la actualización visual
+                return;
             }
         }
 
@@ -177,10 +234,35 @@ public class ComponenteArena {
         configurarTextoSimbolo(x, y, hayEntidad);
     }
 
+    private String obtenerSimboloTorre(Torre torre) {
+        String nombreClase = torre.getClass().getSimpleName();
+        if (nombreClase.equals("TorreRey")) {
+            return "♔"; // Rey
+        } else {
+            return "♖"; // Princesa
+        }
+    }
+
+    private String obtenerSimboloTropa(Tropa tropa) {
+        String nombre = tropa.getNombre().toLowerCase();
+
+        if (nombre.contains("gigante")) return "👹";
+        if (nombre.contains("caballero")) return "♞";
+        if (nombre.contains("arquera")) return "🏹";
+        if (nombre.contains("duende")) return "👺";
+        if (nombre.contains("esqueleto")) return "💀";
+        if (nombre.contains("mago")) return "🧙";
+        if (nombre.contains("dragón")) return "🐉";
+        if (nombre.contains("bárbaro")) return "⚔️";
+
+        // Por defecto, primera letra en mayúscula
+        return String.valueOf(Character.toUpperCase(tropa.getSimboloConsola()));
+    }
+
     /**
      * Configura la visualización del terreno
      * @param posicion Posición del terreno
-     * @param tablero Tablero del juego
+     * @paramtablero Tablero del juego
      */
     private void configurarTerreno(Posicion posicion, Partida partida) {
         int x = posicion.getX();
@@ -192,12 +274,20 @@ public class ComponenteArena {
 
         switch (terreno) {
             case RIO -> {
-                simbolo = "~";
+                simbolo = "🌊"; // Símbolo más representativo
                 colorFondo = ConstantesUI.Colores.ARENA_RIO;
             }
             case PUENTE -> {
-                simbolo = "=";
+                simbolo = "🌉"; // Símbolo más representativo
                 colorFondo = ConstantesUI.Colores.ARENA_PUENTE;
+            }
+            case TORRE_REY -> {
+                simbolo = "🏰";
+                colorFondo = obtenerColorZona(posicion, partida);
+            }
+            case TORRE_PRINCESA -> {
+                simbolo = "🏯";
+                colorFondo = obtenerColorZona(posicion, partida);
             }
             case VACIO -> {
                 simbolo = "";
@@ -259,12 +349,16 @@ public class ComponenteArena {
     private void configurarTextoSimbolo(int x, int y, boolean hayEntidad) {
         if (hayEntidad) {
             simbolos[y][x].setTextFill(Color.WHITE);
+            // Aumentar tamaño de fuente para mejor legibilidad
             simbolos[y][x].setFont(
-                    javafx.scene.text.Font.font("Arial", FontWeight.BOLD, 8)
+                    javafx.scene.text.Font.font("Arial", FontWeight.BOLD, 12) // De 8 a 12
             );
         } else {
             simbolos[y][x].setTextFill(Color.DARKBLUE);
-            simbolos[y][x].setFont(ConstantesUI.Fuentes.TEXTO_DIMINUTO);
+            // Aumentar también la fuente para terreno
+            simbolos[y][x].setFont(
+                    javafx.scene.text.Font.font("Arial", 10) // De 8 a 10
+            );
         }
     }
 

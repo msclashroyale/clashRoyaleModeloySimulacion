@@ -22,11 +22,11 @@ public class ConstantesUI {
         public static final Color NEUTRAL = Color.web("#6b7280");
 
         // Colores del arena
-        public static final Color ARENA_ZONA_J1 = Color.LIGHTCYAN;
-        public static final Color ARENA_ZONA_J2 = Color.MISTYROSE;
-        public static final Color ARENA_ZONA_NEUTRAL = Color.LIGHTGREEN;
-        public static final Color ARENA_RIO = Color.LIGHTBLUE;
-        public static final Color ARENA_PUENTE = Color.BROWN;
+        public static final Color ARENA_ZONA_J1 = Color.web("#93C5FD");
+        public static final Color ARENA_ZONA_J2 = Color.web("#FCA5A5");
+        public static final Color ARENA_ZONA_NEUTRAL = Color.web("#86EFAC");
+        public static final Color ARENA_RIO = Color.web("#60A5FA");
+        public static final Color ARENA_PUENTE = Color.web("#A16207");
         public static final Color ARENA_BORDE = Color.WHITE;
 
         // Estados de vida
@@ -70,10 +70,18 @@ public class ConstantesUI {
                 "-fx-background-color: black; -fx-text-fill: white; -fx-padding: 5 10; -fx-background-radius: 5;";
 
         public static final String CARTA_DISPONIBLE =
-                "-fx-background-color: rgba(0, 255, 0, 0.3); -fx-background-radius: 3; -fx-padding: 2;";
+                "-fx-background-color: linear-gradient(to bottom, #4ADE80, #16A34A); " +
+                        "-fx-border-color: #22C55E; " +
+                        "-fx-border-width: 2; " +
+                        "-fx-background-radius: 10; " +
+                        "-fx-border-radius: 10;";
 
         public static final String CARTA_NO_DISPONIBLE =
-                "-fx-background-color: rgba(255, 0, 0, 0.3); -fx-background-radius: 3; -fx-padding: 2;";
+                "-fx-background-color: linear-gradient(to bottom, #6B7280, #4B5563); " +
+                        "-fx-border-color: #9CA3AF; " +
+                        "-fx-border-width: 2; " +
+                        "-fx-background-radius: 10; " +
+                        "-fx-border-radius: 10;";
 
         public static final String CONTENEDOR_LISTA =
                 "-fx-background-color: rgba(0, 0, 0, 0.4); -fx-background-radius: 5; -fx-padding: 5;";
@@ -94,15 +102,17 @@ public class ConstantesUI {
         public static final Font TEXTO_LEYENDA = Font.font("Arial", 9);
         public static final Font TEXTO_DIMINUTO = Font.font("Arial", 8);
         public static final Font TEXTO_MICRO = Font.font("Arial", 7);
+        public static final Color TEXTO_OSCURO = Color.web("#1F2937");
+        public static final Color TEXTO_CLARO = Color.web("#F9FAFB");
     }
 
     // DIMENSIONES
     public static final class Dimensiones {
-        public static final double ANCHO_VENTANA = 1200;
-        public static final double ALTO_VENTANA = 800;
-        public static final double ANCHO_PANEL_JUGADOR = 400;
-        public static final double TAMANO_CELDA_ARENA = 20;
-        public static final double ESPACIADO_PANEL = 15;
+        public static final double ANCHO_VENTANA = 1600;
+        public static final double ALTO_VENTANA = 1000;
+        public static final double ANCHO_PANEL_JUGADOR = 350;
+        public static final double TAMANO_CELDA_ARENA = 25;
+        public static final double ESPACIADO_PANEL = 20;
         public static final double ESPACIADO_PEQUENO = 8;
         public static final double ESPACIADO_DIMINUTO = 3;
     }
