@@ -135,6 +135,36 @@ public class ConstantesUI {
         public static final double ESPACIADO_PANEL = DIMENSIONES.ESPACIADO_PANEL;
         public static final double ESPACIADO_PEQUENO = esPantallaGrande() ? 8 : 6;
         public static final double ESPACIADO_DIMINUTO = esPantallaGrande() ? 3 : 2;
+
+        public static double getAnchoPanelJugador() {
+            return esPantallaGrande() ? 380 : 300;
+        }
+
+        public static double getAnchoCarta() {
+            return esPantallaGrande() ? 80 : 65;
+        }
+
+        public static double getAltoCarta() {
+            return esPantallaGrande() ? 120 : 95;
+        }
+
+        // Métodos responsive para las alturas de secciones
+        public static double getAltoSeccionCartas() {
+            return esPantallaGrande() ? 220 : 180;
+        }
+
+        public static double getAltoSeccionTropas() {
+            return esPantallaGrande() ? 150 : 120;
+        }
+
+        public static double getAltoSeccionTorres() {
+            return esPantallaGrande() ? 100 : 80;
+        }
+
+        public static double getAltoScrollTropas() {
+            return esPantallaGrande() ? 120 : 90;
+        }
+
     }
 
     // TIMING Y ANIMACIONES

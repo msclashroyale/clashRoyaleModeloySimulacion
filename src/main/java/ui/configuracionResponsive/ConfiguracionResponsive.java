@@ -29,7 +29,7 @@ public class ConfiguracionResponsive {
                 this.ANCHO_VENTANA = 1600;
                 this.ALTO_VENTANA = 1000;
                 this.ANCHO_PANEL_JUGADOR = 350;
-                this.TAMANO_CELDA_ARENA = 25;
+                this.TAMANO_CELDA_ARENA = 29;
                 this.ESPACIADO_PANEL = 20;
             } else {
                 // Valores optimizados para notebooks

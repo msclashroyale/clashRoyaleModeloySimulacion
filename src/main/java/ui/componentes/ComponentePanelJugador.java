@@ -78,8 +78,22 @@ public class ComponentePanelJugador {
      * Inicializa todos los elementos del panel de jugador
      */
     private void inicializarComponente() {
-        contenedorPrincipal = new VBox(ConstantesUI.Dimensiones.ESPACIADO_PANEL); // Aumentado espaciado general
-        contenedorPrincipal.setPrefWidth(ConstantesUI.Dimensiones.ANCHO_PANEL_JUGADOR);
+        contenedorPrincipal = new VBox(ConstantesUI.Dimensiones.ESPACIADO_PANEL);
+
+        // USAR ANCHO RESPONSIVE
+        double anchoPanel = ConstantesUI.Dimensiones.getAnchoPanelJugador();
+        contenedorPrincipal.setPrefWidth(anchoPanel);
+        contenedorPrincipal.setMinWidth(anchoPanel);
+        contenedorPrincipal.setMaxWidth(anchoPanel);
+
+        // Altura también responsive pero con límites
+        double altoMaximo = ConstantesUI.Dimensiones.ALTO_VENTANA * 0.9;
+        double altoMinimo = ConstantesUI.Dimensiones.ALTO_VENTANA * 0.7;
+
+        contenedorPrincipal.setPrefHeight(altoMaximo);
+        contenedorPrincipal.setMinHeight(altoMinimo);
+        contenedorPrincipal.setMaxHeight(altoMaximo);
+
         contenedorPrincipal.setAlignment(Pos.TOP_CENTER);
 
         // Aplicar estilo según el jugador
@@ -238,18 +252,25 @@ public class ComponentePanelJugador {
     private VBox crearSeccionCartas() {
         VBox seccionCartas = new VBox(ConstantesUI.Dimensiones.ESPACIADO_DIMINUTO);
         seccionCartas.setAlignment(Pos.CENTER);
-        seccionCartas.setPrefHeight(220); // Aumentar altura para cartas más grandes
+
+        // ALTURA RESPONSIVE
+        double alto = ConstantesUI.Dimensiones.getAltoSeccionCartas();
+        seccionCartas.setPrefHeight(alto);
+        seccionCartas.setMinHeight(alto);
+        seccionCartas.setMaxHeight(alto);
 
         Label tituloCartas = new Label(ConstantesUI.Etiquetas.CARTAS_EN_MANO);
         tituloCartas.setFont(ConstantesUI.Fuentes.TEXTO_MEDIANO);
         tituloCartas.setTextFill(Color.WHITE);
 
-        // Panel de cartas más grande
-        panelCartas = new VBox(10);
+        // Panel de cartas con tamaño controlado
+        panelCartas = new VBox();
         panelCartas.setStyle(ConstantesUI.Estilos.CONTENEDOR_LISTA);
-        panelCartas.setPrefHeight(180); // Altura aumentada
+        panelCartas.setPrefHeight(alto - 40); // Restar espacio del título
+        panelCartas.setMinHeight(alto - 40);
+        panelCartas.setMaxHeight(alto - 40);
         panelCartas.setAlignment(Pos.CENTER);
-        panelCartas.setPadding(new Insets(12));
+        panelCartas.setPadding(new Insets(8)); // Padding reducido
 
         seccionCartas.getChildren().addAll(tituloCartas, panelCartas);
         return seccionCartas;
@@ -259,17 +280,23 @@ public class ComponentePanelJugador {
      * Crea la sección de estado de torres
      */
     private VBox crearSeccionTorres() {
-        VBox seccionTorres = new VBox(ConstantesUI.Dimensiones.ESPACIADO_PEQUENO); // Aumentado espaciado
+        VBox seccionTorres = new VBox(ConstantesUI.Dimensiones.ESPACIADO_PEQUENO);
         seccionTorres.setAlignment(Pos.CENTER);
 
+        // ALTURA RESPONSIVE
+        double alto = ConstantesUI.Dimensiones.getAltoSeccionTorres();
+        seccionTorres.setPrefHeight(alto);
+        seccionTorres.setMinHeight(alto);
+        seccionTorres.setMaxHeight(alto);
+
         Label tituloTorres = new Label(ConstantesUI.Etiquetas.ESTADO_TORRES);
-        tituloTorres.setFont(ConstantesUI.Fuentes.TEXTO_GRANDE); // Aumentado de TEXTO_MEDIANO
+        tituloTorres.setFont(ConstantesUI.Fuentes.TEXTO_GRANDE);
         tituloTorres.setTextFill(Color.WHITE);
         tituloTorres.setStyle("-fx-effect: dropshadow(gaussian, rgba(0,0,0,0.6), 2, 0.6, 1, 1);");
 
-        panelTorres = new VBox(4); // Aumentado espaciado interno
+        panelTorres = new VBox(4);
         panelTorres.setStyle(ConstantesUI.Estilos.CONTENEDOR_LISTA);
-        panelTorres.setPrefHeight(100); // Aumentado altura
+        panelTorres.setPrefHeight(alto - 40); // Ajustar por el título
 
         seccionTorres.getChildren().addAll(tituloTorres, panelTorres);
         return seccionTorres;
@@ -281,19 +308,31 @@ public class ComponentePanelJugador {
     private VBox crearSeccionTropasVivas() {
         VBox seccionTropas = new VBox(ConstantesUI.Dimensiones.ESPACIADO_PEQUENO);
         seccionTropas.setAlignment(Pos.CENTER);
-        seccionTropas.setPrefHeight(ConstantesUI.esPantallaGrande() ? 150 : 120);
+
+        // ALTURA RESPONSIVE
+        double altoSeccion = ConstantesUI.Dimensiones.getAltoSeccionTropas();
+        seccionTropas.setPrefHeight(altoSeccion);
+        seccionTropas.setMinHeight(altoSeccion);
+        seccionTropas.setMaxHeight(altoSeccion);
 
         Label tituloTropas = new Label(ConstantesUI.Etiquetas.TROPAS_VIVAS);
-        tituloTropas.setFont(ConstantesUI.Fuentes.TEXTO_GRANDE); // Aumentado de TEXTO_MEDIANO
+        tituloTropas.setFont(ConstantesUI.Fuentes.TEXTO_GRANDE);
         tituloTropas.setTextFill(Color.WHITE);
         tituloTropas.setStyle("-fx-effect: dropshadow(gaussian, rgba(0,0,0,0.6), 2, 0.6, 1, 1);");
 
         ScrollPane scrollPane = new ScrollPane();
-        scrollPane.setPrefHeight(120); // Aumentado altura
+
+        // Configuración del ScrollPane
+        double altoScroll = ConstantesUI.Dimensiones.getAltoScrollTropas();
+        scrollPane.setPrefHeight(altoScroll);
+        scrollPane.setMinHeight(altoScroll);
+        scrollPane.setMaxHeight(altoScroll);
         scrollPane.setFitToWidth(true);
+        scrollPane.setVbarPolicy(ScrollPane.ScrollBarPolicy.AS_NEEDED);
+        scrollPane.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
         scrollPane.setStyle("-fx-background: transparent; -fx-background-color: transparent;");
 
-        panelTropasVivas = new VBox(4); // Aumentado espaciado interno
+        panelTropasVivas = new VBox(4);
         panelTropasVivas.setStyle(ConstantesUI.Estilos.CONTENEDOR_LISTA);
 
         scrollPane.setContent(panelTropasVivas);
@@ -677,15 +716,15 @@ public class ComponentePanelJugador {
         if (cartasEnMano.isEmpty()) {
             Label sinCartas = new Label("No hay cartas en mano");
             sinCartas.setTextFill(Color.LIGHTGRAY);
-            sinCartas.setFont(Font.font("Arial", FontWeight.NORMAL, 12));
+            sinCartas.setFont(Font.font("Arial", FontWeight.NORMAL, 11)); // Fuente ligeramente más pequeña
             panelCartas.getChildren().add(sinCartas);
             return;
         }
 
-        // Contenedor horizontal para las cartas
-        HBox cartasContainer = new HBox(15);
+        // Contenedor horizontal con ESPACIADO REDUCIDO (cambio 3)
+        HBox cartasContainer = new HBox(5); // Reducido de 15 a 5
         cartasContainer.setAlignment(Pos.CENTER);
-        cartasContainer.setPrefHeight(150);
+        cartasContainer.setPrefHeight(ConstantesUI.Dimensiones.getAltoSeccionCartas() - 40);
 
         for (Carta carta : cartasEnMano) {
             boolean disponible = elixir.puedeGastar(carta.getCostoElixir());
@@ -697,158 +736,132 @@ public class ComponentePanelJugador {
     }
 
     private StackPane crearCartaVisual(Carta carta, boolean disponible) {
-        // StackPane principal para superposición
-        boolean pantallaGrande = ConstantesUI.esPantallaGrande();
-
         StackPane cartaPane = new StackPane();
-        if (pantallaGrande) {
-            cartaPane.setPrefSize(95, 140);
-            cartaPane.setMinSize(95, 140);
-            cartaPane.setMaxSize(95, 140);
-        } else {
-            cartaPane.setPrefSize(70, 105);
-            cartaPane.setMinSize(70, 105);
-            cartaPane.setMaxSize(70, 105);
-        }
 
+        // USAR TAMAÑOS RESPONSIVE
+        double anchoCarta = ConstantesUI.Dimensiones.getAnchoCarta();
+        double altoCarta = ConstantesUI.Dimensiones.getAltoCarta();
 
+        cartaPane.setPrefSize(anchoCarta, altoCarta);
+        cartaPane.setMinSize(anchoCarta, altoCarta);
+        cartaPane.setMaxSize(anchoCarta, altoCarta);
 
         // Estilo base con fondos MUY transparentes
         String estiloBase =
-                "-fx-background-radius: 12; " +
-                        "-fx-border-radius: 12; " +
-                        "-fx-border-width: 3; " +
-                        "-fx-effect: dropshadow(gaussian, rgba(0,0,0,0.4), 10, 0.4, 3, 3); ";
+                "-fx-background-radius: 10; " + // Reducido de 12
+                        "-fx-border-radius: 10; " +     // Reducido de 12
+                        "-fx-border-width: 2; " +       // Reducido de 3
+                        "-fx-effect: dropshadow(gaussian, rgba(0,0,0,0.4), 8, 0.4, 2, 2); "; // Efecto más sutil
 
         String estiloCompleto;
         if (disponible) {
             estiloCompleto = estiloBase +
-                    "-fx-background-color: rgba(0,0,0,0.1); " +  // Fondo MUY transparente
+                    "-fx-background-color: rgba(0,0,0,0.1); " +
                     "-fx-border-color: #10B981;";
         } else {
             estiloCompleto = estiloBase +
-                    "-fx-background-color: rgba(0,0,0,0.2); " +  // Fondo ligeramente más oscuro pero aún transparente
+                    "-fx-background-color: rgba(0,0,0,0.2); " +
                     "-fx-border-color: #6B7280;";
         }
 
         cartaPane.setStyle(estiloCompleto);
 
-        // ==========================================
-        // FONDO: IMAGEN REAL DE LA CARTA (SIN FONDOS OSCUROS)
-        // ==========================================
+        // Contenedor de imagen
         StackPane imagenContainer = new StackPane();
         imagenContainer.setAlignment(Pos.CENTER);
-        imagenContainer.setStyle("-fx-background-radius: 9; -fx-background-color: transparent;"); // Fondo completamente transparente
+        imagenContainer.setStyle("-fx-background-radius: 8; -fx-background-color: transparent;");
 
-        // Ajustar imagen de la carta
+        // Cargar la imagen real de la carta
         ImageView imagenCarta = crearImagenCarta(carta, disponible);
-        if (pantallaGrande) {
-            imagenCarta.setFitWidth(89);
-            imagenCarta.setFitHeight(134);
-        } else {
-            imagenCarta.setFitWidth(64);
-            imagenCarta.setFitHeight(96);
-        }
 
-        // Ajustar la imagen para que ocupe casi todo el espacio de la carta
-        imagenCarta.setFitWidth(89);  // Un poco más grande
-        imagenCarta.setFitHeight(136); // Un poco más grande
+        // Ajustar la imagen a los nuevos tamaños
+        double anchoImagen = anchoCarta - 4;
+        double altoImagen = altoCarta - 4;
+        imagenCarta.setFitWidth(anchoImagen);
+        imagenCarta.setFitHeight(altoImagen);
         imagenCarta.setPreserveRatio(true);
 
-        // Efecto de brillo MUY sutil para mejor visualización
+        // Efecto de brillo MUY sutil
         Region efectoBrillo = new Region();
         efectoBrillo.setStyle(
                 "-fx-background-color: radial-gradient(center 50% 50%, radius 80%, " +
-                        (disponible ? "rgba(255,255,255,0.05)" : "rgba(255,255,255,0.02)") + // Brillos muy sutiles
+                        (disponible ? "rgba(255,255,255,0.05)" : "rgba(255,255,255,0.02)") +
                         ", transparent); " +
-                        "-fx-background-radius: 9;"
+                        "-fx-background-radius: 8;"
         );
-        efectoBrillo.setPrefSize(89, 136);
+        efectoBrillo.setPrefSize(anchoImagen, altoImagen);
 
         imagenContainer.getChildren().addAll(imagenCarta, efectoBrillo);
 
-        // ==========================================
-        // SUPERIOR: COSTO DE ELIXIR (COMPACTO)
-        // ==========================================
+        // Contenedor del costo
         StackPane costoContainer = new StackPane();
         costoContainer.setAlignment(Pos.TOP_RIGHT);
         costoContainer.setStyle(
-                "-fx-background-color: rgba(0,0,0,0); " + // Reducir opacidad
-                        "-fx-background-radius: 8; " +
-                        "-fx-padding: 1 5 1 5; " + // Padding reducido
-                        "-fx-effect: dropshadow(gaussian, rgba(0,0,0,0.8), 3, 0.5, 1, 1);"
+                "-fx-background-color: rgba(0,0,0,0); " +
+                        "-fx-background-radius: 6; " +
+                        "-fx-padding: 1 4 1 4; " + // Padding reducido
+                        "-fx-effect: dropshadow(gaussian, rgba(0,0,0,0.8), 2, 0.5, 1, 1);"
         );
 
         Label costoLabel = new Label("⏣" + carta.getCostoElixir());
         costoLabel.setTextFill(Color.GOLD);
-        costoLabel.setFont(Font.font("Arial", FontWeight.BOLD, 10));
+        costoLabel.setFont(Font.font("Arial", FontWeight.BOLD, 9)); // Fuente más pequeña
         costoContainer.getChildren().add(costoLabel);
 
-        // ==========================================
-        // INFERIOR: NOMBRE (COMPACTO)
-        // ==========================================
+        // Contenedor del nombre
         HBox nombreContainer = new HBox();
         nombreContainer.setAlignment(Pos.BOTTOM_CENTER);
-        nombreContainer.setPadding(new Insets(0, 0, 3, 0)); // Padding inferior reducido
+        nombreContainer.setPadding(new Insets(0, 0, 2, 0)); // Padding inferior reducido
 
         Label nombreLabel = new Label(carta.getNombre());
         nombreLabel.setTextFill(Color.WHITE);
-        nombreLabel.setFont(Font.font("Arial", FontWeight.BOLD, 8));
+        nombreLabel.setFont(Font.font("Arial", FontWeight.BOLD, 7)); // Fuente más pequeña
         nombreLabel.setWrapText(true);
         nombreLabel.setTextAlignment(TextAlignment.CENTER);
-        nombreLabel.setMaxWidth(80);
+        nombreLabel.setMaxWidth(anchoCarta - 10); // Ancho máximo ajustado
 
-        // Fondo semitransparente para mejor legibilidad (menos opaco)
+        // Fondo semitransparente para mejor legibilidad
         nombreLabel.setStyle(
-                "-fx-background-color: rgba(0,0,0,0.48); " + // Reducir opacidad
-                        "-fx-background-radius: 5; " +
-                        "-fx-padding: 1 3 1 3; " + // Padding reducido
+                "-fx-background-color: rgba(0,0,0,0.48); " +
+                        "-fx-background-radius: 4; " +
+                        "-fx-padding: 1 2 1 2; " + // Padding reducido
                         "-fx-effect: dropshadow(gaussian, rgba(0,0,0,0.87), 2, 0.5, 1, 1);"
         );
 
         nombreContainer.getChildren().add(nombreLabel);
 
-        // ==========================================
-        // ENSAMBLAR TODO
-        // ==========================================
+        // Ensamblar todo
         cartaPane.getChildren().addAll(imagenContainer, costoContainer, nombreContainer);
 
         // Posicionar elementos superpuestos
         StackPane.setAlignment(costoContainer, Pos.TOP_RIGHT);
-        StackPane.setMargin(costoContainer, new Insets(3, 3, 0, 0)); // Margen pequeño en la esquina
+        StackPane.setMargin(costoContainer, new Insets(2, 2, 0, 0)); // Margen pequeño
         StackPane.setAlignment(nombreContainer, Pos.BOTTOM_CENTER);
 
-        // ==========================================
-        // EFECTOS HOVER MEJORADOS (CON FONDOS MÁS CLAROS)
-        // ==========================================
+        // Efectos hover (manteniendo la funcionalidad pero ajustados a nuevo tamaño)
         cartaPane.setOnMouseEntered(e -> {
             if (disponible) {
-                cartaPane.setScaleX(1.15);
-                cartaPane.setScaleY(1.15);
+                cartaPane.setScaleX(1.08); // Efecto más sutil
+                cartaPane.setScaleY(1.08);
                 cartaPane.setStyle(estiloBase +
-                        "-fx-background-color: rgba(0,0,0,0.05); " + // Fondo casi transparente en hover
+                        "-fx-background-color: rgba(0,0,0,0.05); " +
                         "-fx-border-color: #10B981; " +
-                        "-fx-effect: dropshadow(gaussian, rgba(72,187,120,0.6), 15, 0.6, 0, 5);");
+                        "-fx-effect: dropshadow(gaussian, rgba(72,187,120,0.6), 12, 0.6, 0, 3);"); // Efecto más sutil
 
-                // Efecto de brillo en hover (más sutil)
+                // Efecto de brillo en hover
                 Region efectoHover = new Region();
                 efectoHover.setStyle(
-                        "-fx-background-color: radial-gradient(center 50% 50%, radius 80%, rgba(255,255,255,0.2), transparent); " +
-                                "-fx-background-radius: 12;"
+                        "-fx-background-color: radial-gradient(center 50% 50%, radius 80%, rgba(255,255,255,0.15), transparent); " +
+                                "-fx-background-radius: 10;"
                 );
-                efectoHover.setPrefSize(95, 140);
+                efectoHover.setPrefSize(anchoCarta, altoCarta);
 
                 // Añadir efecto solo si no existe ya
                 if (cartaPane.getChildren().size() == 3) {
                     cartaPane.getChildren().add(efectoHover);
                 }
 
-                cartaPane.setTranslateY(-5);
-
-                // Remover efecto de desaturación en hover si no está disponible
-                if (!disponible) {
-                    imagenCarta.setEffect(null);
-                }
+                cartaPane.setTranslateY(-3); // Elevación más sutil
             }
         });
 
@@ -862,17 +875,9 @@ public class ComponentePanelJugador {
             if (cartaPane.getChildren().size() > 3) {
                 cartaPane.getChildren().remove(3);
             }
-
-            // Restaurar efecto de desaturación si no está disponible
-            if (!disponible) {
-                ColorAdjust colorAdjust = new ColorAdjust();
-                colorAdjust.setSaturation(-0.8);
-                colorAdjust.setBrightness(-0.3);
-                imagenCarta.setEffect(colorAdjust);
-            }
         });
 
-        // Tooltip informativo
+        // Tooltip informativo (mantenido igual)
         Tooltip tooltip = new Tooltip(
                 "🎴 " + carta.getNombre().toUpperCase() + "\n" +
                         "⏣ Costo: " + carta.getCostoElixir() + " elixir\n" +
@@ -880,7 +885,7 @@ public class ComponentePanelJugador {
                         (disponible ? "✅ DISPONIBLE" : "❌ ELIXIR INSUFICIENTE")
         );
         tooltip.setStyle(
-                "-fx-font-size: 12; " +
+                "-fx-font-size: 11; " + // Fuente ligeramente más pequeña
                         "-fx-text-fill: white; " +
                         "-fx-background-color: rgba(0,0,0,0.9); " +
                         "-fx-border-color: gold; " +

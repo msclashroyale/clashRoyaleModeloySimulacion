@@ -1,5 +1,6 @@
 package ui.controladores;
 
+import javafx.scene.layout.Priority;
 import javafx.scene.layout.Region;
 import juego.Partida;
 import juego.ConfiguracionPartida;
@@ -29,12 +30,11 @@ public class ControladorUIPrincipal implements GameEventListener {
     private Partida partida;
 
     // Componentes principales de la UI
-    private ComponenteCabecera componenteCabecera;
     private ComponentePanelJugador panelJugador1;
     private ComponentePanelJugador panelJugador2;
     private ComponenteArena componenteArena;
     private ComponentePanelControl componentePanelControl;
-    private ComponenteBarraEstado componenteBarraEstado;
+
 
     // Gestores
     private GestorAnimaciones gestorAnimaciones;
@@ -107,16 +107,12 @@ public class ControladorUIPrincipal implements GameEventListener {
      * Crea todos los componentes de la UI
      */
     private void crearComponentesUI() {
-        componenteCabecera = new ComponenteCabecera();
 
         panelJugador1 = new ComponentePanelJugador(1);
         panelJugador2 = new ComponentePanelJugador(2);
-
         componenteArena = new ComponenteArena();
-
         componentePanelControl = new ComponentePanelControl();
 
-        componenteBarraEstado = new ComponenteBarraEstado();
     }
 
     /**
@@ -126,20 +122,11 @@ public class ControladorUIPrincipal implements GameEventListener {
         contenedorPrincipal = new VBox(ConstantesUI.Dimensiones.ESPACIADO_PANEL);
         contenedorPrincipal.setPadding(new Insets(10));
         contenedorPrincipal.setStyle(ConstantesUI.Estilos.GRADIENTE_FONDO);
-        contenedorPrincipal.setMaxSize(Region.USE_COMPUTED_SIZE, Region.USE_COMPUTED_SIZE);
 
-        // Cabecera
-        contenedorPrincipal.getChildren().add(componenteCabecera.obtenerComponente());
-
-        // Contenido principal (paneles de jugador + arena)
+        // Solo el contenido principal
         HBox contenidoPrincipal = crearContenidoPrincipal();
         contenedorPrincipal.getChildren().add(contenidoPrincipal);
 
-        // El panel de control ahora está en el HBox principal
-
-
-        // Barra de estado
-        contenedorPrincipal.getChildren().add(componenteBarraEstado.obtenerComponente());
     }
 
     /**
@@ -148,10 +135,17 @@ public class ControladorUIPrincipal implements GameEventListener {
     private HBox crearContenidoPrincipal() {
         HBox contenidoPrincipal = new HBox(ConstantesUI.Dimensiones.ESPACIADO_PANEL);
 
-        // Hacer que los paneles sean redimensionables
-        panelJugador1.obtenerComponente().setMaxWidth(Region.USE_PREF_SIZE);
-        panelJugador2.obtenerComponente().setMaxWidth(Region.USE_PREF_SIZE);
-        componenteArena.obtenerComponente().setMaxSize(Region.USE_COMPUTED_SIZE, Region.USE_COMPUTED_SIZE);
+        // CONFIGURAR POLÍTICAS DE CRECIMIENTO CON NUEVOS TAMAÑOS
+        // Paneles laterales - NO crecen, tamaño fijo responsive
+        panelJugador1.obtenerComponente().setMaxSize(Region.USE_PREF_SIZE, Region.USE_PREF_SIZE);
+        panelJugador2.obtenerComponente().setMaxSize(Region.USE_PREF_SIZE, Region.USE_PREF_SIZE);
+
+        // Arena - SÍ puede crecer
+        componenteArena.obtenerComponente().setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
+        HBox.setHgrow(componenteArena.obtenerComponente(), Priority.ALWAYS);
+
+        // Controles - NO crecen
+        componentePanelControl.obtenerComponente().setMaxSize(Region.USE_PREF_SIZE, Region.USE_PREF_SIZE);
 
         contenidoPrincipal.getChildren().addAll(
                 panelJugador1.obtenerComponente(),
@@ -233,7 +227,6 @@ public class ControladorUIPrincipal implements GameEventListener {
 
         estaEjecutandose = true;
         componentePanelControl.actualizarBotonPlayPause(true);
-        componenteBarraEstado.establecerEstadoJuego(ConstantesUI.Etiquetas.JUEGO_EJECUTANDO);
     }
 
     /**
@@ -249,7 +242,6 @@ public class ControladorUIPrincipal implements GameEventListener {
 
         estaEjecutandose = false;
         componentePanelControl.actualizarBotonPlayPause(false);
-        componenteBarraEstado.establecerEstadoJuego(ConstantesUI.Etiquetas.JUEGO_PAUSADO);
     }
 
     /**
@@ -304,9 +296,8 @@ public class ControladorUIPrincipal implements GameEventListener {
 
         estaEjecutandose = false;
         componentePanelControl.actualizarBotonPlayPause(false);
-        componenteBarraEstado.establecerEstadoJuego(ConstantesUI.Etiquetas.JUEGO_TERMINADO);
 
-        // Mostrar ganador usando la información del evento
+        // Mostrar ganador en el panel de control
         int ganador = info.getGanadorId();
         String textoGanador = switch (ganador) {
             case 1 -> ConstantesUI.Etiquetas.JUGADOR_1_GANA;
@@ -314,7 +305,8 @@ public class ControladorUIPrincipal implements GameEventListener {
             default -> ConstantesUI.Etiquetas.EMPATE;
         };
 
-        componenteCabecera.mostrarGanador(textoGanador);
+        // Mostrar ganador en el panel de control en lugar de la cabecera
+        componentePanelControl.mostrarGanador(textoGanador);
     }
 
     /**
@@ -330,8 +322,7 @@ public class ControladorUIPrincipal implements GameEventListener {
 
         estaEjecutandose = false;
         componentePanelControl.actualizarBotonPlayPause(false);
-        componenteBarraEstado.establecerEstadoJuego(ConstantesUI.Etiquetas.JUEGO_PAUSADO);
-        componenteCabecera.limpiarGanador();
+        componentePanelControl.limpiarGanador(); // Limpiar mensaje de ganador del panel de control
 
         // Reinicializar partida
         inicializarJuego();
@@ -347,22 +338,20 @@ public class ControladorUIPrincipal implements GameEventListener {
      * Actualiza todos los componentes de la interfaz
      */
     private void actualizarTodosLosComponentes() {
-        // Actualizar cabecera
-        componenteCabecera.actualizar(
-                obtenerTiempoFormateado(),
-                partida.getTickActual()
-        );
 
-        // Actualizar paneles de jugadores (necesitan Arena, no Tablero)
-        // Nota: ComponentePanelJugador.actualizar() espera Arena, pero tienes Tablero
-        // Necesitas actualizar ComponentePanelJugador para usar Tablero en lugar de Arena
+        // Actualizar paneles de jugadores
         panelJugador1.actualizar(partida.getJugador1(), partida.getTablero());
         panelJugador2.actualizar(partida.getJugador2(), partida.getTablero());
 
         // Actualizar arena
         componenteArena.actualizar(partida, gestorAnimaciones);
-    }
 
+        // Actualizar panel de control con tiempo y ticks
+        componentePanelControl.actualizarTiempoYTicks(
+                obtenerTiempoFormateado(),
+                partida.getTickActual()
+        );
+    }
     /**
      * Obtiene el tiempo formateado de la partida
      */
