@@ -7,6 +7,7 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
+import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import juego.Partida;
 import tablero.Tablero;
@@ -86,23 +87,20 @@ public class ComponenteArena {
      * @param y coordenada Y
      */
     private void crearCasilla(int x, int y) {
-        // Rectangle para el color de fondo
-        Rectangle rect = new Rectangle(
-                ConstantesUI.Dimensiones.TAMANO_CELDA_ARENA,
-                ConstantesUI.Dimensiones.TAMANO_CELDA_ARENA
-        );
+        double tamanoCelda = ConstantesUI.Dimensiones.TAMANO_CELDA_ARENA;
+
+        Rectangle rect = new Rectangle(tamanoCelda, tamanoCelda);
         rect.setStroke(Color.GRAY);
         rect.setStrokeWidth(0.3);
         casillas[y][x] = rect;
 
         // Label para el símbolo
         Label simbolo = new Label();
-        simbolo.setFont(ConstantesUI.Fuentes.TEXTO_DIMINUTO);
+        simbolo.setFont(ConstantesUI.esPantallaGrande() ?
+                ConstantesUI.Fuentes.TEXTO_DIMINUTO :
+                Font.font("Arial", 7));
         simbolo.setAlignment(Pos.CENTER);
-        simbolo.setPrefSize(
-                ConstantesUI.Dimensiones.TAMANO_CELDA_ARENA,
-                ConstantesUI.Dimensiones.TAMANO_CELDA_ARENA
-        );
+        simbolo.setPrefSize(tamanoCelda, tamanoCelda);
         simbolos[y][x] = simbolo;
 
         // StackPane para superponer rectangle y label

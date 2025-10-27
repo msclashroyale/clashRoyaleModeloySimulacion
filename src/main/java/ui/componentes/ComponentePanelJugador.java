@@ -182,7 +182,12 @@ public class ComponentePanelJugador {
         VBox contenedor = new VBox();
         contenedor.setAlignment(Pos.CENTER);
         contenedor.setMaxWidth(Double.MAX_VALUE);
-        contenedor.setPadding(new Insets(10, 15, 15, 15));
+
+        if (ConstantesUI.esPantallaGrande()) {
+            contenedor.setPadding(new Insets(10, 15, 15, 15));
+        } else {
+            contenedor.setPadding(new Insets(8, 12, 12, 12));
+        }
 
         // Contenedor principal - SIN FONDO VISIBLE
         StackPane barraPrincipal = new StackPane();
@@ -274,9 +279,9 @@ public class ComponentePanelJugador {
      * Crea la sección de tropas vivas
      */
     private VBox crearSeccionTropasVivas() {
-        VBox seccionTropas = new VBox(ConstantesUI.Dimensiones.ESPACIADO_PEQUENO); // Aumentado espaciado
+        VBox seccionTropas = new VBox(ConstantesUI.Dimensiones.ESPACIADO_PEQUENO);
         seccionTropas.setAlignment(Pos.CENTER);
-        seccionTropas.setPrefHeight(150); // Aumentado altura
+        seccionTropas.setPrefHeight(ConstantesUI.esPantallaGrande() ? 150 : 120);
 
         Label tituloTropas = new Label(ConstantesUI.Etiquetas.TROPAS_VIVAS);
         tituloTropas.setFont(ConstantesUI.Fuentes.TEXTO_GRANDE); // Aumentado de TEXTO_MEDIANO
@@ -693,10 +698,20 @@ public class ComponentePanelJugador {
 
     private StackPane crearCartaVisual(Carta carta, boolean disponible) {
         // StackPane principal para superposición
+        boolean pantallaGrande = ConstantesUI.esPantallaGrande();
+
         StackPane cartaPane = new StackPane();
-        cartaPane.setPrefSize(95, 140);
-        cartaPane.setMinSize(95, 140);
-        cartaPane.setMaxSize(95, 140);
+        if (pantallaGrande) {
+            cartaPane.setPrefSize(95, 140);
+            cartaPane.setMinSize(95, 140);
+            cartaPane.setMaxSize(95, 140);
+        } else {
+            cartaPane.setPrefSize(70, 105);
+            cartaPane.setMinSize(70, 105);
+            cartaPane.setMaxSize(70, 105);
+        }
+
+
 
         // Estilo base con fondos MUY transparentes
         String estiloBase =
@@ -725,8 +740,15 @@ public class ComponentePanelJugador {
         imagenContainer.setAlignment(Pos.CENTER);
         imagenContainer.setStyle("-fx-background-radius: 9; -fx-background-color: transparent;"); // Fondo completamente transparente
 
-        // Cargar la imagen real de la carta
+        // Ajustar imagen de la carta
         ImageView imagenCarta = crearImagenCarta(carta, disponible);
+        if (pantallaGrande) {
+            imagenCarta.setFitWidth(89);
+            imagenCarta.setFitHeight(134);
+        } else {
+            imagenCarta.setFitWidth(64);
+            imagenCarta.setFitHeight(96);
+        }
 
         // Ajustar la imagen para que ocupe casi todo el espacio de la carta
         imagenCarta.setFitWidth(89);  // Un poco más grande

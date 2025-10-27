@@ -1,5 +1,6 @@
 package ui.controladores;
 
+import javafx.scene.layout.Region;
 import juego.Partida;
 import juego.ConfiguracionPartida;
 import javafx.animation.KeyFrame;
@@ -125,6 +126,7 @@ public class ControladorUIPrincipal implements GameEventListener {
         contenedorPrincipal = new VBox(ConstantesUI.Dimensiones.ESPACIADO_PANEL);
         contenedorPrincipal.setPadding(new Insets(10));
         contenedorPrincipal.setStyle(ConstantesUI.Estilos.GRADIENTE_FONDO);
+        contenedorPrincipal.setMaxSize(Region.USE_COMPUTED_SIZE, Region.USE_COMPUTED_SIZE);
 
         // Cabecera
         contenedorPrincipal.getChildren().add(componenteCabecera.obtenerComponente());
@@ -145,6 +147,11 @@ public class ControladorUIPrincipal implements GameEventListener {
      */
     private HBox crearContenidoPrincipal() {
         HBox contenidoPrincipal = new HBox(ConstantesUI.Dimensiones.ESPACIADO_PANEL);
+
+        // Hacer que los paneles sean redimensionables
+        panelJugador1.obtenerComponente().setMaxWidth(Region.USE_PREF_SIZE);
+        panelJugador2.obtenerComponente().setMaxWidth(Region.USE_PREF_SIZE);
+        componenteArena.obtenerComponente().setMaxSize(Region.USE_COMPUTED_SIZE, Region.USE_COMPUTED_SIZE);
 
         contenidoPrincipal.getChildren().addAll(
                 panelJugador1.obtenerComponente(),

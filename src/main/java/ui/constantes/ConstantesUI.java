@@ -3,11 +3,21 @@ package ui.constantes;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
+import ui.configuracionResponsive.ConfiguracionResponsive;
 
 /**
  * Constantes centralizadas para la interfaz de usuario
  */
 public class ConstantesUI {
+
+    private static final ConfiguracionResponsive.TipoPantalla TIPO_PANTALLA =
+            ConfiguracionResponsive.detectarTipoPantalla();
+    private static final ConfiguracionResponsive.DimensionesResponsive DIMENSIONES =
+            new ConfiguracionResponsive.DimensionesResponsive(TIPO_PANTALLA);
+
+    public static boolean esPantallaGrande() {
+        return TIPO_PANTALLA == ConfiguracionResponsive.TipoPantalla.MONITOR_GRANDE;
+    }
 
     // COLORES
     public static final class Colores {
@@ -92,29 +102,39 @@ public class ConstantesUI {
 
     // FUENTES
     public static final class Fuentes {
-        public static final Font TITULO_GRANDE = Font.font("Arial", FontWeight.BOLD, 24);
-        public static final Font TITULO_MEDIANO = Font.font("Arial", FontWeight.BOLD, 18);
-        public static final Font TITULO_PEQUENO = Font.font("Arial", FontWeight.BOLD, 16);
-        public static final Font SUBTITULO = Font.font("Arial", FontWeight.BOLD, 14);
-        public static final Font TEXTO_GRANDE = Font.font("Arial", 14);
-        public static final Font TEXTO_MEDIANO = Font.font("Arial", 12);
-        public static final Font TEXTO_PEQUENO = Font.font("Arial", 10);
-        public static final Font TEXTO_LEYENDA = Font.font("Arial", 9);
-        public static final Font TEXTO_DIMINUTO = Font.font("Arial", 8);
-        public static final Font TEXTO_MICRO = Font.font("Arial", 7);
+        public static final Font TITULO_GRANDE = Font.font("Arial", FontWeight.BOLD,
+                esPantallaGrande() ? 24 : 20);
+        public static final Font TITULO_MEDIANO = Font.font("Arial", FontWeight.BOLD,
+                esPantallaGrande() ? 18 : 16);
+        public static final Font TITULO_PEQUENO = Font.font("Arial", FontWeight.BOLD,
+                esPantallaGrande() ? 16 : 14);
+        public static final Font SUBTITULO = Font.font("Arial", FontWeight.BOLD,
+                esPantallaGrande() ? 14 : 12);
+        public static final Font TEXTO_GRANDE = Font.font("Arial",
+                esPantallaGrande() ? 14 : 12);
+        public static final Font TEXTO_MEDIANO = Font.font("Arial",
+                esPantallaGrande() ? 12 : 10);
+        public static final Font TEXTO_PEQUENO = Font.font("Arial",
+                esPantallaGrande() ? 10 : 9);
+        public static final Font TEXTO_LEYENDA = Font.font("Arial",
+                esPantallaGrande() ? 9 : 8);
+        public static final Font TEXTO_DIMINUTO = Font.font("Arial",
+                esPantallaGrande() ? 8 : 7);
+        public static final Font TEXTO_MICRO = Font.font("Arial",
+                esPantallaGrande() ? 7 : 6);
         public static final Color TEXTO_OSCURO = Color.web("#1F2937");
         public static final Color TEXTO_CLARO = Color.web("#F9FAFB");
     }
 
     // DIMENSIONES
     public static final class Dimensiones {
-        public static final double ANCHO_VENTANA = 1600;
-        public static final double ALTO_VENTANA = 1000;
-        public static final double ANCHO_PANEL_JUGADOR = 350;
-        public static final double TAMANO_CELDA_ARENA = 25;
-        public static final double ESPACIADO_PANEL = 20;
-        public static final double ESPACIADO_PEQUENO = 8;
-        public static final double ESPACIADO_DIMINUTO = 3;
+        public static final double ANCHO_VENTANA = DIMENSIONES.ANCHO_VENTANA;
+        public static final double ALTO_VENTANA = DIMENSIONES.ALTO_VENTANA;
+        public static final double ANCHO_PANEL_JUGADOR = DIMENSIONES.ANCHO_PANEL_JUGADOR;
+        public static final double TAMANO_CELDA_ARENA = DIMENSIONES.TAMANO_CELDA_ARENA;
+        public static final double ESPACIADO_PANEL = DIMENSIONES.ESPACIADO_PANEL;
+        public static final double ESPACIADO_PEQUENO = esPantallaGrande() ? 8 : 6;
+        public static final double ESPACIADO_DIMINUTO = esPantallaGrande() ? 3 : 2;
     }
 
     // TIMING Y ANIMACIONES
