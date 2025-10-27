@@ -163,7 +163,6 @@ public class Partida implements GameEventListener {
             // Actualizar zonas para ambos jugadores
             atacante.getZonaDespliegue().agregarZona(nuevaZona);
             atacante.getZonaDespliegue().agregarZona(zonaPuente);
-            defensor.getZonaDespliegue().restringirZona(nuevaZona);
         }
     }
 

@@ -7,6 +7,9 @@ import tablero.Posicion;
  */
 public abstract class EntidadJuego {
 
+    private static int contadorId = 0;
+    protected final int id;
+
     protected Posicion posicion;
     protected int vidaActual;
     protected int vidaMaxima;
@@ -15,6 +18,7 @@ public abstract class EntidadJuego {
     protected boolean estaViva;
 
     public EntidadJuego(Posicion posicion, int vidaMaxima, int nivel, int jugadorId) {
+        this.id = contadorId++;
         this.posicion = posicion;
         this.vidaMaxima = vidaMaxima;
         this.vidaActual = vidaMaxima;
@@ -70,6 +74,7 @@ public abstract class EntidadJuego {
     public int getVidaMaxima() { return vidaMaxima; }
     public int getNivel() { return nivel; }
     public int getJugadorId() { return jugadorId; }
+    public int getId() { return id; }
     public boolean estaViva() { return estaViva; }
 
     public double getPorcentajeVida() {
