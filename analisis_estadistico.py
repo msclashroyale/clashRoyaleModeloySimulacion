@@ -14,8 +14,8 @@ class AnalisisEstadisticoAvanzado:
         
     def cargar_datos(self):
         """Carga los datos"""
-        self.df_partidas = pd.read_csv(self.carpeta / "resumen_partidas.csv")
-        self.df_jugadores = pd.read_csv(self.carpeta / "estadisticas_jugadores.csv")
+        self.df_partidas = pd.read_csv(self.carpeta / "resumen_partidas.csv", encoding='utf-8')
+        self.df_jugadores = pd.read_csv(self.carpeta / "estadisticas_jugadores.csv", encoding='utf-8')
         print(f"✓ Datos cargados: {len(self.df_partidas)} partidas")
     
     def test_chi_cuadrado_estrategias(self):

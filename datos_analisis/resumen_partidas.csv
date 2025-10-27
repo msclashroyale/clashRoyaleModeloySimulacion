@@ -1,101 +1,101 @@
 id_partida,fecha_hora,estrategia_j1,estrategia_j2,nivel_j1,nivel_j2,ganador,motivo_victoria,duracion_segundos,torres_destruidas_j1,torres_destruidas_j2,vida_final_j1,vida_final_j2,cartas_jugadas_j1,cartas_jugadas_j2,elixir_gastado_j1,elixir_gastado_j2,tropas_invocadas_j1,tropas_invocadas_j2,danio_causado_j1,danio_causado_j2,danio_recibido_j1,danio_recibido_j2,ataques_j1,ataques_j2
-PARTIDA_0001_16964f7f,2025-10-25 16:29:59,EstrategiaDefensiva,EstrategiaAleatoria,5,5,1,"Torre Rey del Jugador 2 destruida",85,3,0,5862,0,7,8,29,31,7,8,12949,4465,4465,12949,86,56
-PARTIDA_0002_1090783d,2025-10-25 16:30:00,EstrategiaDefensiva,EstrategiaAgresiva,5,5,2,"Torre Rey del Jugador 1 destruida",93,0,3,0,7278,8,9,33,33,8,9,6252,13809,13809,6252,78,99
-PARTIDA_0003_7021ded6,2025-10-25 16:30:00,EstrategiaMenorCosto,EstrategiaDefensiva,5,5,1,"Torre Rey del Jugador 2 destruida",83,3,0,7278,0,8,7,31,32,8,7,15325,1768,1768,15325,119,19
-PARTIDA_0004_ef1ed8c2,2025-10-25 16:30:00,EstrategiaAgresiva,EstrategiaDefensiva,5,5,1,"Torre Rey del Jugador 2 destruida",169,3,0,7278,0,15,15,57,57,15,15,16634,9831,9831,16634,110,124
-PARTIDA_0005_d46a3c76,2025-10-25 16:30:00,EstrategiaAleatoria,EstrategiaDefensiva,5,5,2,"Torre Rey del Jugador 1 destruida",156,1,3,0,4959,17,14,57,53,17,14,9030,15817,15817,9030,129,197
-PARTIDA_0006_d2f24b13,2025-10-25 16:30:00,EstrategiaAleatoria,EstrategiaAgresiva,5,5,2,"Torre Rey del Jugador 1 destruida",165,0,3,0,6153,18,17,59,58,18,17,9541,15166,15166,9541,128,159
-PARTIDA_0007_e67b2b42,2025-10-25 16:30:00,EstrategiaMenorCosto,EstrategiaAgresiva,5,5,1,"Torre Rey del Jugador 2 destruida",129,3,1,5130,0,11,14,45,47,11,14,17732,7426,7426,17732,145,78
-PARTIDA_0008_c1d91a73,2025-10-25 16:30:00,EstrategiaDefensiva,EstrategiaAgresiva,5,5,2,"Torre Rey del Jugador 1 destruida",56,0,3,0,7278,5,7,22,24,5,7,1114,12484,12484,1114,17,128
-PARTIDA_0009_015cc147,2025-10-25 16:30:00,EstrategiaDefensiva,EstrategiaAleatoria,5,5,2,"Torre Rey del Jugador 1 destruida",130,0,3,0,7152,12,14,45,47,12,14,4307,14953,14953,4307,50,126
-PARTIDA_0010_8a4d4c78,2025-10-25 16:30:00,EstrategiaDefensiva,EstrategiaMenorCosto,5,5,2,"Más torres restantes",179,0,2,180,7278,16,18,65,65,16,18,6986,19588,19588,6986,65,131
-PARTIDA_0011_0c1b2ae2,2025-10-25 16:30:00,EstrategiaMenorCosto,EstrategiaAleatoria,5,5,1,"Más torres restantes",246,3,2,3360,0,25,25,85,86,25,25,22757,19836,19836,22757,204,238
-PARTIDA_0012_2f10b238,2025-10-25 16:30:00,EstrategiaAleatoria,EstrategiaDefensiva,5,5,2,"Torre Rey del Jugador 1 destruida",120,1,3,0,4962,12,10,44,42,12,10,8798,14565,14565,8798,120,90
-PARTIDA_0013_d25a31d9,2025-10-25 16:30:00,EstrategiaAleatoria,EstrategiaDefensiva,5,5,1,"Más torres restantes",179,2,1,3959,1490,18,15,62,61,18,15,16465,13510,13510,16465,169,82
-PARTIDA_0014_f6dec0d7,2025-10-25 16:30:00,EstrategiaAleatoria,EstrategiaDefensiva,5,5,1,"Más torres restantes",179,1,0,6268,3513,17,14,65,63,17,14,17397,10624,10624,17397,161,101
-PARTIDA_0015_f080de15,2025-10-25 16:30:00,EstrategiaMenorCosto,EstrategiaMenorCosto,5,5,1,"Más torres restantes",179,2,1,4503,1409,18,20,65,64,18,20,15766,11550,11550,15766,227,187
-PARTIDA_0016_0a85f222,2025-10-25 16:30:00,EstrategiaAgresiva,EstrategiaAgresiva,5,5,1,"Torre Rey del Jugador 2 destruida",101,3,0,6513,0,10,11,36,39,10,11,14646,6321,6321,14646,75,92
-PARTIDA_0017_a9082a38,2025-10-25 16:30:00,EstrategiaDefensiva,EstrategiaMenorCosto,5,5,1,"Torre Rey del Jugador 2 destruida",155,3,1,3744,0,13,16,53,57,13,16,17048,13217,13217,17048,129,119
-PARTIDA_0018_a5732b2e,2025-10-25 16:30:00,EstrategiaAgresiva,EstrategiaAleatoria,5,5,1,"Torre Rey del Jugador 2 destruida",42,3,0,5766,0,5,5,18,16,5,5,9087,3864,3864,9087,47,65
-PARTIDA_0019_9b9c6bdc,2025-10-25 16:30:00,EstrategiaMenorCosto,EstrategiaMenorCosto,5,5,1,"Más torres restantes",179,2,0,4889,2835,17,18,63,65,17,18,12999,12292,12292,12999,79,203
-PARTIDA_0020_70338d6f,2025-10-25 16:30:00,EstrategiaMenorCosto,EstrategiaMenorCosto,5,5,1,"Torre Rey del Jugador 2 destruida",50,3,0,7278,0,5,6,20,21,5,6,10496,1807,1807,10496,47,30
-PARTIDA_0021_31ee6a5c,2025-10-25 16:30:00,EstrategiaAleatoria,EstrategiaAleatoria,5,5,1,"Torre Rey del Jugador 2 destruida",85,3,0,7278,0,9,8,33,31,9,8,11211,2736,2736,11211,114,42
-PARTIDA_0022_5a94d968,2025-10-25 16:30:00,EstrategiaAleatoria,EstrategiaDefensiva,5,5,1,"Torre Rey del Jugador 2 destruida",148,3,0,7178,0,15,12,51,50,15,12,17705,6350,6350,17705,187,72
-PARTIDA_0023_e8f5b3be,2025-10-25 16:30:00,EstrategiaAleatoria,EstrategiaMenorCosto,5,5,2,"Torre Rey del Jugador 1 destruida",128,1,3,0,5319,12,13,44,47,12,13,7663,16044,16044,7663,81,96
-PARTIDA_0024_f12725e8,2025-10-25 16:30:00,EstrategiaMenorCosto,EstrategiaMenorCosto,5,5,1,"Torre Rey del Jugador 2 destruida",148,3,0,6378,0,17,13,54,53,17,13,15415,8652,8652,15415,140,70
-PARTIDA_0025_124ffd05,2025-10-25 16:30:00,EstrategiaAleatoria,EstrategiaDefensiva,5,5,2,"Más torres restantes",240,1,2,3360,3726,24,20,84,82,24,20,19083,15956,15956,19083,199,98
-PARTIDA_0026_461e07f6,2025-10-25 16:30:00,EstrategiaAgresiva,EstrategiaAgresiva,5,5,1,"Torre Rey del Jugador 2 destruida",84,3,0,7278,0,9,10,30,33,9,10,11216,2574,2574,11216,146,50
-PARTIDA_0027_fb9b4561,2025-10-25 16:30:00,EstrategiaAgresiva,EstrategiaMenorCosto,5,5,1,"Torre Rey del Jugador 2 destruida",110,3,2,2352,0,11,10,41,40,11,10,13809,11754,11754,13809,137,150
-PARTIDA_0028_6a231812,2025-10-25 16:30:00,EstrategiaAleatoria,EstrategiaMenorCosto,5,5,2,"Torre Rey del Jugador 1 destruida",97,0,3,0,6798,9,10,36,34,9,10,3970,14456,14456,3970,48,146
-PARTIDA_0029_e557b35a,2025-10-25 16:30:00,EstrategiaMenorCosto,EstrategiaDefensiva,5,5,2,"Mayor vida total en torres",299,2,2,1220,1470,29,26,104,100,29,26,28771,24562,24562,28771,331,293
-PARTIDA_0030_f12c194e,2025-10-25 16:30:00,EstrategiaDefensiva,EstrategiaAgresiva,5,5,1,"Torre Rey del Jugador 2 destruida",151,3,1,4098,0,12,15,52,52,12,15,19184,12603,12603,19184,107,156
-PARTIDA_0031_882537f2,2025-10-25 16:30:00,EstrategiaAgresiva,EstrategiaDefensiva,5,5,1,"Torre Rey del Jugador 2 destruida",75,3,0,7278,0,9,7,30,29,9,7,11760,4960,4960,11760,102,44
-PARTIDA_0032_1dae8442,2025-10-25 16:30:00,EstrategiaDefensiva,EstrategiaAleatoria,5,5,2,"Más torres restantes",179,0,2,2760,5703,17,18,62,63,17,18,13029,14889,14889,13029,116,200
-PARTIDA_0033_10ab405a,2025-10-25 16:30:00,EstrategiaAgresiva,EstrategiaAleatoria,5,5,1,"Torre Rey del Jugador 2 destruida",85,3,0,7278,0,9,9,32,30,9,9,13774,4069,4069,13774,123,73
-PARTIDA_0034_ed17a9d7,2025-10-25 16:30:00,EstrategiaAleatoria,EstrategiaDefensiva,5,5,1,"Más torres restantes",179,2,1,5319,3360,18,15,62,63,18,15,12885,9651,9651,12885,117,86
-PARTIDA_0035_7180e6ad,2025-10-25 16:30:00,EstrategiaMenorCosto,EstrategiaAleatoria,5,5,2,"Torre Rey del Jugador 1 destruida",47,0,3,0,7278,6,6,20,20,6,6,1415,10294,10294,1415,22,50
-PARTIDA_0036_35fae060,2025-10-25 16:30:00,EstrategiaMenorCosto,EstrategiaMenorCosto,5,5,2,"Torre Rey del Jugador 1 destruida",55,1,3,0,4299,6,6,21,22,6,6,5233,10255,10255,5233,35,64
-PARTIDA_0037_6c933e30,2025-10-25 16:30:00,EstrategiaMenorCosto,EstrategiaDefensiva,5,5,1,"Más torres restantes",179,2,1,4299,1357,19,13,64,60,19,13,17074,13052,13052,17074,239,75
-PARTIDA_0038_11764582,2025-10-25 16:30:00,EstrategiaMenorCosto,EstrategiaMenorCosto,5,5,1,"Más torres restantes",179,2,1,4419,1750,17,17,64,63,17,17,15239,11833,11833,15239,101,125
-PARTIDA_0039_f7a628e2,2025-10-25 16:30:00,EstrategiaMenorCosto,EstrategiaAleatoria,5,5,1,"Torre Rey del Jugador 2 destruida",98,3,0,7278,0,11,10,38,36,11,10,13332,4767,4767,13332,83,85
-PARTIDA_0040_30fc9d8e,2025-10-25 16:30:00,EstrategiaAgresiva,EstrategiaAgresiva,5,5,2,"Torre Rey del Jugador 1 destruida",79,0,3,0,7278,8,8,28,30,8,8,5547,12403,12403,5547,54,42
-PARTIDA_0041_40c6c898,2025-10-25 16:30:00,EstrategiaAgresiva,EstrategiaAleatoria,5,5,2,"Torre Rey del Jugador 1 destruida",110,2,3,0,2648,12,11,41,41,12,11,8831,14102,14102,8831,50,151
-PARTIDA_0042_e852a01e,2025-10-25 16:30:00,EstrategiaDefensiva,EstrategiaMenorCosto,5,5,2,"Torre Rey del Jugador 1 destruida",88,0,3,0,7278,8,10,33,34,8,10,3802,13449,13449,3802,53,94
-PARTIDA_0043_fa0e366b,2025-10-25 16:30:00,EstrategiaAgresiva,EstrategiaAgresiva,5,5,2,"Torre Rey del Jugador 1 destruida",50,0,3,0,7278,6,5,21,18,6,5,1780,10803,10803,1780,33,38
-PARTIDA_0044_5c0bd379,2025-10-25 16:30:00,EstrategiaDefensiva,EstrategiaMenorCosto,5,5,2,"Torre Rey del Jugador 1 destruida",164,0,3,0,5954,14,16,56,57,14,16,8869,21534,21534,8869,91,180
-PARTIDA_0045_69319897,2025-10-25 16:30:00,EstrategiaDefensiva,EstrategiaAleatoria,5,5,1,"Torre Rey del Jugador 2 destruida",86,3,0,5514,0,7,9,30,33,7,9,10924,3739,3739,10924,72,72
-PARTIDA_0046_d9180ce3,2025-10-25 16:30:00,EstrategiaAgresiva,EstrategiaAgresiva,5,5,1,"Más torres restantes",179,2,0,6267,3140,16,20,65,65,16,20,14368,8860,8860,14368,119,131
-PARTIDA_0047_57ea0bc1,2025-10-25 16:30:00,EstrategiaDefensiva,EstrategiaMenorCosto,5,5,2,"Más torres restantes",240,1,2,3360,3889,19,25,83,85,19,25,14058,20293,20293,14058,141,255
-PARTIDA_0048_15e796b7,2025-10-25 16:30:00,EstrategiaAleatoria,EstrategiaDefensiva,5,5,1,"Más torres restantes",209,2,1,5319,3360,18,16,74,71,18,16,20063,12094,12094,20063,171,118
-PARTIDA_0049_486c6497,2025-10-25 16:30:00,EstrategiaAgresiva,EstrategiaMenorCosto,5,5,1,"Torre Rey del Jugador 2 destruida",167,3,2,1872,0,18,18,59,61,18,18,18955,13939,13939,18955,186,130
-PARTIDA_0050_30907461,2025-10-25 16:30:00,EstrategiaAleatoria,EstrategiaMenorCosto,5,5,1,"Torre Rey del Jugador 2 destruida",135,3,1,4639,0,14,14,49,47,14,14,14149,10312,10312,14149,89,73
-PARTIDA_0051_b3085434,2025-10-25 16:30:00,EstrategiaMenorCosto,EstrategiaMenorCosto,5,5,2,"Más torres restantes",179,1,2,912,3546,17,19,64,65,17,19,13393,14925,14925,13393,128,182
-PARTIDA_0052_e198d2e5,2025-10-25 16:30:00,EstrategiaAleatoria,EstrategiaAleatoria,5,5,1,"Torre Rey del Jugador 2 destruida",121,3,0,5678,0,14,14,45,45,14,14,13422,7148,7148,13422,146,112
-PARTIDA_0053_ba7a1c72,2025-10-25 16:30:00,EstrategiaDefensiva,EstrategiaDefensiva,5,5,2,"Más torres restantes",179,0,1,5319,7278,14,16,60,64,14,16,10892,15714,15714,10892,58,102
-PARTIDA_0054_0e8d271a,2025-10-25 16:30:00,EstrategiaAgresiva,EstrategiaAgresiva,5,5,1,"Torre Rey del Jugador 2 destruida",43,3,0,7278,0,5,5,19,19,5,5,9500,1306,1306,9500,44,22
-PARTIDA_0055_bbf51703,2025-10-25 16:30:00,EstrategiaAgresiva,EstrategiaDefensiva,5,5,1,"Torre Rey del Jugador 2 destruida",172,3,0,7278,0,17,14,61,60,17,14,19699,7910,7910,19699,153,90
-PARTIDA_0056_8bb26ec9,2025-10-25 16:30:00,EstrategiaAgresiva,EstrategiaMenorCosto,5,5,1,"Torre Rey del Jugador 2 destruida",108,3,0,7278,0,12,12,39,40,12,12,13543,5767,5767,13543,82,100
-PARTIDA_0057_cf7eaba0,2025-10-25 16:30:00,EstrategiaAleatoria,EstrategiaAleatoria,5,5,1,"Más torres restantes",179,2,1,4613,1,17,18,62,63,17,18,18760,12405,12405,18760,181,159
-PARTIDA_0058_7b26f802,2025-10-25 16:30:00,EstrategiaDefensiva,EstrategiaAleatoria,5,5,1,"Más torres restantes",179,2,0,5632,1640,17,19,64,65,17,19,13432,10007,10007,13432,94,95
-PARTIDA_0059_aec70371,2025-10-25 16:30:00,EstrategiaDefensiva,EstrategiaAgresiva,5,5,2,"Torre Rey del Jugador 1 destruida",72,0,3,0,7278,6,8,27,29,6,8,3619,12232,12232,3619,35,106
-PARTIDA_0060_e022bc52,2025-10-25 16:30:00,EstrategiaAgresiva,EstrategiaAleatoria,5,5,1,"Torre Rey del Jugador 2 destruida",127,3,0,7278,0,13,13,46,44,13,13,14921,7388,7388,14921,90,92
-PARTIDA_0061_ddc5f4b6,2025-10-25 16:30:00,EstrategiaAgresiva,EstrategiaAgresiva,5,5,1,"Torre Rey del Jugador 2 destruida",79,3,0,7278,0,9,9,30,31,9,9,12205,4795,4795,12205,75,59
-PARTIDA_0062_89053cb8,2025-10-25 16:30:00,EstrategiaDefensiva,EstrategiaMenorCosto,5,5,1,"Torre Rey del Jugador 2 destruida",104,3,1,3744,0,7,12,34,38,7,12,13393,7842,7842,13393,74,143
-PARTIDA_0063_3398a5f9,2025-10-25 16:30:00,EstrategiaAgresiva,EstrategiaAleatoria,5,5,2,"Torre Rey del Jugador 1 destruida",60,0,3,0,7018,6,6,24,25,6,6,1776,10761,10761,1776,28,66
-PARTIDA_0064_37cb2285,2025-10-25 16:30:00,EstrategiaAleatoria,EstrategiaAgresiva,5,5,2,"Torre Rey del Jugador 1 destruida",70,0,3,0,6198,7,8,25,28,7,8,6006,11085,11085,6006,80,77
-PARTIDA_0065_20e7464a,2025-10-25 16:30:00,EstrategiaMenorCosto,EstrategiaMenorCosto,5,5,1,"Torre Rey del Jugador 2 destruida",104,3,2,3360,0,11,10,39,40,11,10,12576,8321,8321,12576,65,67
-PARTIDA_0066_8798c0f2,2025-10-25 16:30:00,EstrategiaAgresiva,EstrategiaDefensiva,5,5,1,"Torre Rey del Jugador 2 destruida",75,3,0,7278,0,8,6,29,25,8,6,11556,4644,4644,11556,59,50
-PARTIDA_0067_97b6d2b7,2025-10-25 16:30:00,EstrategiaMenorCosto,EstrategiaMenorCosto,5,5,2,"Más torres restantes",179,1,2,2680,4679,19,20,65,64,19,20,11618,13631,13631,11618,108,122
-PARTIDA_0068_ded34385,2025-10-25 16:30:00,EstrategiaAgresiva,EstrategiaDefensiva,5,5,1,"Más torres restantes",179,1,0,7278,3692,18,15,63,63,18,15,18074,13583,13583,18074,225,85
-PARTIDA_0069_9c4ceb3d,2025-10-25 16:30:00,EstrategiaAleatoria,EstrategiaMenorCosto,5,5,2,"Torre Rey del Jugador 1 destruida",136,0,3,0,5460,15,14,49,47,15,14,7111,13906,13906,7111,118,171
-PARTIDA_0070_91107980,2025-10-25 16:30:00,EstrategiaAleatoria,EstrategiaAgresiva,5,5,2,"Torre Rey del Jugador 1 destruida",174,2,3,0,230,16,17,62,62,16,17,19270,18116,18116,19270,150,123
-PARTIDA_0071_49434313,2025-10-25 16:30:00,EstrategiaAleatoria,EstrategiaAleatoria,5,5,1,"Más torres restantes",179,2,0,7278,3297,17,18,62,63,17,18,12073,10795,10795,12073,139,87
-PARTIDA_0072_65afcc5f,2025-10-25 16:30:00,EstrategiaMenorCosto,EstrategiaAgresiva,5,5,1,"Torre Rey del Jugador 2 destruida",131,3,2,1367,0,14,13,48,47,14,13,15709,12458,12458,15709,199,158
-PARTIDA_0073_978d72be,2025-10-25 16:30:00,EstrategiaAleatoria,EstrategiaAgresiva,5,5,2,"Torre Rey del Jugador 1 destruida",110,2,3,0,2808,13,10,42,40,13,10,10734,13485,13485,10734,144,157
-PARTIDA_0074_3997007c,2025-10-25 16:30:00,EstrategiaMenorCosto,EstrategiaAgresiva,5,5,1,"Torre Rey del Jugador 2 destruida",82,3,1,3619,0,9,8,31,29,9,8,11418,6783,6783,11418,132,45
-PARTIDA_0075_6ccd2582,2025-10-25 16:30:00,EstrategiaDefensiva,EstrategiaDefensiva,5,5,1,"Más torres restantes",179,2,0,7278,2340,16,15,65,63,16,15,20922,8495,8495,20922,153,70
-PARTIDA_0076_4089db85,2025-10-25 16:30:00,EstrategiaMenorCosto,EstrategiaAleatoria,5,5,1,"Más torres restantes",179,2,1,3619,3000,16,17,63,62,16,17,14706,12547,12547,14706,121,110
-PARTIDA_0077_7112dc5d,2025-10-25 16:30:00,EstrategiaMenorCosto,EstrategiaAleatoria,5,5,1,"Torre Rey del Jugador 2 destruida",158,3,1,4219,0,14,16,55,57,14,16,14707,13009,13009,14707,89,105
-PARTIDA_0078_5b62be50,2025-10-25 16:30:00,EstrategiaAleatoria,EstrategiaAgresiva,5,5,1,"Torre Rey del Jugador 2 destruida",83,3,1,5319,0,7,8,29,31,7,8,12715,4780,4780,12715,89,26
-PARTIDA_0079_0503301b,2025-10-25 16:30:00,EstrategiaMenorCosto,EstrategiaAleatoria,5,5,2,"Más torres restantes",193,2,3,0,1176,21,18,67,67,21,18,15864,19622,19622,15864,195,154
-PARTIDA_0080_0f314a33,2025-10-25 16:30:00,EstrategiaAleatoria,EstrategiaAleatoria,5,5,2,"Más torres restantes",179,0,2,48,6368,17,18,64,63,17,18,8882,18495,18495,8882,84,153
-PARTIDA_0081_8bbcf7ca,2025-10-25 16:30:00,EstrategiaMenorCosto,EstrategiaAgresiva,5,5,1,"Torre Rey del Jugador 2 destruida",135,3,1,4219,0,14,13,47,49,14,13,13950,10262,10262,13950,195,122
-PARTIDA_0082_c95016df,2025-10-25 16:30:00,EstrategiaAgresiva,EstrategiaMenorCosto,5,5,2,"Torre Rey del Jugador 1 destruida",47,0,3,0,6258,6,5,20,20,6,5,3128,10719,10719,3128,26,55
-PARTIDA_0083_d64fd5ed,2025-10-25 16:30:00,EstrategiaMenorCosto,EstrategiaAgresiva,5,5,2,"Torre Rey del Jugador 1 destruida",99,1,3,0,3999,10,10,38,36,10,10,10425,12503,12503,10425,144,71
-PARTIDA_0084_07766111,2025-10-25 16:30:00,EstrategiaDefensiva,EstrategiaAgresiva,5,5,2,"Torre Rey del Jugador 1 destruida",73,0,3,0,7278,6,8,25,29,6,8,2955,12476,12476,2955,40,140
-PARTIDA_0085_c8ccfe75,2025-10-25 16:30:00,EstrategiaAgresiva,EstrategiaAleatoria,5,5,2,"Torre Rey del Jugador 1 destruida",80,0,3,0,5860,9,8,30,29,9,8,5013,11046,11046,5013,78,84
-PARTIDA_0086_6f81a192,2025-10-25 16:30:00,EstrategiaMenorCosto,EstrategiaAgresiva,5,5,1,"Torre Rey del Jugador 2 destruida",145,3,0,6717,0,15,15,51,51,15,15,14353,8061,8061,14353,126,105
-PARTIDA_0087_a4be6439,2025-10-25 16:30:00,EstrategiaDefensiva,EstrategiaMenorCosto,5,5,1,"Torre Rey del Jugador 2 destruida",107,3,0,6135,0,9,12,37,40,9,12,12403,5630,5630,12403,131,84
-PARTIDA_0088_16e5e096,2025-10-25 16:30:00,EstrategiaAgresiva,EstrategiaAgresiva,5,5,1,"Mayor vida total en torres",299,0,0,5948,5359,29,26,104,105,29,26,19239,19697,19697,19239,254,168
-PARTIDA_0089_8edc8d4c,2025-10-25 16:30:00,EstrategiaMenorCosto,EstrategiaDefensiva,5,5,1,"Torre Rey del Jugador 2 destruida",162,3,2,3360,0,14,13,55,54,14,13,19982,10760,10760,19982,215,80
-PARTIDA_0090_5ecd72e7,2025-10-25 16:30:00,EstrategiaMenorCosto,EstrategiaAgresiva,5,5,1,"Torre Rey del Jugador 2 destruida",100,3,2,3020,0,10,10,38,38,10,10,14597,7771,7771,14597,202,57
-PARTIDA_0091_c09a8050,2025-10-25 16:30:00,EstrategiaDefensiva,EstrategiaAleatoria,5,5,2,"Torre Rey del Jugador 1 destruida",101,0,3,0,7278,8,9,34,36,8,9,3258,15300,15300,3258,32,75
-PARTIDA_0092_b0dace64,2025-10-25 16:30:00,EstrategiaDefensiva,EstrategiaMenorCosto,5,5,1,"Torre Rey del Jugador 2 destruida",115,3,1,4520,0,11,12,42,43,11,12,14639,8473,8473,14639,104,94
-PARTIDA_0093_a5560a41,2025-10-25 16:30:00,EstrategiaAleatoria,EstrategiaAleatoria,5,5,2,"Torre Rey del Jugador 1 destruida",71,0,3,0,7278,7,8,27,26,7,8,3394,12735,12735,3394,34,117
-PARTIDA_0094_29b9c72b,2025-10-25 16:30:00,EstrategiaAleatoria,EstrategiaAleatoria,5,5,1,"Torre Rey del Jugador 2 destruida",102,3,0,7278,0,10,10,38,36,10,10,13615,4657,4657,13615,133,63
-PARTIDA_0095_6fce42a4,2025-10-25 16:30:00,EstrategiaAleatoria,EstrategiaMenorCosto,5,5,2,"Más torres restantes",179,0,3,0,5289,18,16,62,64,18,16,10321,19184,19184,10321,157,122
-PARTIDA_0096_0cb0f15f,2025-10-25 16:30:00,EstrategiaMenorCosto,EstrategiaDefensiva,5,5,2,"Torre Rey del Jugador 1 destruida",141,0,3,0,5988,15,12,51,51,15,12,8895,14582,14582,8895,94,101
-PARTIDA_0097_b74e3343,2025-10-25 16:30:00,EstrategiaDefensiva,EstrategiaAgresiva,5,5,2,"Torre Rey del Jugador 1 destruida",135,1,3,0,5319,12,12,49,47,12,12,8718,17760,17760,8718,80,143
-PARTIDA_0098_930d9d7c,2025-10-25 16:30:00,EstrategiaAleatoria,EstrategiaAleatoria,5,5,1,"Torre Rey del Jugador 2 destruida",176,3,1,4824,0,15,18,60,62,15,18,15599,9214,9214,15599,160,102
-PARTIDA_0099_5ad9adff,2025-10-25 16:30:00,EstrategiaAgresiva,EstrategiaAleatoria,5,5,2,"Torre Rey del Jugador 1 destruida",68,2,3,0,2745,7,7,25,26,7,7,7870,12562,12562,7870,78,85
-PARTIDA_0100_9ada99aa,2025-10-25 16:30:00,EstrategiaAleatoria,EstrategiaMenorCosto,5,5,2,"Más torres restantes",182,1,2,3360,3399,18,17,64,64,18,17,14910,16042,16042,14910,201,132
+PARTIDA_0001_82538421,2025-10-27 16:35:19,EstrategiaDefensiva,EstrategiaAgresiva,5,5,1,"Torre Rey del Jugador 2 destruida",134,3,2,774,0,11,14,48,47,11,14,15300,12801,12801,15300,85,84
+PARTIDA_0002_a8af14e0,2025-10-27 16:35:19,EstrategiaAgresiva,EstrategiaDefensiva,5,5,1,"Torre Rey del Jugador 2 destruida",132,3,1,5319,0,13,10,46,46,13,10,15993,10950,10950,15993,106,73
+PARTIDA_0003_0735562f,2025-10-27 16:35:19,EstrategiaAgresiva,EstrategiaAleatoria,5,5,1,"Torre Rey del Jugador 2 destruida",143,3,0,7278,0,14,15,51,51,14,15,12504,8197,8197,12504,114,143
+PARTIDA_0004_a54cc353,2025-10-27 16:35:19,EstrategiaAgresiva,EstrategiaAleatoria,5,5,1,"Torre Rey del Jugador 2 destruida",110,3,1,5166,0,12,11,42,39,12,11,12830,9130,9130,12830,114,131
+PARTIDA_0005_34af81db,2025-10-27 16:35:19,EstrategiaDefensiva,EstrategiaAleatoria,5,5,1,"Más torres restantes",179,1,0,6882,3619,15,18,63,62,15,18,12205,9927,9927,12205,77,110
+PARTIDA_0006_32cb9dd6,2025-10-27 16:35:19,EstrategiaMenorCosto,EstrategiaAleatoria,5,5,2,"Más torres restantes",179,1,2,1080,4797,18,17,64,62,18,17,11820,14535,14535,11820,174,93
+PARTIDA_0007_d7666d8d,2025-10-27 16:35:19,EstrategiaMenorCosto,EstrategiaMenorCosto,5,5,1,"Más torres restantes",192,2,1,5319,3360,17,20,67,68,17,20,14045,11580,11580,14045,157,112
+PARTIDA_0008_b6b8b4d8,2025-10-27 16:35:19,EstrategiaAgresiva,EstrategiaMenorCosto,5,5,1,"Torre Rey del Jugador 2 destruida",56,3,0,7278,0,6,6,22,23,6,6,10060,3230,3230,10060,85,48
+PARTIDA_0009_ccf80437,2025-10-27 16:35:19,EstrategiaMenorCosto,EstrategiaAleatoria,5,5,2,"Más torres restantes",209,0,1,3619,5299,22,21,75,73,22,21,10524,15047,15047,10524,133,147
+PARTIDA_0010_dca75466,2025-10-27 16:35:19,EstrategiaAleatoria,EstrategiaDefensiva,5,5,1,"Más torres restantes",179,2,0,6918,10,18,13,63,61,18,13,21035,11864,11864,21035,277,87
+PARTIDA_0011_65fcea39,2025-10-27 16:35:19,EstrategiaDefensiva,EstrategiaDefensiva,5,5,2,"Más torres restantes",240,0,1,5319,6838,19,20,83,84,19,20,17475,21609,21609,17475,86,157
+PARTIDA_0012_47b37a94,2025-10-27 16:35:19,EstrategiaMenorCosto,EstrategiaDefensiva,5,5,2,"Más torres restantes",179,1,2,3360,4989,19,15,65,62,19,15,13066,13876,13876,13066,191,80
+PARTIDA_0013_56fa8920,2025-10-27 16:35:19,EstrategiaAgresiva,EstrategiaAgresiva,5,5,1,"Torre Rey del Jugador 2 destruida",79,3,0,7278,0,8,8,29,28,8,8,11373,5270,5270,11373,57,71
+PARTIDA_0014_e35f63c9,2025-10-27 16:35:19,EstrategiaMenorCosto,EstrategiaAleatoria,5,5,1,"Torre Rey del Jugador 2 destruida",156,3,0,7278,0,14,16,55,55,14,16,15331,8085,8085,15331,99,109
+PARTIDA_0015_ec64feb5,2025-10-27 16:35:19,EstrategiaAgresiva,EstrategiaAleatoria,5,5,2,"Torre Rey del Jugador 1 destruida",135,2,3,0,963,13,14,47,48,13,14,14241,16747,16747,14241,159,212
+PARTIDA_0016_cf661022,2025-10-27 16:35:19,EstrategiaAleatoria,EstrategiaDefensiva,5,5,1,"Torre Rey del Jugador 2 destruida",130,3,0,7278,0,14,11,48,47,14,11,17607,3579,3579,17607,191,29
+PARTIDA_0017_718dc797,2025-10-27 16:35:19,EstrategiaAleatoria,EstrategiaAgresiva,5,5,2,"Torre Rey del Jugador 1 destruida",41,0,3,0,6717,6,5,19,18,6,5,2117,9700,9700,2117,43,31
+PARTIDA_0018_8d8fa589,2025-10-27 16:35:19,EstrategiaAgresiva,EstrategiaMenorCosto,5,5,1,"Torre Rey del Jugador 2 destruida",87,3,0,7278,0,8,10,32,32,8,10,11655,4957,4957,11655,62,81
+PARTIDA_0019_5df47976,2025-10-27 16:35:19,EstrategiaAgresiva,EstrategiaDefensiva,5,5,1,"Torre Rey del Jugador 2 destruida",167,3,0,7278,0,16,13,59,57,16,13,19811,12846,12846,19811,175,132
+PARTIDA_0020_9e1b608b,2025-10-27 16:35:19,EstrategiaDefensiva,EstrategiaMenorCosto,5,5,2,"Más torres restantes",179,0,2,1475,7278,15,19,63,65,15,19,9145,18292,18292,9145,52,198
+PARTIDA_0021_6cf4bb0c,2025-10-27 16:35:19,EstrategiaDefensiva,EstrategiaMenorCosto,5,5,1,"Torre Rey del Jugador 2 destruida",141,3,0,5700,0,13,14,49,52,13,14,15152,7635,7635,15152,115,118
+PARTIDA_0022_f1041208,2025-10-27 16:35:19,EstrategiaAgresiva,EstrategiaAgresiva,5,5,2,"Torre Rey del Jugador 1 destruida",92,0,3,0,7278,10,9,35,33,10,9,6901,12906,12906,6901,86,82
+PARTIDA_0023_fb355ae4,2025-10-27 16:35:19,EstrategiaDefensiva,EstrategiaAgresiva,5,5,2,"Torre Rey del Jugador 1 destruida",67,0,3,0,7278,6,8,25,26,6,8,2879,11795,11795,2879,36,115
+PARTIDA_0024_2fb574ed,2025-10-27 16:35:19,EstrategiaMenorCosto,EstrategiaDefensiva,5,5,1,"Torre Rey del Jugador 2 destruida",50,3,0,7278,0,6,4,22,18,6,4,10985,1488,1488,10985,79,28
+PARTIDA_0025_92a0ed48,2025-10-27 16:35:19,EstrategiaMenorCosto,EstrategiaDefensiva,5,5,2,"Más torres restantes",179,1,2,2680,4419,19,15,64,60,19,15,15818,12499,12499,15818,207,107
+PARTIDA_0026_2e26d8f3,2025-10-27 16:35:19,EstrategiaAgresiva,EstrategiaDefensiva,5,5,1,"Torre Rey del Jugador 2 destruida",111,3,0,7278,0,10,9,40,38,10,9,14664,6488,6488,14664,92,70
+PARTIDA_0027_2bddbb9e,2025-10-27 16:35:19,EstrategiaDefensiva,EstrategiaAgresiva,5,5,2,"Más torres restantes",179,0,1,3339,7278,15,18,63,63,15,18,8227,19685,19685,8227,46,241
+PARTIDA_0028_933aab33,2025-10-27 16:35:19,EstrategiaMenorCosto,EstrategiaMenorCosto,5,5,1,"Torre Rey del Jugador 2 destruida",89,3,0,7089,0,9,11,32,35,9,11,12530,4939,4939,12530,72,82
+PARTIDA_0029_a0228982,2025-10-27 16:35:19,EstrategiaDefensiva,EstrategiaDefensiva,5,5,2,"Más torres restantes",195,0,1,5319,6715,17,17,65,67,17,17,10095,14040,14040,10095,127,116
+PARTIDA_0030_29fd0a84,2025-10-27 16:35:19,EstrategiaDefensiva,EstrategiaDefensiva,5,5,1,"Torre Rey del Jugador 2 destruida",128,3,0,6258,0,11,11,45,46,11,11,14921,6422,6422,14921,145,76
+PARTIDA_0031_d2c6f35e,2025-10-27 16:35:19,EstrategiaAgresiva,EstrategiaMenorCosto,5,5,1,"Torre Rey del Jugador 2 destruida",53,3,1,5319,0,6,6,22,20,6,6,10098,5914,5914,10098,49,69
+PARTIDA_0032_6e434142,2025-10-27 16:35:19,EstrategiaDefensiva,EstrategiaAleatoria,5,5,2,"Más torres restantes",179,1,2,2634,5319,14,17,60,65,14,17,13654,14292,14292,13654,145,127
+PARTIDA_0033_237fece6,2025-10-27 16:35:19,EstrategiaAgresiva,EstrategiaDefensiva,5,5,1,"Torre Rey del Jugador 2 destruida",176,3,0,7278,0,17,14,62,61,17,14,21044,10654,10654,21044,230,78
+PARTIDA_0034_99de2ebe,2025-10-27 16:35:19,EstrategiaDefensiva,EstrategiaAleatoria,5,5,2,"Torre Rey del Jugador 1 destruida",135,0,3,0,6603,11,11,47,47,11,11,4921,17354,17354,4921,49,105
+PARTIDA_0035_5d58f2cb,2025-10-27 16:35:19,EstrategiaDefensiva,EstrategiaAleatoria,5,5,1,"Torre Rey del Jugador 2 destruida",82,3,0,6963,0,6,8,28,30,6,8,12686,2795,2795,12686,53,42
+PARTIDA_0036_3598d4b5,2025-10-27 16:35:19,EstrategiaMenorCosto,EstrategiaAgresiva,5,5,1,"Torre Rey del Jugador 2 destruida",100,3,1,5319,0,10,10,36,36,10,10,12236,7189,7189,12236,108,74
+PARTIDA_0037_e3fa9b22,2025-10-27 16:35:19,EstrategiaAleatoria,EstrategiaAleatoria,5,5,2,"Más torres restantes",179,0,2,2060,6552,17,18,62,64,17,18,10598,12193,12193,10598,145,101
+PARTIDA_0038_4e821bd9,2025-10-27 16:35:19,EstrategiaMenorCosto,EstrategiaAgresiva,5,5,1,"Torre Rey del Jugador 2 destruida",86,3,2,140,0,9,8,31,33,9,8,13973,11137,11137,13973,124,70
+PARTIDA_0039_cc022b8d,2025-10-27 16:35:19,EstrategiaAgresiva,EstrategiaAleatoria,5,5,2,"Torre Rey del Jugador 1 destruida",55,0,3,0,7148,6,6,22,22,6,6,1763,10512,10512,1763,28,62
+PARTIDA_0040_c644ab87,2025-10-27 16:35:19,EstrategiaAgresiva,EstrategiaDefensiva,5,5,1,"Torre Rey del Jugador 2 destruida",172,3,0,7278,0,18,15,62,58,18,15,19065,13132,13132,19065,159,151
+PARTIDA_0041_df3817fc,2025-10-27 16:35:19,EstrategiaDefensiva,EstrategiaMenorCosto,5,5,1,"Torre Rey del Jugador 2 destruida",115,3,0,7089,0,10,13,40,41,10,13,14991,4210,4210,14991,58,65
+PARTIDA_0042_14e270bb,2025-10-27 16:35:19,EstrategiaAgresiva,EstrategiaMenorCosto,5,5,1,"Torre Rey del Jugador 2 destruida",74,3,0,6678,0,8,8,30,28,8,8,10561,4502,4502,10561,67,71
+PARTIDA_0043_fdf83a6d,2025-10-27 16:35:19,EstrategiaDefensiva,EstrategiaMenorCosto,5,5,2,"Torre Rey del Jugador 1 destruida",68,0,3,0,7278,6,8,26,27,6,8,3242,12083,12083,3242,25,134
+PARTIDA_0044_78bd7350,2025-10-27 16:35:19,EstrategiaMenorCosto,EstrategiaMenorCosto,5,5,1,"Más torres restantes",179,1,0,4776,3719,18,18,65,65,18,18,12472,13523,13523,12472,122,129
+PARTIDA_0045_05ef801b,2025-10-27 16:35:19,EstrategiaMenorCosto,EstrategiaDefensiva,5,5,2,"Torre Rey del Jugador 1 destruida",107,2,3,0,2880,12,8,40,37,12,8,8008,15304,15304,8008,118,83
+PARTIDA_0046_0e3cae97,2025-10-27 16:35:19,EstrategiaAleatoria,EstrategiaDefensiva,5,5,1,"Más torres restantes",179,1,0,5578,3539,16,15,62,60,16,15,14033,11577,11577,14033,110,87
+PARTIDA_0047_fa374695,2025-10-27 16:35:19,EstrategiaDefensiva,EstrategiaAgresiva,5,5,1,"Torre Rey del Jugador 2 destruida",73,3,1,5319,0,6,8,26,28,6,8,11460,6588,6588,11460,48,56
+PARTIDA_0048_55b252e3,2025-10-27 16:35:19,EstrategiaDefensiva,EstrategiaDefensiva,5,5,2,"Más torres restantes",179,0,2,19,7278,15,16,63,63,15,16,7982,23734,23734,7982,66,269
+PARTIDA_0049_72ef6777,2025-10-27 16:35:19,EstrategiaAgresiva,EstrategiaAgresiva,5,5,1,"Torre Rey del Jugador 2 destruida",117,3,1,5319,0,11,12,43,42,11,12,13713,7193,7193,13713,105,78
+PARTIDA_0050_8aeacc75,2025-10-27 16:35:19,EstrategiaAleatoria,EstrategiaAgresiva,5,5,2,"Torre Rey del Jugador 1 destruida",42,0,3,0,7278,5,5,19,19,5,5,2338,10020,10020,2338,36,48
+PARTIDA_0051_0fa050d3,2025-10-27 16:35:19,EstrategiaAgresiva,EstrategiaAleatoria,5,5,1,"Torre Rey del Jugador 2 destruida",145,3,1,5319,0,14,16,50,51,14,16,16045,9258,9258,16045,119,164
+PARTIDA_0052_911e89cb,2025-10-27 16:35:19,EstrategiaAgresiva,EstrategiaAgresiva,5,5,2,"Torre Rey del Jugador 1 destruida",102,0,3,0,7278,11,11,39,38,11,11,7078,14886,14886,7078,97,122
+PARTIDA_0053_c76b97be,2025-10-27 16:35:19,EstrategiaMenorCosto,EstrategiaAleatoria,5,5,2,"Torre Rey del Jugador 1 destruida",77,0,3,0,7278,9,8,28,28,9,8,2825,11153,11153,2825,60,73
+PARTIDA_0054_0d68563b,2025-10-27 16:35:19,EstrategiaAleatoria,EstrategiaMenorCosto,5,5,1,"Torre Rey del Jugador 2 destruida",73,3,0,5792,0,8,7,27,26,8,7,10466,4960,4960,10466,105,45
+PARTIDA_0055_2c067ecb,2025-10-27 16:35:19,EstrategiaAleatoria,EstrategiaAgresiva,5,5,1,"Torre Rey del Jugador 2 destruida",139,3,1,4650,0,12,14,49,50,12,14,15373,9129,9129,15373,76,105
+PARTIDA_0056_52b02c2a,2025-10-27 16:35:19,EstrategiaAgresiva,EstrategiaAleatoria,5,5,2,"Torre Rey del Jugador 1 destruida",138,2,3,0,633,13,16,47,51,13,16,14666,15420,15420,14666,175,242
+PARTIDA_0057_65c43eff,2025-10-27 16:35:19,EstrategiaAgresiva,EstrategiaDefensiva,5,5,1,"Torre Rey del Jugador 2 destruida",139,3,0,7278,0,14,12,50,49,14,12,16835,9904,9904,16835,102,87
+PARTIDA_0058_ae3c82d7,2025-10-27 16:35:19,EstrategiaDefensiva,EstrategiaAleatoria,5,5,2,"Torre Rey del Jugador 1 destruida",37,0,3,0,7278,3,4,13,16,3,4,1337,8624,8624,1337,24,33
+PARTIDA_0059_b63631ce,2025-10-27 16:35:19,EstrategiaAleatoria,EstrategiaDefensiva,5,5,2,"Torre Rey del Jugador 1 destruida",110,1,3,0,3651,11,9,38,38,11,9,9433,15124,15124,9433,120,100
+PARTIDA_0060_456a52ad,2025-10-27 16:35:19,EstrategiaAleatoria,EstrategiaAleatoria,5,5,2,"Torre Rey del Jugador 1 destruida",173,0,3,0,7278,17,18,62,63,17,18,7317,15195,15195,7317,92,176
+PARTIDA_0061_e3e1f790,2025-10-27 16:35:19,EstrategiaMenorCosto,EstrategiaAgresiva,5,5,2,"Torre Rey del Jugador 1 destruida",109,2,3,0,2196,13,10,41,38,13,10,11434,14222,14222,11434,177,178
+PARTIDA_0062_e7d7fc0c,2025-10-27 16:35:19,EstrategiaDefensiva,EstrategiaMenorCosto,5,5,2,"Torre Rey del Jugador 1 destruida",158,0,3,0,4698,12,15,56,57,12,15,9820,17893,17893,9820,74,142
+PARTIDA_0063_07624152,2025-10-27 16:35:19,EstrategiaMenorCosto,EstrategiaDefensiva,5,5,2,"Más torres restantes",179,0,2,3360,5226,19,15,64,63,19,15,10157,13991,13991,10157,143,75
+PARTIDA_0064_d19913f7,2025-10-27 16:35:19,EstrategiaDefensiva,EstrategiaAleatoria,5,5,1,"Más torres restantes",179,2,0,4952,1335,15,18,60,62,15,18,15586,10458,10458,15586,113,101
+PARTIDA_0065_aaaf0d66,2025-10-27 16:35:19,EstrategiaMenorCosto,EstrategiaMenorCosto,5,5,1,"Torre Rey del Jugador 2 destruida",67,3,0,7278,0,7,8,26,25,7,8,11061,2666,2666,11061,43,44
+PARTIDA_0066_3168fe52,2025-10-27 16:35:19,EstrategiaDefensiva,EstrategiaAleatoria,5,5,2,"Torre Rey del Jugador 1 destruida",174,1,3,0,4239,14,17,57,62,14,17,10290,23774,23774,10290,108,270
+PARTIDA_0067_d9eaa42f,2025-10-27 16:35:20,EstrategiaAleatoria,EstrategiaAgresiva,5,5,1,"Torre Rey del Jugador 2 destruida",62,3,1,4113,0,7,6,24,23,7,6,11839,5392,5392,11839,101,55
+PARTIDA_0068_2b4a7fe7,2025-10-27 16:35:20,EstrategiaMenorCosto,EstrategiaMenorCosto,5,5,1,"Torre Rey del Jugador 2 destruida",108,3,0,5028,0,11,11,40,41,11,11,12129,9092,9092,12129,70,115
+PARTIDA_0069_31d67950,2025-10-27 16:35:20,EstrategiaAgresiva,EstrategiaAleatoria,5,5,2,"Torre Rey del Jugador 1 destruida",98,1,3,0,4375,9,9,34,37,9,9,7509,12216,12216,7509,83,137
+PARTIDA_0070_326d9ed5,2025-10-27 16:35:20,EstrategiaDefensiva,EstrategiaMenorCosto,5,5,2,"Torre Rey del Jugador 1 destruida",142,2,3,0,2957,11,15,49,51,11,15,13286,14774,14774,13286,95,148
+PARTIDA_0071_c12a0f38,2025-10-27 16:35:20,EstrategiaDefensiva,EstrategiaDefensiva,5,5,0,"Empate por vida total",299,1,1,5319,5319,25,22,100,100,25,22,26219,23638,23638,26219,186,130
+PARTIDA_0072_862ba5b8,2025-10-27 16:35:20,EstrategiaMenorCosto,EstrategiaDefensiva,5,5,2,"Más torres restantes",179,0,2,3360,5804,19,15,65,60,19,15,14517,14588,14588,14517,95,110
+PARTIDA_0073_d7e00a73,2025-10-27 16:35:20,EstrategiaAgresiva,EstrategiaDefensiva,5,5,1,"Torre Rey del Jugador 2 destruida",89,3,0,7278,0,9,9,34,33,9,9,14417,6262,6262,14417,109,63
+PARTIDA_0074_d8b95a04,2025-10-27 16:35:20,EstrategiaDefensiva,EstrategiaMenorCosto,5,5,2,"Más torres restantes",179,0,2,960,7278,16,18,61,64,16,18,6726,19698,19698,6726,100,192
+PARTIDA_0075_173cd5ac,2025-10-27 16:35:20,EstrategiaMenorCosto,EstrategiaDefensiva,5,5,1,"Más torres restantes",179,2,0,7278,3297,19,14,64,61,19,14,17128,6102,6102,17128,225,43
+PARTIDA_0076_03b8de08,2025-10-27 16:35:20,EstrategiaDefensiva,EstrategiaMenorCosto,5,5,2,"Torre Rey del Jugador 1 destruida",98,0,3,0,7278,9,10,36,36,9,10,5088,13221,13221,5088,41,125
+PARTIDA_0077_bc331b5e,2025-10-27 16:35:20,EstrategiaAgresiva,EstrategiaAleatoria,5,5,1,"Torre Rey del Jugador 2 destruida",41,3,1,5319,0,5,5,19,17,5,5,8814,3990,3990,8814,48,56
+PARTIDA_0078_0bf3ced0,2025-10-27 16:35:20,EstrategiaAgresiva,EstrategiaAgresiva,5,5,1,"Torre Rey del Jugador 2 destruida",147,3,2,180,0,14,14,53,53,14,14,18926,13639,13639,18926,158,97
+PARTIDA_0079_bb16a26d,2025-10-27 16:35:20,EstrategiaAleatoria,EstrategiaAleatoria,5,5,1,"Mayor vida total en torres",299,2,2,3000,2667,32,30,103,104,32,30,24256,19157,19157,24256,344,271
+PARTIDA_0080_850667aa,2025-10-27 16:35:20,EstrategiaAleatoria,EstrategiaAgresiva,5,5,2,"Torre Rey del Jugador 1 destruida",174,0,3,0,7278,15,19,60,62,15,19,8256,17847,17847,8256,99,261
+PARTIDA_0081_ebeb898b,2025-10-27 16:35:20,EstrategiaAleatoria,EstrategiaMenorCosto,5,5,1,"Más torres restantes",182,2,1,4703,3360,18,19,65,64,18,19,14578,11395,11395,14578,122,134
+PARTIDA_0082_2f1a9cbb,2025-10-27 16:35:20,EstrategiaDefensiva,EstrategiaAleatoria,5,5,2,"Torre Rey del Jugador 1 destruida",80,0,3,0,7278,7,9,30,32,7,9,2504,14050,14050,2504,28,76
+PARTIDA_0083_fc37731c,2025-10-27 16:35:20,EstrategiaAgresiva,EstrategiaDefensiva,5,5,1,"Torre Rey del Jugador 2 destruida",72,3,0,7278,0,7,7,28,26,7,7,13273,5514,5514,13273,79,68
+PARTIDA_0084_69bd9e18,2025-10-27 16:35:20,EstrategiaAgresiva,EstrategiaDefensiva,5,5,1,"Torre Rey del Jugador 2 destruida",176,3,0,7278,0,15,15,60,63,15,15,20389,10605,10605,20389,134,129
+PARTIDA_0085_d897b86b,2025-10-27 16:35:20,EstrategiaAleatoria,EstrategiaMenorCosto,5,5,1,"Más torres restantes",197,2,1,3915,3108,20,22,68,70,20,22,12761,12256,12256,12761,145,176
+PARTIDA_0086_f0a8bb40,2025-10-27 16:35:20,EstrategiaAleatoria,EstrategiaAleatoria,5,5,1,"Torre Rey del Jugador 2 destruida",115,3,1,3739,0,11,12,41,41,11,12,13231,9215,9215,13231,116,83
+PARTIDA_0087_554f7a1e,2025-10-27 16:35:20,EstrategiaAleatoria,EstrategiaAleatoria,5,5,2,"Más torres restantes",179,1,2,1720,3504,18,17,63,63,18,17,14433,14017,14017,14433,161,191
+PARTIDA_0088_4c2f92b1,2025-10-27 16:35:20,EstrategiaDefensiva,EstrategiaDefensiva,5,5,2,"Torre Rey del Jugador 1 destruida",123,0,3,0,7215,10,10,46,46,10,10,5949,13510,13510,5949,62,64
+PARTIDA_0089_e781da5b,2025-10-27 16:35:20,EstrategiaAgresiva,EstrategiaAleatoria,5,5,2,"Más torres restantes",179,1,2,3135,5319,19,17,63,64,19,17,12488,14969,14969,12488,168,112
+PARTIDA_0090_63d0662b,2025-10-27 16:35:20,EstrategiaDefensiva,EstrategiaMenorCosto,5,5,1,"Torre Rey del Jugador 2 destruida",106,3,2,800,0,9,10,37,38,9,10,11924,12065,12065,11924,98,96
+PARTIDA_0091_4aa347fb,2025-10-27 16:35:20,EstrategiaDefensiva,EstrategiaDefensiva,5,5,2,"Torre Rey del Jugador 1 destruida",154,0,3,0,7278,12,14,54,53,12,14,5949,15669,15669,5949,71,128
+PARTIDA_0092_f557f46a,2025-10-27 16:35:20,EstrategiaDefensiva,EstrategiaMenorCosto,5,5,2,"Más torres restantes",179,0,1,4686,6008,14,17,65,63,14,17,9591,10833,10833,9591,55,88
+PARTIDA_0093_2dfead72,2025-10-27 16:35:20,EstrategiaAgresiva,EstrategiaAleatoria,5,5,1,"Torre Rey del Jugador 2 destruida",125,3,2,605,0,13,12,45,42,13,12,13090,11174,11174,13090,156,116
+PARTIDA_0094_32c94be9,2025-10-27 16:35:20,EstrategiaAleatoria,EstrategiaAgresiva,5,5,2,"Torre Rey del Jugador 1 destruida",151,2,3,0,2520,15,16,55,55,15,16,13863,19487,19487,13863,176,163
+PARTIDA_0095_57fdca40,2025-10-27 16:35:20,EstrategiaAleatoria,EstrategiaAleatoria,5,5,2,"Torre Rey del Jugador 1 destruida",133,1,3,0,4437,13,13,47,49,13,13,9772,14519,14519,9772,128,80
+PARTIDA_0096_d3c3b1e7,2025-10-27 16:35:20,EstrategiaMenorCosto,EstrategiaMenorCosto,5,5,1,"Torre Rey del Jugador 2 destruida",131,3,0,5954,0,12,13,48,49,12,13,14476,6041,6041,14476,82,84
+PARTIDA_0097_ee8a3bea,2025-10-27 16:35:20,EstrategiaDefensiva,EstrategiaAgresiva,5,5,1,"Más torres restantes",194,2,1,5319,3360,16,19,67,70,16,19,14469,12431,12431,14469,138,104
+PARTIDA_0098_ac5f2654,2025-10-27 16:35:20,EstrategiaMenorCosto,EstrategiaMenorCosto,5,5,2,"Torre Rey del Jugador 1 destruida",159,1,3,0,3862,15,15,57,57,15,15,11359,14940,14940,11359,98,136
+PARTIDA_0099_2fea3912,2025-10-27 16:35:20,EstrategiaMenorCosto,EstrategiaMenorCosto,5,5,1,"Torre Rey del Jugador 2 destruida",160,3,0,6326,0,17,14,57,56,17,14,17001,6757,6757,17001,181,78
+PARTIDA_0100_9034da20,2025-10-27 16:35:20,EstrategiaDefensiva,EstrategiaMenorCosto,5,5,2,"Más torres restantes",179,0,1,4707,6715,16,17,64,64,16,17,9883,15371,15371,9883,112,90

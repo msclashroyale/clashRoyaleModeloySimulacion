@@ -16,9 +16,9 @@ def analisis_rapido():
     
     # Cargar datos
     try:
-        df_partidas = pd.read_csv(carpeta / "resumen_partidas.csv")
-        df_jugadores = pd.read_csv(carpeta / "estadisticas_jugadores.csv")
-        df_eventos = pd.read_csv(carpeta / "eventos_partidas.csv")
+        df_partidas = pd.read_csv(carpeta / "resumen_partidas.csv", encoding='utf-8')
+        df_jugadores = pd.read_csv(carpeta / "estadisticas_jugadores.csv", encoding='utf-8')
+        df_eventos = pd.read_csv(carpeta / "eventos_partidas.csv", encoding='utf-8')
     except FileNotFoundError:
         print("\n❌ ERROR: No se encontraron los archivos CSV")
         print("   Ejecuta primero el programa Java para generar los datos\n")

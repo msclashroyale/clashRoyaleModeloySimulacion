@@ -14,7 +14,8 @@ public class ExportadorCSV {
      * Exporta un resumen de todas las partidas a un CSV
      */
     public static void exportarResumenPartidas(List<RegistroPartida> registros, String rutaArchivo) throws IOException {
-        try (PrintWriter writer = new PrintWriter(new FileWriter(rutaArchivo))) {
+        try (PrintWriter writer = new PrintWriter(new OutputStreamWriter(
+                new FileOutputStream(rutaArchivo), java.nio.charset.StandardCharsets.UTF_8))) {
             // Escribir encabezado
             writer.println("id_partida,fecha_hora,estrategia_j1,estrategia_j2,nivel_j1,nivel_j2," +
                     "ganador,motivo_victoria,duracion_segundos," +
@@ -38,7 +39,8 @@ public class ExportadorCSV {
      * Exporta estadísticas detalladas por jugador
      */
     public static void exportarEstadisticasJugadores(List<RegistroPartida> registros, String rutaArchivo) throws IOException {
-        try (PrintWriter writer = new PrintWriter(new FileWriter(rutaArchivo))) {
+        try (PrintWriter writer = new PrintWriter(new OutputStreamWriter(
+                new FileOutputStream(rutaArchivo), java.nio.charset.StandardCharsets.UTF_8))) {
             // Escribir encabezado
             writer.println("id_partida,fecha_hora,jugador_id,nombre,estrategia,nivel," +
                     "resultado,cartas_jugadas,elixir_gastado,elixir_desperdiciado," +
@@ -59,7 +61,8 @@ public class ExportadorCSV {
      * Exporta todos los eventos de todas las partidas
      */
     public static void exportarEventos(List<RegistroPartida> registros, String rutaArchivo) throws IOException {
-        try (PrintWriter writer = new PrintWriter(new FileWriter(rutaArchivo))) {
+        try (PrintWriter writer = new PrintWriter(new OutputStreamWriter(
+                new FileOutputStream(rutaArchivo), java.nio.charset.StandardCharsets.UTF_8))) {
             // Escribir encabezado
             writer.println("id_partida,segundo,jugador_id,tipo_evento,detalles");
             
@@ -81,7 +84,8 @@ public class ExportadorCSV {
      * Exporta análisis de estrategias
      */
     public static void exportarAnalisisEstrategias(List<RegistroPartida> registros, String rutaArchivo) throws IOException {
-        try (PrintWriter writer = new PrintWriter(new FileWriter(rutaArchivo))) {
+        try (PrintWriter writer = new PrintWriter(new OutputStreamWriter(
+                new FileOutputStream(rutaArchivo), java.nio.charset.StandardCharsets.UTF_8))) {
             writer.println("estrategia,partidas_jugadas,victorias,derrotas,empates," +
                     "tasa_victoria,promedio_duracion,promedio_torres_destruidas," +
                     "promedio_cartas_jugadas,promedio_elixir_gastado," +

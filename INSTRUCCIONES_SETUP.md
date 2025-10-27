@@ -330,6 +330,16 @@ En la carpeta `datos_analisis/` (se crea automáticamente)
 
 **Alternativa:** Usa IntelliJ IDEA que incluye Maven integrado.
 
+### Error "UnicodeDecodeError: 'utf-8' codec can't decode..."
+
+**Problema de codificación.** Lee **`SOLUCION_UNICODE_ERROR.md`** para la solución completa.
+
+**Solución rápida:**
+1. `git pull` para obtener la última versión
+2. Elimina los CSVs viejos: `datos_analisis/*.csv`
+3. Regenera los datos: `java -cp target/classes analisis.EjemploAnalisis`
+4. Ejecuta de nuevo el análisis
+
 ### Error al compilar
 
 ```bash

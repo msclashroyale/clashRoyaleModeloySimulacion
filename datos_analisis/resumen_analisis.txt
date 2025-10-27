@@ -5,4 +5,4 @@ RESUMEN DE ANÁLISIS - CLASH ROYALE SIMULATION
 Total de partidas: 100
 Mejor estrategia: DERROTA (0.0%)
 Estrategia más eficiente: VICTORIA
-Duración promedio: 2.2 min
+Duración promedio: 2.3 min
