@@ -98,6 +98,152 @@ public class ConstantesUI {
 
         public static final String GRILLA_ARENA =
                 "-fx-border-color: white; -fx-border-width: 2; -fx-background-color: rgba(255, 255, 255, 0.1);";
+
+        public static final String PANEL_JUGADOR_1_NUEVO =
+                "-fx-background-color: linear-gradient(to bottom, #1e3b70, #2a5298); " +
+                        "-fx-background-radius: 20; " +
+                        "-fx-border-radius: 20; " +
+                        "-fx-border-color: linear-gradient(to bottom, #3b82f6, #1e40af); " +
+                        "-fx-border-width: 3; " +
+                        "-fx-effect: dropshadow(gaussian, rgba(59, 130, 246, 0.5), 20, 0.3, 0, 5); " +
+                        "-fx-padding: 15;";
+
+        public static final String PANEL_JUGADOR_2_NUEVO =
+                "-fx-background-color: linear-gradient(to bottom, #7f1d1d, #dc2626); " +
+                        "-fx-background-radius: 20; " +
+                        "-fx-border-radius: 20; " +
+                        "-fx-border-color: linear-gradient(to bottom, #ef4444, #b91c1c); " +
+                        "-fx-border-width: 3; " +
+                        "-fx-effect: dropshadow(gaussian, rgba(239, 68, 68, 0.5), 20, 0.3, 0, 5); " +
+                        "-fx-padding: 15;";
+
+        // NUEVOS ESTILOS PARA BOTONES - DISEÑO GAMER
+        public static final String BOTON_PRIMARIO_NUEVO =
+                "-fx-background-color: linear-gradient(to bottom, #10b981, #059669); " +
+                        "-fx-text-fill: white; " +
+                        "-fx-font-weight: bold; " +
+                        "-fx-padding: 12 24; " +
+                        "-fx-background-radius: 12; " +
+                        "-fx-border-radius: 12; " +
+                        "-fx-border-color: #34d399; " +
+                        "-fx-border-width: 2; " +
+                        "-fx-effect: dropshadow(gaussian, rgba(16, 185, 129, 0.4), 10, 0.3, 0, 3); " +
+                        "-fx-cursor: hand; " +
+                        "-fx-font-size: 13;";
+
+        public static final String BOTON_PRIMARIO_NUEVO_HOVER =
+                "-fx-background-color: linear-gradient(to bottom, #34d399, #10b981); " +
+                        "-fx-text-fill: white; " +
+                        "-fx-font-weight: bold; " +
+                        "-fx-padding: 12 24; " +
+                        "-fx-background-radius: 12; " +
+                        "-fx-border-radius: 12; " +
+                        "-fx-border-color: #6ee7b7; " +
+                        "-fx-border-width: 2; " +
+                        "-fx-effect: dropshadow(gaussian, rgba(16, 185, 129, 0.6), 15, 0.4, 0, 5); " +
+                        "-fx-cursor: hand; " +
+                        "-fx-font-size: 13;";
+
+        public static final String BOTON_SECUNDARIO_NUEVO =
+                "-fx-background-color: linear-gradient(to bottom, #6b7280, #4b5563); " +
+                        "-fx-text-fill: white; " +
+                        "-fx-font-weight: bold; " +
+                        "-fx-padding: 12 24; " +
+                        "-fx-background-radius: 12; " +
+                        "-fx-border-radius: 12; " +
+                        "-fx-border-color: #9ca3af; " +
+                        "-fx-border-width: 2; " +
+                        "-fx-effect: dropshadow(gaussian, rgba(107, 114, 128, 0.4), 10, 0.3, 0, 3); " +
+                        "-fx-cursor: hand; " +
+                        "-fx-font-size: 13;";
+
+        public static final String BOTON_SECUNDARIO_NUEVO_HOVER =
+                "-fx-background-color: linear-gradient(to bottom, #9ca3af, #6b7280); " +
+                        "-fx-text-fill: white; " +
+                        "-fx-font-weight: bold; " +
+                        "-fx-padding: 12 24; " +
+                        "-fx-background-radius: 12; " +
+                        "-fx-border-radius: 12; " +
+                        "-fx-border-color: #d1d5db; " +
+                        "-fx-border-width: 2; " +
+                        "-fx-effect: dropshadow(gaussian, rgba(107, 114, 128, 0.6), 15, 0.4, 0, 5); " +
+                        "-fx-cursor: hand; " +
+                        "-fx-font-size: 13;";
+
+        public static final String BOTON_PELIGRO_NUEVO =
+                "-fx-background-color: linear-gradient(to bottom, #ef4444, #dc2626); " +
+                        "-fx-text-fill: white; " +
+                        "-fx-font-weight: bold; " +
+                        "-fx-padding: 12 24; " +
+                        "-fx-background-radius: 12; " +
+                        "-fx-border-radius: 12; " +
+                        "-fx-border-color: #f87171; " +
+                        "-fx-border-width: 2; " +
+                        "-fx-effect: dropshadow(gaussian, rgba(239, 68, 68, 0.4), 10, 0.3, 0, 3); " +
+                        "-fx-cursor: hand; " +
+                        "-fx-font-size: 13;";
+
+        public static final String BOTON_PELIGRO_NUEVO_HOVER =
+                "-fx-background-color: linear-gradient(to bottom, #f87171, #ef4444); " +
+                        "-fx-text-fill: white; " +
+                        "-fx-font-weight: bold; " +
+                        "-fx-padding: 12 24; " +
+                        "-fx-background-radius: 12; " +
+                        "-fx-border-radius: 12; " +
+                        "-fx-border-color: #fca5a5; " +
+                        "-fx-border-width: 2; " +
+                        "-fx-effect: dropshadow(gaussian, rgba(239, 68, 68, 0.6), 15, 0.4, 0, 5); " +
+                        "-fx-cursor: hand; " +
+                        "-fx-font-size: 13;";
+
+        public static final String BOTON_INFORMACION_NUEVO =
+                "-fx-background-color: linear-gradient(to bottom, #3b82f6, #2563eb); " +
+                        "-fx-text-fill: white; " +
+                        "-fx-font-weight: bold; " +
+                        "-fx-padding: 12 24; " +
+                        "-fx-background-radius: 12; " +
+                        "-fx-border-radius: 12; " +
+                        "-fx-border-color: #60a5fa; " +
+                        "-fx-border-width: 2; " +
+                        "-fx-effect: dropshadow(gaussian, rgba(59, 130, 246, 0.4), 10, 0.3, 0, 3); " +
+                        "-fx-cursor: hand; " +
+                        "-fx-font-size: 13;";
+
+        public static final String BOTON_INFORMACION_NUEVO_HOVER =
+                "-fx-background-color: linear-gradient(to bottom, #60a5fa, #3b82f6); " +
+                        "-fx-text-fill: white; " +
+                        "-fx-font-weight: bold; " +
+                        "-fx-padding: 12 24; " +
+                        "-fx-background-radius: 12; " +
+                        "-fx-border-radius: 12; " +
+                        "-fx-border-color: #93c5fd; " +
+                        "-fx-border-width: 2; " +
+                        "-fx-effect: dropshadow(gaussian, rgba(59, 130, 246, 0.6), 15, 0.4, 0, 5); " +
+                        "-fx-cursor: hand; " +
+                        "-fx-font-size: 13;";
+
+        // NUEVO ESTILO PARA CONTENEDORES INTERNOS
+        public static final String CONTENEDOR_LISTA_NUEVO =
+                "-fx-background-color: rgba(0, 0, 0, 0.3); " +
+                        "-fx-background-radius: 12; " +
+                        "-fx-border-radius: 12; " +
+                        "-fx-border-color: rgba(255, 255, 255, 0.1); " +
+                        "-fx-border-width: 1; " +
+                        "-fx-padding: 10;";
+
+        // NUEVO ESTILO PARA BARRAS DE PROGRESO
+        public static final String BARRA_ELIXIR_NUEVA =
+                "-fx-background-radius: 20; " +
+                        "-fx-border-radius: 20; " +
+                        "-fx-background-color: #1e293b; " +
+                        "-fx-accent: #8b5cf6; " +
+                        "-fx-padding: 0;";
+
+        // NUEVO ESTILO PARA TÍTULOS
+        public static final String TITULO_PANEL_NUEVO =
+                "-fx-font-weight: bold; " +
+                        "-fx-text-fill: white; " +
+                        "-fx-effect: dropshadow(gaussian, rgba(0,0,0,0.8), 8, 0.5, 2, 2);";
     }
 
     // FUENTES
@@ -194,10 +340,10 @@ public class ConstantesUI {
         public static final String EMPATE = "🤝 EMPATE";
 
         // Botones
-        public static final String BOTON_INICIAR = "▶ INICIAR";
-        public static final String BOTON_PAUSAR = "⏸ PAUSAR";
-        public static final String BOTON_REINICIAR = "🔄 RESET";
-        public static final String BOTON_PASO = "➡️ STEP";
+        public static final String BOTON_INICIAR = " INICIAR";
+        public static final String BOTON_PAUSAR = " PAUSAR";
+        public static final String BOTON_REINICIAR = " REINICIAR";
+        public static final String BOTON_PASO = " PASO";
 
         // Ayuda
         public static final String AYUDA_CONTROLES = "Controles: ESPACIO=Play/Pause | ENTER=Step | R=Reset";

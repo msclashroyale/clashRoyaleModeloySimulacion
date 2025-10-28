@@ -85,34 +85,40 @@ public class ComponentePanelControl {
      * Crea todos los botones de control
      */
     private void crearBotones() {
-        // Botón Play/Pause
-        botonPlayPause = new Button(ConstantesUI.Etiquetas.BOTON_INICIAR);
-        botonPlayPause.setStyle(ConstantesUI.Estilos.BOTON_PRIMARIO);
+        // Botón Play/Pause con nuevos estilos
+        botonPlayPause = new Button("▶ " + ConstantesUI.Etiquetas.BOTON_INICIAR);
+        aplicarEstiloBoton(botonPlayPause, ConstantesUI.Estilos.BOTON_PRIMARIO_NUEVO, ConstantesUI.Estilos.BOTON_PRIMARIO_NUEVO_HOVER);
         botonPlayPause.setOnAction(e -> {
             if (accionPlayPause != null) {
                 accionPlayPause.run();
             }
         });
 
-        // Botón Step
-        botonPaso = new Button(ConstantesUI.Etiquetas.BOTON_PASO);
-        botonPaso.setStyle(ConstantesUI.Estilos.BOTON_INFORMACION);
+        // Botón Step con nuevos estilos
+        botonPaso = new Button( ConstantesUI.Etiquetas.BOTON_PASO);
+        aplicarEstiloBoton(botonPaso, ConstantesUI.Estilos.BOTON_INFORMACION_NUEVO, ConstantesUI.Estilos.BOTON_INFORMACION_NUEVO_HOVER);
         botonPaso.setOnAction(e -> {
             if (accionPaso != null) {
                 accionPaso.run();
             }
         });
 
-        // Botón Reset
-        botonReset = new Button(ConstantesUI.Etiquetas.BOTON_REINICIAR);
-        botonReset.setStyle(ConstantesUI.Estilos.BOTON_SECUNDARIO);
+        // Botón Reset con nuevos estilos
+        botonReset = new Button("🔄 " + ConstantesUI.Etiquetas.BOTON_REINICIAR);
+        aplicarEstiloBoton(botonReset, ConstantesUI.Estilos.BOTON_SECUNDARIO_NUEVO, ConstantesUI.Estilos.BOTON_SECUNDARIO_NUEVO_HOVER);
         botonReset.setOnAction(e -> {
             if (accionReiniciar != null) {
                 accionReiniciar.run();
             }
         });
 
-        contenedorControles.getChildren().addAll(botonPlayPause, botonPaso, botonReset); // <- contenedorControles
+        contenedorControles.getChildren().addAll(botonPlayPause, botonPaso, botonReset);
+    }
+
+    private void aplicarEstiloBoton(Button boton, String estiloNormal, String estiloHover) {
+        boton.setStyle(estiloNormal);
+        boton.setOnMouseEntered(e -> boton.setStyle(estiloHover));
+        boton.setOnMouseExited(e -> boton.setStyle(estiloNormal));
     }
 
     /**
@@ -184,11 +190,11 @@ public class ComponentePanelControl {
      */
     public void actualizarBotonPlayPause(boolean estaEjecutandose) {
         if (estaEjecutandose) {
-            botonPlayPause.setText(ConstantesUI.Etiquetas.BOTON_PAUSAR);
-            botonPlayPause.setStyle(ConstantesUI.Estilos.BOTON_PELIGRO);
+            botonPlayPause.setText("⏸ " + ConstantesUI.Etiquetas.BOTON_PAUSAR);
+            aplicarEstiloBoton(botonPlayPause, ConstantesUI.Estilos.BOTON_PELIGRO_NUEVO, ConstantesUI.Estilos.BOTON_PELIGRO_NUEVO_HOVER);
         } else {
-            botonPlayPause.setText(ConstantesUI.Etiquetas.BOTON_INICIAR);
-            botonPlayPause.setStyle(ConstantesUI.Estilos.BOTON_PRIMARIO);
+            botonPlayPause.setText("▶ " + ConstantesUI.Etiquetas.BOTON_INICIAR);
+            aplicarEstiloBoton(botonPlayPause, ConstantesUI.Estilos.BOTON_PRIMARIO_NUEVO, ConstantesUI.Estilos.BOTON_PRIMARIO_NUEVO_HOVER);
         }
     }
 
@@ -214,25 +220,6 @@ public class ComponentePanelControl {
      */
     public void configurarAccionReiniciar(Runnable accion) {
         this.accionReiniciar = accion;
-    }
-
-    /**
-     * Habilita o deshabilita todos los botones
-     * @param habilitado true para habilitar, false para deshabilitar
-     */
-    public void establecerBotonesHabilitados(boolean habilitado) {
-        botonPlayPause.setDisable(!habilitado);
-        botonPaso.setDisable(!habilitado);
-        botonReset.setDisable(!habilitado);
-    }
-
-    /**
-     * Habilita o deshabilita solo el botón de paso
-     * Útil cuando el juego está corriendo automáticamente
-     * @param habilitado true para habilitar, false para deshabilitar
-     */
-    public void establecerBotonPasoHabilitado(boolean habilitado) {
-        botonPaso.setDisable(!habilitado);
     }
 
     /**

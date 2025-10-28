@@ -78,7 +78,8 @@ public class ComponentePanelJugador {
      * Inicializa todos los elementos del panel de jugador
      */
     private void inicializarComponente() {
-        contenedorPrincipal = new VBox(ConstantesUI.Dimensiones.ESPACIADO_PANEL);
+        contenedorPrincipal = new VBox(35); // Aumentado espaciado
+        contenedorPrincipal.setAlignment(Pos.TOP_CENTER);
 
         // USAR ANCHO RESPONSIVE
         double anchoPanel = ConstantesUI.Dimensiones.getAnchoPanelJugador();
@@ -94,12 +95,10 @@ public class ComponentePanelJugador {
         contenedorPrincipal.setMinHeight(altoMinimo);
         contenedorPrincipal.setMaxHeight(altoMaximo);
 
-        contenedorPrincipal.setAlignment(Pos.TOP_CENTER);
-
-        // Aplicar estilo según el jugador
+        // APLICAR NUEVO ESTILO SEGÚN JUGADOR
         String estiloPanel = jugadorId == 1 ?
-                ConstantesUI.Estilos.PANEL_JUGADOR_1 :
-                ConstantesUI.Estilos.PANEL_JUGADOR_2;
+                ConstantesUI.Estilos.PANEL_JUGADOR_1_NUEVO :
+                ConstantesUI.Estilos.PANEL_JUGADOR_2_NUEVO;
         contenedorPrincipal.setStyle(estiloPanel);
 
         crearElementosPanel();
@@ -127,20 +126,12 @@ public class ComponentePanelJugador {
         // Leyenda
         VBox leyenda = crearLeyenda();
 
-        // Separadores
-        Separator sep1 = crearSeparador();
-        Separator sep2 = crearSeparador();
-        Separator sep3 = crearSeparador();
-
-        // Ensamblar todo
+        // ENSAMBLAR TODO SIN SEPARADORES
         contenedorPrincipal.getChildren().addAll(
                 titulo,
                 infoBasica,
-                sep1,
                 seccionCartas,
-                sep2,
                 seccionTorres,
-                sep3,
                 seccionTropas,
                 leyenda
         );
@@ -151,13 +142,21 @@ public class ComponentePanelJugador {
      */
     private Label crearTituloJugador() {
         String textoTitulo = jugadorId == 1 ?
-                ConstantesUI.Etiquetas.TITULO_JUGADOR_1 :
-                ConstantesUI.Etiquetas.TITULO_JUGADOR_2;
+                "⚔️ " + ConstantesUI.Etiquetas.TITULO_JUGADOR_1 + " ⚔️" :
+                "🛡️ " + ConstantesUI.Etiquetas.TITULO_JUGADOR_2 + " 🛡️";
 
         etiquetaTitulo = new Label(textoTitulo);
-        etiquetaTitulo.setFont(ConstantesUI.Fuentes.TITULO_MEDIANO); // Aumentado de TITULO_PEQUENO
+        etiquetaTitulo.setFont(Font.font("Arial", FontWeight.BOLD,
+                ConstantesUI.esPantallaGrande() ? 18 : 16));
         etiquetaTitulo.setTextFill(Color.WHITE);
-        etiquetaTitulo.setStyle("-fx-effect: dropshadow(gaussian, rgba(0,0,0,0.8), 3, 0.8, 2, 2);");
+        etiquetaTitulo.setStyle(
+                "-fx-effect: dropshadow(gaussian, rgba(0,0,0,0.9), 10, 0.7, 3, 3); " +
+                        "-fx-padding: 8 15 8 15; " +
+                        "-fx-background-color: rgba(0,0,0,0.4); " +
+                        "-fx-background-radius: 10;"
+        );
+        etiquetaTitulo.setAlignment(Pos.CENTER);
+        etiquetaTitulo.setMaxWidth(Double.MAX_VALUE);
 
         return etiquetaTitulo;
     }
@@ -196,52 +195,44 @@ public class ComponentePanelJugador {
         VBox contenedor = new VBox();
         contenedor.setAlignment(Pos.CENTER);
         contenedor.setMaxWidth(Double.MAX_VALUE);
+        contenedor.setPadding(new Insets(15, 20, 20, 20));
 
-        if (ConstantesUI.esPantallaGrande()) {
-            contenedor.setPadding(new Insets(10, 15, 15, 15));
-        } else {
-            contenedor.setPadding(new Insets(8, 12, 12, 12));
-        }
-
-        // Contenedor principal - SIN FONDO VISIBLE
+        // Contenedor principal con nuevo estilo
         StackPane barraPrincipal = new StackPane();
         barraPrincipal.setMaxWidth(Double.MAX_VALUE);
-        barraPrincipal.setPrefHeight(35);
-
-        // ProgressBar que ocupa TODO el espacio
-        barraProgresoElixir = new ProgressBar(0.5);
-        barraProgresoElixir.setMaxWidth(Double.MAX_VALUE);
-        barraProgresoElixir.setPrefHeight(35); // Misma altura que el contenedor
-        barraProgresoElixir.setStyle(
-                "-fx-background-radius: 18; " +
-                        "-fx-border-radius: 18; " +
-                        "-fx-background-color: #2d3047; " + // Fondo de la barra vacía
-                        "-fx-accent: #8a2be2; " + // Color del progreso
-                        "-fx-padding: 0;" // Eliminar padding interno
+        barraPrincipal.setPrefHeight(40);
+        barraPrincipal.setStyle(
+                "-fx-background-color: rgba(0,0,0,0.3); " +
+                        "-fx-background-radius: 20; " +
+                        "-fx-border-radius: 20; " +
+                        "-fx-border-color: rgba(255,255,255,0.2); " +
+                        "-fx-border-width: 2; " +
+                        "-fx-padding: 3;"
         );
 
-        // Texto superpuesto
+        // ProgressBar con nuevo estilo
+        barraProgresoElixir = new ProgressBar(0.5);
+        barraProgresoElixir.setMaxWidth(Double.MAX_VALUE);
+        barraProgresoElixir.setPrefHeight(34);
+        barraProgresoElixir.setStyle(ConstantesUI.Estilos.BARRA_ELIXIR_NUEVA);
+
+        // Texto superpuesto mejorado
         etiquetaElixirTexto = new Label("⏣ 5/10");
         etiquetaElixirTexto.setTextFill(Color.WHITE);
         etiquetaElixirTexto.setFont(Font.font("Arial", FontWeight.EXTRA_BOLD, 14));
         etiquetaElixirTexto.setStyle(
-                "-fx-effect: dropshadow(gaussian, rgba(0,0,0,0.9), 8, 0.8, 2, 2);"
+                "-fx-effect: dropshadow(gaussian, rgba(0,0,0,0.9), 10, 0.8, 2, 2);"
         );
 
-        // Efecto de brillo interno (opcional)
+        // Efecto de brillo interno mejorado
         Region efectoBrillo = new Region();
         efectoBrillo.setStyle(
-                "-fx-background-color: linear-gradient(to bottom, rgba(255,255,255,0.2), transparent 70%); " +
-                        "-fx-background-radius: 18;"
+                "-fx-background-color: linear-gradient(to bottom, rgba(255,255,255,0.3), transparent 80%); " +
+                        "-fx-background-radius: 17;"
         );
-        efectoBrillo.setPrefHeight(35);
+        efectoBrillo.setPrefHeight(34);
 
-        // Organizar elementos - la ProgressBar es el fondo principal
         barraPrincipal.getChildren().addAll(barraProgresoElixir, efectoBrillo, etiquetaElixirTexto);
-
-        // Guardar referencia para animaciones
-        this.barraContenedorElixir = barraPrincipal;
-
         contenedor.getChildren().add(barraPrincipal);
         return contenedor;
     }
@@ -250,27 +241,26 @@ public class ComponentePanelJugador {
      * Crea la sección de cartas en mano
      */
     private VBox crearSeccionCartas() {
-        VBox seccionCartas = new VBox(ConstantesUI.Dimensiones.ESPACIADO_DIMINUTO);
+        VBox seccionCartas = new VBox(8);
         seccionCartas.setAlignment(Pos.CENTER);
 
-        // ALTURA RESPONSIVE
         double alto = ConstantesUI.Dimensiones.getAltoSeccionCartas();
         seccionCartas.setPrefHeight(alto);
         seccionCartas.setMinHeight(alto);
         seccionCartas.setMaxHeight(alto);
 
-        Label tituloCartas = new Label(ConstantesUI.Etiquetas.CARTAS_EN_MANO);
+        Label tituloCartas = new Label("🎴 " + ConstantesUI.Etiquetas.CARTAS_EN_MANO);
         tituloCartas.setFont(ConstantesUI.Fuentes.TEXTO_MEDIANO);
         tituloCartas.setTextFill(Color.WHITE);
+        tituloCartas.setStyle(ConstantesUI.Estilos.TITULO_PANEL_NUEVO);
 
-        // Panel de cartas con tamaño controlado
         panelCartas = new VBox();
-        panelCartas.setStyle(ConstantesUI.Estilos.CONTENEDOR_LISTA);
-        panelCartas.setPrefHeight(alto - 40); // Restar espacio del título
+        panelCartas.setStyle(ConstantesUI.Estilos.CONTENEDOR_LISTA_NUEVO);
+        panelCartas.setPrefHeight(alto - 40);
         panelCartas.setMinHeight(alto - 40);
         panelCartas.setMaxHeight(alto - 40);
         panelCartas.setAlignment(Pos.CENTER);
-        panelCartas.setPadding(new Insets(8)); // Padding reducido
+        panelCartas.setPadding(new Insets(10));
 
         seccionCartas.getChildren().addAll(tituloCartas, panelCartas);
         return seccionCartas;
@@ -280,23 +270,22 @@ public class ComponentePanelJugador {
      * Crea la sección de estado de torres
      */
     private VBox crearSeccionTorres() {
-        VBox seccionTorres = new VBox(ConstantesUI.Dimensiones.ESPACIADO_PEQUENO);
+        VBox seccionTorres = new VBox(8);
         seccionTorres.setAlignment(Pos.CENTER);
 
-        // ALTURA RESPONSIVE
         double alto = ConstantesUI.Dimensiones.getAltoSeccionTorres();
         seccionTorres.setPrefHeight(alto);
         seccionTorres.setMinHeight(alto);
         seccionTorres.setMaxHeight(alto);
 
-        Label tituloTorres = new Label(ConstantesUI.Etiquetas.ESTADO_TORRES);
+        Label tituloTorres = new Label("🏰 " + ConstantesUI.Etiquetas.ESTADO_TORRES);
         tituloTorres.setFont(ConstantesUI.Fuentes.TEXTO_GRANDE);
         tituloTorres.setTextFill(Color.WHITE);
-        tituloTorres.setStyle("-fx-effect: dropshadow(gaussian, rgba(0,0,0,0.6), 2, 0.6, 1, 1);");
+        tituloTorres.setStyle(ConstantesUI.Estilos.TITULO_PANEL_NUEVO);
 
-        panelTorres = new VBox(4);
-        panelTorres.setStyle(ConstantesUI.Estilos.CONTENEDOR_LISTA);
-        panelTorres.setPrefHeight(alto - 40); // Ajustar por el título
+        panelTorres = new VBox(6);
+        panelTorres.setStyle(ConstantesUI.Estilos.CONTENEDOR_LISTA_NUEVO);
+        panelTorres.setPrefHeight(alto - 40);
 
         seccionTorres.getChildren().addAll(tituloTorres, panelTorres);
         return seccionTorres;
@@ -306,23 +295,21 @@ public class ComponentePanelJugador {
      * Crea la sección de tropas vivas
      */
     private VBox crearSeccionTropasVivas() {
-        VBox seccionTropas = new VBox(ConstantesUI.Dimensiones.ESPACIADO_PEQUENO);
+        VBox seccionTropas = new VBox(8);
         seccionTropas.setAlignment(Pos.CENTER);
 
-        // ALTURA RESPONSIVE
         double altoSeccion = ConstantesUI.Dimensiones.getAltoSeccionTropas();
         seccionTropas.setPrefHeight(altoSeccion);
         seccionTropas.setMinHeight(altoSeccion);
         seccionTropas.setMaxHeight(altoSeccion);
 
-        Label tituloTropas = new Label(ConstantesUI.Etiquetas.TROPAS_VIVAS);
+        Label tituloTropas = new Label("⚔️ " + ConstantesUI.Etiquetas.TROPAS_VIVAS);
         tituloTropas.setFont(ConstantesUI.Fuentes.TEXTO_GRANDE);
         tituloTropas.setTextFill(Color.WHITE);
-        tituloTropas.setStyle("-fx-effect: dropshadow(gaussian, rgba(0,0,0,0.6), 2, 0.6, 1, 1);");
+        tituloTropas.setStyle(ConstantesUI.Estilos.TITULO_PANEL_NUEVO);
 
         ScrollPane scrollPane = new ScrollPane();
 
-        // Configuración del ScrollPane
         double altoScroll = ConstantesUI.Dimensiones.getAltoScrollTropas();
         scrollPane.setPrefHeight(altoScroll);
         scrollPane.setMinHeight(altoScroll);
@@ -330,13 +317,16 @@ public class ComponentePanelJugador {
         scrollPane.setFitToWidth(true);
         scrollPane.setVbarPolicy(ScrollPane.ScrollBarPolicy.AS_NEEDED);
         scrollPane.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
-        scrollPane.setStyle("-fx-background: transparent; -fx-background-color: transparent;");
+        scrollPane.setStyle(
+                "-fx-background: transparent; " +
+                        "-fx-background-color: transparent; " +
+                        "-fx-border-color: transparent;"
+        );
 
-        panelTropasVivas = new VBox(4);
-        panelTropasVivas.setStyle(ConstantesUI.Estilos.CONTENEDOR_LISTA);
+        panelTropasVivas = new VBox(5);
+        panelTropasVivas.setStyle(ConstantesUI.Estilos.CONTENEDOR_LISTA_NUEVO);
 
         scrollPane.setContent(panelTropasVivas);
-
         seccionTropas.getChildren().addAll(tituloTropas, scrollPane);
         return seccionTropas;
     }
@@ -374,6 +364,17 @@ public class ComponentePanelJugador {
     private Separator crearSeparador() {
         Separator separador = new Separator();
         separador.setPrefWidth(180);
+
+        String estiloBase =
+                "-fx-background-color: linear-gradient(to right, " +
+                        "rgba(255,255,255,0.1), rgba(255,255,255,0.4), rgba(255,255,255,0.1)); " +
+                        "-fx-border-color: transparent; " +
+                        "-fx-pref-height: 1.5; " +
+                        "-fx-effect: dropshadow(gaussian, " +
+                        (jugadorId == 1 ? "rgba(59, 130, 246, 0.5)" : "rgba(239, 68, 68, 0.5)") +
+                        ", 8, 0.3, 0, 1);";
+
+        separador.setStyle(estiloBase);
         return separador;
     }
 
@@ -920,61 +921,48 @@ public class ComponentePanelJugador {
      * Crea un elemento visual para una torre
      */
     private HBox crearElementoTorre(Torre torre) {
-        HBox torreBox = new HBox(8); // Aumentado espaciado
+        HBox torreBox = new HBox(10);
         torreBox.setAlignment(Pos.CENTER_LEFT);
-        torreBox.setPadding(new Insets(4)); // Aumentado padding
+        torreBox.setPadding(new Insets(8));
+        torreBox.setStyle(
+                "-fx-background-color: " + obtenerColorFondoTorre(torre) + "; " +
+                        "-fx-background-radius: 8; " +
+                        "-fx-border-radius: 8; " +
+                        "-fx-border-color: rgba(255,255,255,0.3); " +
+                        "-fx-border-width: 1;"
+        );
 
-        String colorFondo;
-        if (torre.estaViva()) {
-            double porcentajeVida = (double) torre.getVidaActual() / torre.getVidaMaxima();
-            if (porcentajeVida > 0.7) {
-                colorFondo = "rgba(34, 197, 94, 0.7)"; // Verde
-            } else if (porcentajeVida > 0.4) {
-                colorFondo = "rgba(251, 191, 36, 0.7)"; // Amarillo
-            } else if (porcentajeVida > 0.15) {
-                colorFondo = "rgba(249, 115, 22, 0.7)"; // Naranja
-            } else {
-                colorFondo = "rgba(239, 68, 68, 0.7)"; // Rojo
-            }
-        } else {
-            colorFondo = "rgba(75, 85, 99, 0.8)"; // Gris para destruidas
-        }
-
-        torreBox.setStyle("-fx-background-color: " + colorFondo + "; -fx-background-radius: 4;");
-
-        String simboloTorre = torre.getClass().getSimpleName().equals("TorreRey") ? "♔" : "♖";
+        String simboloTorre = torre.getClass().getSimpleName().equals("TorreRey") ? "👑" : "🏯";
         String nombreTorre = torre.getClass().getSimpleName().equals("TorreRey") ? "Rey" : "Princesa";
 
         Label simboloLabel = new Label(simboloTorre);
         simboloLabel.setTextFill(Color.WHITE);
-        simboloLabel.setFont(ConstantesUI.Fuentes.TEXTO_MEDIANO); // Aumentado
-        simboloLabel.setPrefWidth(22); // Aumentado ancho
-        simboloLabel.setAlignment(Pos.CENTER);
+        simboloLabel.setFont(ConstantesUI.Fuentes.TEXTO_MEDIANO);
+        simboloLabel.setPrefWidth(25);
 
         Label nombreLabel = new Label(nombreTorre);
         nombreLabel.setTextFill(Color.WHITE);
-        nombreLabel.setFont(ConstantesUI.Fuentes.TEXTO_MEDIANO); // Aumentado
-        nombreLabel.setPrefWidth(60); // Aumentado ancho
+        nombreLabel.setFont(ConstantesUI.Fuentes.TEXTO_MEDIANO);
+        nombreLabel.setPrefWidth(60);
 
-        // Estado de vida
         Label vidaLabel;
         if (torre.estaViva()) {
             vidaLabel = new Label(torre.getVidaActual() + "/" + torre.getVidaMaxima());
             vidaLabel.setTextFill(Color.WHITE);
-            vidaLabel.setFont(ConstantesUI.Fuentes.TEXTO_MEDIANO); // Aumentado
         } else {
-            vidaLabel = new Label(ConstantesUI.Etiquetas.TORRE_DESTRUIDA);
+            vidaLabel = new Label("💀 " + ConstantesUI.Etiquetas.TORRE_DESTRUIDA);
             vidaLabel.setTextFill(Color.LIGHTCORAL);
-            vidaLabel.setFont(ConstantesUI.Fuentes.TEXTO_MEDIANO); // Aumentado
         }
+        vidaLabel.setFont(ConstantesUI.Fuentes.TEXTO_MEDIANO);
 
-        Label nivelLabel = new Label("Nv." + torre.getNivel());
+        Label nivelLabel = new Label("Lv." + torre.getNivel());
         nivelLabel.setTextFill(Color.LIGHTGRAY);
-        nivelLabel.setFont(ConstantesUI.Fuentes.TEXTO_MEDIANO); // Aumentado
+        nivelLabel.setFont(ConstantesUI.Fuentes.TEXTO_MEDIANO);
 
         torreBox.getChildren().addAll(simboloLabel, nombreLabel, vidaLabel, nivelLabel);
         return torreBox;
     }
+
 
     /**
      * Actualiza el panel de tropas vivas
@@ -1005,48 +993,71 @@ public class ComponentePanelJugador {
      * Crea un elemento visual para una tropa
      */
     private HBox crearElementoTropa(Tropa tropa) {
-        HBox tropaBox = new HBox(8); // Aumentado espaciado
+        HBox tropaBox = new HBox(8);
         tropaBox.setAlignment(Pos.CENTER_LEFT);
-        tropaBox.setPadding(new Insets(4)); // Aumentado padding
+        tropaBox.setPadding(new Insets(6));
+        tropaBox.setStyle(
+                "-fx-background-color: " + obtenerColorFondoTropa(tropa) + "; " +
+                        "-fx-background-radius: 6; " +
+                        "-fx-border-radius: 6; " +
+                        "-fx-border-color: rgba(255,255,255,0.2); " +
+                        "-fx-border-width: 1;"
+        );
 
-        // Color según porcentaje de vida
-        double porcentajeVida = (double) tropa.getVidaActual() / tropa.getVidaMaxima();
-        String colorFondo;
-        if (porcentajeVida > 0.7) {
-            colorFondo = "rgba(34, 197, 94, 0.6)"; // Verde
-        } else if (porcentajeVida > 0.4) {
-            colorFondo = "rgba(251, 191, 36, 0.6)"; // Amarillo
-        } else if (porcentajeVida > 0.15) {
-            colorFondo = "rgba(249, 115, 22, 0.6)"; // Naranja
-        } else {
-            colorFondo = "rgba(239, 68, 68, 0.6)"; // Rojo
-        }
-
-        tropaBox.setStyle("-fx-background-color: " + colorFondo + "; -fx-background-radius: 3;");
-
-        Label simboloLabel = new Label(String.valueOf(tropa.getSimboloConsola()));
+        Label simboloLabel = new Label(obtenerEmojiTropa(tropa));
         simboloLabel.setTextFill(Color.WHITE);
-        simboloLabel.setFont(ConstantesUI.Fuentes.TEXTO_MEDIANO); // Aumentado
-        simboloLabel.setPrefWidth(18); // Aumentado ancho
-        simboloLabel.setAlignment(Pos.CENTER);
+        simboloLabel.setFont(ConstantesUI.Fuentes.TEXTO_MEDIANO);
+        simboloLabel.setPrefWidth(20);
 
         String tipoTropa = tropa.getNombre();
         Label tipoLabel = new Label(tipoTropa);
         tipoLabel.setTextFill(Color.WHITE);
-        tipoLabel.setFont(ConstantesUI.Fuentes.TEXTO_MEDIANO); // Aumentado
-        tipoLabel.setPrefWidth(55); // Aumentado ancho
+        tipoLabel.setFont(ConstantesUI.Fuentes.TEXTO_MEDIANO);
+        tipoLabel.setPrefWidth(50);
 
         Label vidaLabel = new Label(tropa.getVidaActual() + "/" + tropa.getVidaMaxima());
         vidaLabel.setTextFill(Color.WHITE);
-        vidaLabel.setFont(ConstantesUI.Fuentes.TEXTO_MEDIANO); // Aumentado
+        vidaLabel.setFont(ConstantesUI.Fuentes.TEXTO_MEDIANO);
 
         Label posLabel = new Label("(" + tropa.getPosicion().getX() + "," + tropa.getPosicion().getY() + ")");
         posLabel.setTextFill(Color.LIGHTGRAY);
-        posLabel.setFont(ConstantesUI.Fuentes.TEXTO_MEDIANO); // Aumentado
+        posLabel.setFont(ConstantesUI.Fuentes.TEXTO_MEDIANO);
 
         tropaBox.getChildren().addAll(simboloLabel, tipoLabel, vidaLabel, posLabel);
         return tropaBox;
     }
+
+    private String obtenerColorFondoTorre(Torre torre) {
+        if (!torre.estaViva()) return "rgba(75, 85, 99, 0.8)";
+
+        double porcentajeVida = (double) torre.getVidaActual() / torre.getVidaMaxima();
+        if (porcentajeVida > 0.7) return "rgba(34, 197, 94, 0.7)";
+        if (porcentajeVida > 0.4) return "rgba(251, 191, 36, 0.7)";
+        if (porcentajeVida > 0.15) return "rgba(249, 115, 22, 0.7)";
+        return "rgba(239, 68, 68, 0.7)";
+    }
+
+    private String obtenerColorFondoTropa(Tropa tropa) {
+        double porcentajeVida = (double) tropa.getVidaActual() / tropa.getVidaMaxima();
+        if (porcentajeVida > 0.7) return "rgba(34, 197, 94, 0.6)";
+        if (porcentajeVida > 0.4) return "rgba(251, 191, 36, 0.6)";
+        if (porcentajeVida > 0.15) return "rgba(249, 115, 22, 0.6)";
+        return "rgba(239, 68, 68, 0.6)";
+    }
+
+    private String obtenerEmojiTropa(Tropa tropa) {
+        String nombre = tropa.getNombre().toLowerCase();
+        if (nombre.contains("gigante") || nombre.contains("giant")) return "👹";
+        if (nombre.contains("caballero") || nombre.contains("knight")) return "♞";
+        if (nombre.contains("arquera") || nombre.contains("archer")) return "🏹";
+        if (nombre.contains("duende") || nombre.contains("goblin")) return "👺";
+        if (nombre.contains("esqueleto") || nombre.contains("skeleton")) return "💀";
+        if (nombre.contains("mago") || nombre.contains("wizard")) return "🧙";
+        if (nombre.contains("dragon")) return "🐉";
+        if (nombre.contains("barbaro") || nombre.contains("barbarian")) return "⚔️";
+        return "❓";
+    }
+
 
     /**
      * Cuenta las torres vivas de una lista
