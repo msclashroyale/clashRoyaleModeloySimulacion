@@ -343,8 +343,9 @@ public class ControladorUIPrincipal implements GameEventListener {
         panelJugador1.actualizar(partida.getJugador1(), partida.getTablero());
         panelJugador2.actualizar(partida.getJugador2(), partida.getTablero());
 
-        // Actualizar arena
-        componenteArena.actualizar(partida, gestorAnimaciones);
+        // Actualizar arena, pasando el estado del checkbox
+        boolean mostrarRangos = componentePanelControl.isMostrarRangosSeleccionado();
+        componenteArena.actualizar(partida, gestorAnimaciones, mostrarRangos);
 
         // Actualizar panel de control con tiempo y ticks
         componentePanelControl.actualizarTiempoYTicks(

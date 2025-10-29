@@ -125,7 +125,7 @@ public class ComponenteArena {
      * @paramtablero Tablero del juego con el estado actual
      * @param gestorAnimaciones Gestor para verificar animaciones activas
      */
-    public void actualizar(Partida partida, GestorAnimaciones gestorAnimaciones) {
+    public void actualizar(Partida partida, GestorAnimaciones gestorAnimaciones, boolean mostrarRangos) {
         Tablero tablero = partida.getTablero();
 
         // 1. Actualizar la grilla base
@@ -138,8 +138,12 @@ public class ComponenteArena {
             }
         }
 
-        // 2. Dibujar los rangos en el canvas
-        dibujarRangos(partida);
+        // 2. Dibujar o limpiar los rangos según el estado del checkbox
+        if (mostrarRangos) {
+            dibujarRangos(partida);
+        } else {
+            canvasArena.getGraphicsContext2D().clearRect(0, 0, canvasArena.getWidth(), canvasArena.getHeight());
+        }
     }
 
     private void dibujarRangos(Partida partida) {

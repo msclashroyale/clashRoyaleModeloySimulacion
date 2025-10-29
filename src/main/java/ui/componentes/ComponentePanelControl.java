@@ -4,6 +4,7 @@ import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.CheckBox;
 import javafx.scene.control.Separator;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
@@ -19,6 +20,7 @@ public class ComponentePanelControl {
     private Button botonPlayPause;
     private Button botonReset;
     private Button botonPaso;
+    private CheckBox mostrarRangosCheck;
 
     // Elementos para tiempo, ticks y ganador
     private Label etiquetaTiempo;
@@ -112,7 +114,12 @@ public class ComponentePanelControl {
             }
         });
 
-        contenedorControles.getChildren().addAll(botonPlayPause, botonPaso, botonReset);
+        // Checkbox para mostrar rangos
+        mostrarRangosCheck = new CheckBox("Mostrar Rangos");
+        mostrarRangosCheck.setTextFill(Color.WHITE);
+        mostrarRangosCheck.setSelected(true); // Por defecto activado
+
+        contenedorControles.getChildren().addAll(botonPlayPause, botonPaso, botonReset, new Separator(), mostrarRangosCheck);
     }
 
     private void aplicarEstiloBoton(Button boton, String estiloNormal, String estiloHover) {
@@ -220,6 +227,10 @@ public class ComponentePanelControl {
      */
     public void configurarAccionReiniciar(Runnable accion) {
         this.accionReiniciar = accion;
+    }
+
+    public boolean isMostrarRangosSeleccionado() {
+        return mostrarRangosCheck.isSelected();
     }
 
     /**
