@@ -6,6 +6,8 @@ import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.geometry.Pos;
 import javafx.scene.control.Label;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
@@ -18,6 +20,9 @@ import tablero.TipoTerreno;
 import ui.constantes.ConstantesUI;
 import ui.gestores.GestorAnimaciones;
 
+import java.util.HashMap;
+import java.util.Map;
+
 /**
  * Componente que maneja la visualización del tablero de juego
  * Muestra las tropas, torres, terreno y efectos visuales
@@ -28,13 +33,84 @@ public class ComponenteArena {
     private GridPane grillaArena;
     private Canvas canvasArena; // Lienzo para dibujar rangos y efectos
     private Rectangle[][] casillas;
+    private ImageView[][] imagenes;
     private Label[][] simbolos;
+    private Map<String, Image> cacheImagenes;
 
     /**
      * Constructor - inicializa el componente del tablero
      */
     public ComponenteArena() {
+        cacheImagenes = new HashMap<>();
         inicializarComponente();
+        cargarImagenes();
+    }
+
+    /**
+     * Carga todas las imágenes necesarias en el caché
+     */
+    private void cargarImagenes() {
+        try {
+            // Cargar imágenes de tropas usando los nombres EXACTOS de los archivos
+            cargarImagen("gigante", "/imagenCartas/Card_Giant.png");
+            cargarImagen("caballero", "/imagenCartas/Card_Knight.png");
+            cargarImagen("arquera", "/imagenCartas/Card_Archer.png");
+            cargarImagen("duende", "/imagenCartas/Card_Goblin.png");
+            cargarImagen("esqueleto", "/imagenCartas/Card_skeletons.png");
+            cargarImagen("mago", "/imagenCartas/Card_Wizard.png");
+            cargarImagen("dragon", "/imagenCartas/Baby Dragon.png");
+            cargarImagen("barbaro", "/imagenCartas/Card_Barbarians.png");
+            cargarImagen("pekka", "/imagenCartas/Card_PEKKA.png");
+            cargarImagen("valquiria", "/imagenCartas/Card_Valkyrie.png");
+            cargarImagen("principe", "/imagenCartas/Card_Prince.png");
+            cargarImagen("bruja", "/imagenCartas/Card_Witch.png");
+            cargarImagen("golem", "/imagenCartas/Card_Golem.png");
+            cargarImagen("minero", "/imagenCartas/Card_Miner.png");
+            cargarImagen("montapuercos", "/imagenCartas/Card_Hog Rider.png");
+            cargarImagen("mosquetero", "/imagenCartas/Card_Musketeer.png");
+            cargarImagen("mini", "/imagenCartas/Card_Mini PEKKA.png");
+            cargarImagen("globo", "/imagenCartas/Balloon.png");
+            cargarImagen("esbirro", "/imagenCartas/Card_Minion.png");
+            cargarImagen("princesa", "/imagenCartas/Card_Princess.png");
+            cargarImagen("mago_electrico", "/imagenCartas/Card_Electro Wizard.png");
+            cargarImagen("mago_hielo", "/imagenCartas/Card_Ice Wizard.png");
+            cargarImagen("megacaballero", "/imagenCartas/Card_Mega Knight.png");
+            cargarImagen("gigante_real", "/imagenCartas/Card_Royale Giant.png");
+            cargarImagen("montacareneros", "/imagenCartas/Card_Ram Rider.png");
+            cargarImagen("lanzadardos", "/imagenCartas/Card_Dart Goblin.png");
+            cargarImagen("bandido", "/imagenCartas/Card_Bandit.png");
+            cargarImagen("leñador", "/imagenCartas/Card_Lumberjack.png");
+            cargarImagen("pescador", "/imagenCartas/Card_Fisherman.png");
+            cargarImagen("verdugo", "/imagenCartas/Card_Executioner.png");
+            cargarImagen("bombardero", "/imagenCartas/Card_Bomber.png");
+            cargarImagen("cazador", "/imagenCartas/Card_Hunter.png");
+
+        } catch (Exception e) {
+            System.err.println("Error al cargar imágenes: " + e.getMessage());
+        }
+    }
+
+    /**
+     * Carga una imagen en el caché
+     */
+    private void cargarImagen(String clave, String ruta) {
+        try {
+            Image imagen = new Image(getClass().getResourceAsStream(ruta));
+            if (!imagen.isError()) {
+                cacheImagenes.put(clave, imagen);
+            } else {
+                System.err.println("Error al cargar imagen: " + ruta);
+            }
+        } catch (Exception e) {
+            System.err.println("No se pudo cargar imagen: " + ruta + " - " + e.getMessage());
+        }
+    }
+
+    /**
+     * Obtiene una imagen del caché
+     */
+    private Image obtenerImagen(String clave) {
+        return cacheImagenes.get(clave);
     }
 
     /**
@@ -66,12 +142,16 @@ public class ComponenteArena {
         grillaArena = new GridPane();
         grillaArena.setAlignment(Pos.CENTER);
         grillaArena.setStyle(ConstantesUI.Estilos.GRILLA_ARENA);
+
+        // Añadir un poco de espaciado entre celdas para mejor visualización
         grillaArena.setHgap(1);
         grillaArena.setVgap(1);
 
         casillas = new Rectangle[Tablero.ALTO][Tablero.ANCHO];
+        imagenes = new ImageView[Tablero.ALTO][Tablero.ANCHO];
         simbolos = new Label[Tablero.ALTO][Tablero.ANCHO];
 
+        // Crear las casillas
         for (int y = 0; y < Tablero.ALTO; y++) {
             for (int x = 0; x < Tablero.ANCHO; x++) {
                 crearCasilla(x, y);
@@ -104,7 +184,15 @@ public class ComponenteArena {
         rect.setStrokeWidth(0.3);
         casillas[y][x] = rect;
 
-        // Label para el símbolo
+        // ImageView para las imágenes de tropas
+        ImageView imageView = new ImageView();
+        imageView.setFitWidth(tamanoCelda - 4);
+        imageView.setFitHeight(tamanoCelda - 4);
+        imageView.setPreserveRatio(true);
+        imageView.setSmooth(true);
+        imagenes[y][x] = imageView;
+
+        // Label para el símbolo (para terrenos y torres)
         Label simbolo = new Label();
         simbolo.setFont(ConstantesUI.esPantallaGrande() ?
                 ConstantesUI.Fuentes.TEXTO_DIMINUTO :
@@ -113,17 +201,18 @@ public class ComponenteArena {
         simbolo.setPrefSize(tamanoCelda, tamanoCelda);
         simbolos[y][x] = simbolo;
 
-        // StackPane para superponer rectangle y label
+        // StackPane para superponer rectangle, imagen y label
         StackPane celda = new StackPane();
-        celda.getChildren().addAll(rect, simbolo);
+        celda.getChildren().addAll(rect, imageView, simbolo);
 
         grillaArena.add(celda, x, y);
     }
 
     /**
      * Actualiza la visualización del tablero
-     * @paramtablero Tablero del juego con el estado actual
+     * @param partida Partida del juego con el estado actual
      * @param gestorAnimaciones Gestor para verificar animaciones activas
+     * @param mostrarRangos Si se deben mostrar los rangos de detección
      */
     public void actualizar(Partida partida, GestorAnimaciones gestorAnimaciones, boolean mostrarRangos) {
         Tablero tablero = partida.getTablero();
@@ -132,7 +221,12 @@ public class ComponenteArena {
         for (int y = 0; y < Tablero.ALTO; y++) {
             for (int x = 0; x < Tablero.ANCHO; x++) {
                 Posicion pos = new Posicion(x, y);
-                if (gestorAnimaciones == null || !gestorAnimaciones.tieneAnimacionActiva(pos) || !gestorAnimaciones.obtenerAnimacion(pos).estaActiva()) {
+
+                // Solo actualizar si no hay animación activa O si la animación no está corriendo
+                if (gestorAnimaciones == null ||
+                        !gestorAnimaciones.tieneAnimacionActiva(pos) ||
+                        (gestorAnimaciones.tieneAnimacionActiva(pos) &&
+                                !gestorAnimaciones.obtenerAnimacion(pos).estaActiva())) {
                     actualizarCasilla(pos, partida);
                 }
             }
@@ -146,6 +240,9 @@ public class ComponenteArena {
         }
     }
 
+    /**
+     * Dibuja los rangos de detección de las tropas en el canvas
+     */
     private void dibujarRangos(Partida partida) {
         GraphicsContext gc = canvasArena.getGraphicsContext2D();
         gc.clearRect(0, 0, canvasArena.getWidth(), canvasArena.getHeight());
@@ -227,25 +324,28 @@ public class ComponenteArena {
     /**
      * Actualiza una casilla individual
      * @param posicion Posición a actualizar
-     * @paramtablero Tablero del juego
+     * @param partida Partida del juego
      */
     private void actualizarCasilla(Posicion posicion, Partida partida) {
         int x = posicion.getX();
         int y = posicion.getY();
 
         String simbolo = "";
+        Image imagen = null;
         Color colorFondo = Color.LIGHTGRAY;
         boolean hayEntidad = false;
+        boolean esTropa = false;
 
         Tablero tablero = partida.getTablero();
 
         // Prioridad: Tropa > Torre > Terreno
         Tropa tropa = tablero.obtenerTropaEnPosicion(posicion);
         if (tropa != null && tropa.estaViva()) {
-            // Usar símbolos más descriptivos
-            simbolo = obtenerSimboloTropa(tropa);
+            // Usar imagen para tropas
+            imagen = obtenerImagenTropa(tropa);
             colorFondo = obtenerColorJugador(tropa.getJugadorId(), true);
             hayEntidad = true;
+            esTropa = true;
         } else {
             // Verificar si hay una torre
             Torre torre = tablero.obtenerTorreEnPosicion(posicion);
@@ -267,10 +367,17 @@ public class ComponenteArena {
 
         // Aplicar cambios visuales
         casillas[y][x].setFill(colorFondo);
-        simbolos[y][x].setText(simbolo);
 
-        // Ajustar color del texto
-        configurarTextoSimbolo(x, y, hayEntidad);
+        if (esTropa) {
+            // Mostrar imagen, ocultar símbolo
+            imagenes[y][x].setImage(imagen);
+            simbolos[y][x].setText("");
+        } else {
+            // Mostrar símbolo, ocultar imagen
+            imagenes[y][x].setImage(null);
+            simbolos[y][x].setText(simbolo);
+            configurarTextoSimbolo(x, y, hayEntidad);
+        }
     }
 
     private String obtenerSimboloTorre(Torre torre) {
@@ -299,9 +406,63 @@ public class ComponenteArena {
     }
 
     /**
+     * Obtiene la imagen correspondiente a una tropa
+     */
+    private Image obtenerImagenTropa(Tropa tropa) {
+        String nombre = tropa.getNombre().toLowerCase();
+
+        // Normalizar nombre quitando acentos y puntos para comparación
+        String nombreNormalizado = nombre
+                .replace("á", "a")
+                .replace("é", "e")
+                .replace("í", "i")
+                .replace("ó", "o")
+                .replace("ú", "u")
+                .replace(".", "");  // Quitar puntos
+
+        // Mapeo de nombres a claves de imagen
+        if (nombreNormalizado.contains("mini") && nombreNormalizado.contains("pekka")) return obtenerImagen("mini");
+        if (nombreNormalizado.contains("pekka")) return obtenerImagen("pekka");
+        if (nombreNormalizado.contains("gigante") && nombreNormalizado.contains("real")) return obtenerImagen("gigante_real");
+        if (nombreNormalizado.contains("gigante")) return obtenerImagen("gigante");
+        if (nombreNormalizado.contains("caballero") && nombreNormalizado.contains("mega")) return obtenerImagen("megacaballero");
+        if (nombreNormalizado.contains("caballero")) return obtenerImagen("caballero");
+        if (nombreNormalizado.contains("arquera")) return obtenerImagen("arquera");
+        if (nombreNormalizado.contains("duende")) return obtenerImagen("duende");
+        if (nombreNormalizado.contains("esqueleto")) return obtenerImagen("esqueleto");
+        if (nombreNormalizado.contains("mago") && nombreNormalizado.contains("electrico")) return obtenerImagen("mago_electrico");
+        if (nombreNormalizado.contains("mago") && nombreNormalizado.contains("hielo")) return obtenerImagen("mago_hielo");
+        if (nombreNormalizado.contains("mago") || nombreNormalizado.contains("maga")) return obtenerImagen("mago");
+        if (nombreNormalizado.contains("dragon")) return obtenerImagen("dragon");
+        if (nombreNormalizado.contains("barbaro") || nombreNormalizado.contains("barbara")) return obtenerImagen("barbaro");
+        if (nombreNormalizado.contains("valquiria")) return obtenerImagen("valquiria");
+        if (nombreNormalizado.contains("principe") && !nombreNormalizado.contains("princesa")) return obtenerImagen("principe");
+        if (nombreNormalizado.contains("princesa")) return obtenerImagen("princesa");
+        if (nombreNormalizado.contains("bruja") || nombreNormalizado.contains("brujo")) return obtenerImagen("bruja");
+        if (nombreNormalizado.contains("golem")) return obtenerImagen("golem");
+        if (nombreNormalizado.contains("minero") || nombreNormalizado.contains("minera")) return obtenerImagen("minero");
+        if (nombreNormalizado.contains("montapuercos") || nombreNormalizado.contains("puerco") || nombreNormalizado.contains("hog")) return obtenerImagen("montapuercos");
+        if (nombreNormalizado.contains("carnero") || nombreNormalizado.contains("ram")) return obtenerImagen("montacareneros");
+        if (nombreNormalizado.contains("mosquetero") || nombreNormalizado.contains("mosquetera")) return obtenerImagen("mosquetero");
+        if (nombreNormalizado.contains("globo")) return obtenerImagen("globo");
+        if (nombreNormalizado.contains("esbirro") || nombreNormalizado.contains("minion")) return obtenerImagen("esbirro");
+        if (nombreNormalizado.contains("bandido") || nombreNormalizado.contains("bandida")) return obtenerImagen("bandido");
+        if (nombreNormalizado.contains("leñador") || nombreNormalizado.contains("lenador")) return obtenerImagen("leñador");
+        if (nombreNormalizado.contains("pescador")) return obtenerImagen("pescador");
+        if (nombreNormalizado.contains("verdugo")) return obtenerImagen("verdugo");
+        if (nombreNormalizado.contains("bombardero")) return obtenerImagen("bombardero");
+        if (nombreNormalizado.contains("cazador")) return obtenerImagen("cazador");
+        if (nombreNormalizado.contains("lanzadardos") || nombreNormalizado.contains("dardo")) return obtenerImagen("lanzadardos");
+
+        // Si no se encuentra la imagen, mostrar advertencia
+        System.out.println("ADVERTENCIA: No se encontró imagen para: '" + nombre + "'");
+        return null;
+    }
+
+    /**
      * Configura la visualización del terreno
      * @param posicion Posición del terreno
-     * @paramtablero Tablero del juego
+     * @param partida Partida del juego
      */
     private void configurarTerreno(Posicion posicion, Partida partida) {
         int x = posicion.getX();
@@ -339,6 +500,7 @@ public class ComponenteArena {
         }
 
         casillas[y][x].setFill(colorFondo);
+        imagenes[y][x].setImage(null); // Sin imagen para terreno
         simbolos[y][x].setText(simbolo);
         configurarTextoSimbolo(x, y, false);
     }
