@@ -2,6 +2,8 @@ package ui.componentes;
 
 import entidades.edificios.Torre;
 import entidades.tropas.Tropa;
+import javafx.scene.canvas.Canvas;
+import javafx.scene.canvas.GraphicsContext;
 import javafx.geometry.Pos;
 import javafx.scene.control.Label;
 import javafx.scene.layout.*;
@@ -24,6 +26,7 @@ public class ComponenteArena {
 
     private VBox contenedorArena;
     private GridPane grillaArena;
+    private Canvas canvasArena; // Lienzo para dibujar rangos y efectos
     private Rectangle[][] casillas;
     private Label[][] simbolos;
 
@@ -63,22 +66,29 @@ public class ComponenteArena {
         grillaArena = new GridPane();
         grillaArena.setAlignment(Pos.CENTER);
         grillaArena.setStyle(ConstantesUI.Estilos.GRILLA_ARENA);
-
-        // Añadir un poco de espaciado entre celdas para mejor visualización
         grillaArena.setHgap(1);
         grillaArena.setVgap(1);
 
         casillas = new Rectangle[Tablero.ALTO][Tablero.ANCHO];
         simbolos = new Label[Tablero.ALTO][Tablero.ANCHO];
 
-        // Crear las casillas
         for (int y = 0; y < Tablero.ALTO; y++) {
             for (int x = 0; x < Tablero.ANCHO; x++) {
                 crearCasilla(x, y);
             }
         }
 
-        contenedorArena.getChildren().add(grillaArena);
+        // Crear el Canvas del mismo tamaño que la grilla
+        double canvasWidth = Tablero.ANCHO * (ConstantesUI.Dimensiones.TAMANO_CELDA_ARENA + 1);
+        double canvasHeight = Tablero.ALTO * (ConstantesUI.Dimensiones.TAMANO_CELDA_ARENA + 1);
+        canvasArena = new Canvas(canvasWidth, canvasHeight);
+        canvasArena.setMouseTransparent(true); // El canvas no intercepta eventos de ratón
+
+        // Usar un StackPane para superponer la grilla y el canvas
+        StackPane stackPane = new StackPane();
+        stackPane.getChildren().addAll(grillaArena, canvasArena);
+
+        contenedorArena.getChildren().add(stackPane);
     }
 
     /**
@@ -118,20 +128,47 @@ public class ComponenteArena {
     public void actualizar(Partida partida, GestorAnimaciones gestorAnimaciones) {
         Tablero tablero = partida.getTablero();
 
-        // Primero limpiar todas las celdas que no tienen animaciones activas
+        // 1. Actualizar la grilla base
         for (int y = 0; y < Tablero.ALTO; y++) {
             for (int x = 0; x < Tablero.ANCHO; x++) {
                 Posicion pos = new Posicion(x, y);
-
-                // Solo actualizar si no hay animación activa O si la animación no está corriendo
-                if (gestorAnimaciones == null ||
-                        !gestorAnimaciones.tieneAnimacionActiva(pos) ||
-                        (gestorAnimaciones.tieneAnimacionActiva(pos) &&
-                                !gestorAnimaciones.obtenerAnimacion(pos).estaActiva())) {
+                if (gestorAnimaciones == null || !gestorAnimaciones.tieneAnimacionActiva(pos) || !gestorAnimaciones.obtenerAnimacion(pos).estaActiva()) {
                     actualizarCasilla(pos, partida);
                 }
             }
         }
+
+        // 2. Dibujar los rangos en el canvas
+        dibujarRangos(partida);
+    }
+
+    private void dibujarRangos(Partida partida) {
+        GraphicsContext gc = canvasArena.getGraphicsContext2D();
+        gc.clearRect(0, 0, canvasArena.getWidth(), canvasArena.getHeight());
+
+        double tamanoCelda = ConstantesUI.Dimensiones.TAMANO_CELDA_ARENA + 1; // Incluir el gap
+
+        // Configurar el estilo de línea para los rangos
+        gc.setLineDashes(8, 4); // 8 píxeles de línea, 4 de espacio
+        gc.setLineWidth(1.0);
+
+        for (Tropa tropa : partida.getTablero().getTropas()) {
+            if (!tropa.estaViva()) continue;
+
+            double centroX = (tropa.getPosicion().getX() + 0.5) * tamanoCelda;
+            double centroY = (tropa.getPosicion().getY() + 0.5) * tamanoCelda;
+            double radioPixels = tropa.getRangoDeteccion() * tamanoCelda;
+
+            // Configurar el color del borde del círculo
+            Color colorBorde = (tropa.getJugadorId() == 1) ? Color.rgb(0, 100, 255, 0.5) : Color.rgb(255, 50, 50, 0.5);
+            gc.setStroke(colorBorde);
+
+            // Dibujar solo el borde del círculo
+            gc.strokeOval(centroX - radioPixels, centroY - radioPixels, radioPixels * 2, radioPixels * 2);
+        }
+
+        // Limpiar la configuración de guiones para no afectar otros posibles dibujos futuros
+        gc.setLineDashes(null);
     }
 
     /**
