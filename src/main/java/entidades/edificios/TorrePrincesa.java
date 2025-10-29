@@ -5,7 +5,7 @@ import tablero.Posicion;
 
 public class TorrePrincesa extends Torre {
     private static final int VIDA_BASE = 1400;
-    private static final int DANIO_BASE = 30;
+    private static final int DANIO_BASE = 90;
     private static final int ANCHO = 3;
     private static final int ALTO = 3;
     private int ultimoTickAtaque = 0;

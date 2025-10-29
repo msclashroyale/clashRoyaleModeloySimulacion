@@ -6,7 +6,7 @@ import tablero.Posicion;
 
 public class TorreRey extends Torre {
     private static final int VIDA_BASE = 2400;
-    private static final int DANIO_BASE = 50;
+    private static final int DANIO_BASE = 100;
     private static final int ANCHO = 4;
     private static final int ALTO = 4;
     private int ultimoTickAtaque = 0;
