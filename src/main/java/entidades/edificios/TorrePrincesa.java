@@ -56,6 +56,7 @@ public class TorrePrincesa extends Torre {
     public int atacar(Tropa objetivo, int tickActual) {
         if (puedeAtacar(tickActual)) {
             ultimoTickAtaque = tickActual;
+            objetivo.recibirDanio(danioAtaque);
             return danioAtaque;
         }
         return 0;
