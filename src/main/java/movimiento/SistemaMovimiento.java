@@ -9,6 +9,7 @@ import entidades.edificios.TorreRey;
 import entidades.edificios.TorrePrincesa;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class SistemaMovimiento {
 
@@ -31,13 +32,12 @@ public class SistemaMovimiento {
     }
 
     private void actualizarTropa(Tropa tropa, int tickActual) {
-        // Si el objetivo actual ya no es válido (murió o es nulo), buscar uno nuevo.
-        if (tropa.getObjetivo() == null || !tropa.getObjetivo().estaViva()) {
-            EntidadJuego nuevoObjetivo = buscarEntidadObjetivo(tropa);
-            tropa.setObjetivo(nuevoObjetivo);
-            if (nuevoObjetivo == null) {
-                return; // No hay objetivos disponibles, la tropa no se mueve.
-            }
+        // --- NUEVA LÓGICA DE RE-EVALUACIÓN CONSTANTE DE OBJETIVO ---
+        EntidadJuego nuevoObjetivo = determinarNuevoObjetivo(tropa);
+        tropa.setObjetivo(nuevoObjetivo);
+
+        if (nuevoObjetivo == null) {
+            return; // No hay objetivos disponibles, la tropa no se mueve.
         }
 
         // Si ya estamos en rango, no hay necesidad de moverse. El sistema de combate se encargará.
@@ -57,75 +57,79 @@ public class SistemaMovimiento {
                 if (pasoAlternativo != null) {
                     tropa.setPosicion(pasoAlternativo);
                 }
-                // Si no hay ruta alternativa, la tropa simplemente espera al siguiente tick sin invalidar su objetivo.
             }
         }
     }
 
-    private EntidadJuego buscarEntidadObjetivo(Tropa tropa) {
-        int jugadorEnemigo = (tropa.getJugadorId() == 1) ? 2 : 1;
-
+    private EntidadJuego determinarNuevoObjetivo(Tropa tropa) {
+        // Las tropas que solo atacan estructuras ignoran a otras tropas.
         if (tropa.getTipoObjetivo() == Tropa.TipoObjetivo.ESTRUCTURAS) {
-            return encontrarTorreObjetivo(tropa.getPosicion(), jugadorEnemigo);
-        } else { // TROPAS_Y_ESTRUCTURAS
-            return encontrarObjetivoMasCercano(tropa, jugadorEnemigo);
+            return encontrarTorreObjetivoPrioritaria(tropa);
         }
+
+        // 1. Buscar tropas enemigas dentro del rango de detección.
+        EntidadJuego objetivo = encontrarTropaEnemigaEnRango(tropa);
+        if (objetivo != null) {
+            return objetivo;
+        }
+
+        // 2. Si no hay tropas en rango, buscar la torre prioritaria.
+        return encontrarTorreObjetivoPrioritaria(tropa);
     }
 
-    private Torre encontrarTorreObjetivo(Posicion origen, int jugadorEnemigo) {
-        Torre torreMasCercana = null;
+    private Tropa encontrarTropaEnemigaEnRango(Tropa tropa) {
+        int jugadorEnemigo = (tropa.getJugadorId() == 1) ? 2 : 1;
+        Tropa tropaMasCercana = null;
         double menorDistancia = Double.MAX_VALUE;
 
-        for (Torre torre : tablero.getTorresJugador(jugadorEnemigo)) {
-            if (torre.estaViva()) {
-                // Regla: No atacar a la Torre del Rey si hay Torres de Princesa vivas.
-                if (torre instanceof TorreRey && hayTorresPrincesaVivas(jugadorEnemigo)) {
-                    continue;
-                }
-                double distancia = origen.calcularDistancia(torre);
-                if (distancia < menorDistancia) {
-                    menorDistancia = distancia;
-                    torreMasCercana = torre;
-                }
-            }
-        }
-        return torreMasCercana;
-    }
-
-    private EntidadJuego encontrarObjetivoMasCercano(Tropa tropa, int jugadorEnemigo) {
-        EntidadJuego objetivoMasCercano = null;
-        double menorDistancia = Double.MAX_VALUE;
-
-        // Buscar en tropas enemigas
         for (Tropa tropaEnemiga : tablero.getTropasJugador(jugadorEnemigo)) {
             if (tropaEnemiga.estaViva()) {
                 double distancia = tropa.getPosicion().calcularDistancia(tropaEnemiga);
-                if (distancia < menorDistancia) {
+                // Comprobar si está dentro del rango de detección
+                if (distancia <= tropa.getRangoDeteccion() && distancia < menorDistancia) {
                     menorDistancia = distancia;
-                    objetivoMasCercano = tropaEnemiga;
+                    tropaMasCercana = tropaEnemiga;
                 }
             }
         }
-
-        // Buscar en torres enemigas
-        Torre torreObjetivo = encontrarTorreObjetivo(tropa.getPosicion(), jugadorEnemigo);
-        if (torreObjetivo != null) {
-            double distancia = tropa.getPosicion().calcularDistancia(torreObjetivo);
-            if (distancia < menorDistancia) {
-                objetivoMasCercano = torreObjetivo;
-            }
-        }
-
-        return objetivoMasCercano;
+        return tropaMasCercana;
     }
-    
-    private boolean hayTorresPrincesaVivas(int jugadorId) {
-        for (Torre torre : tablero.getTorresJugador(jugadorId)) {
-            if (torre instanceof TorrePrincesa && torre.estaViva()) {
-                return true;
-            }
+
+    private Torre encontrarTorreObjetivoPrioritaria(Tropa tropa) {
+        int jugadorEnemigo = (tropa.getJugadorId() == 1) ? 2 : 1;
+        List<Torre> torresEnemigas = tablero.getTorresJugador(jugadorEnemigo);
+
+        List<Torre> torresPrincesaVivas = torresEnemigas.stream()
+                .filter(t -> t instanceof TorrePrincesa && t.estaViva())
+                .collect(Collectors.toList());
+
+        // Si ambas torres de princesa están vivas, ir a por la más cercana.
+        if (torresPrincesaVivas.size() == 2) {
+            Torre torreIzq = torresPrincesaVivas.get(0);
+            Torre torreDer = torresPrincesaVivas.get(1);
+            double distIzq = tropa.getPosicion().calcularDistancia(torreIzq);
+            double distDer = tropa.getPosicion().calcularDistancia(torreDer);
+            return distIzq <= distDer ? torreIzq : torreDer;
         }
-        return false;
+
+        // Si solo una torre de princesa está viva, decidir entre esa y la del rey.
+        if (torresPrincesaVivas.size() == 1) {
+            Torre torrePrincesaRestante = torresPrincesaVivas.get(0);
+            Torre torreRey = torresEnemigas.stream()
+                    .filter(t -> t instanceof TorreRey)
+                    .findFirst().orElse(null);
+
+            if (torreRey == null) return torrePrincesaRestante; // Salvaguarda
+
+            double distPrincesa = tropa.getPosicion().calcularDistancia(torrePrincesaRestante);
+            double distRey = tropa.getPosicion().calcularDistancia(torreRey);
+            return distPrincesa <= distRey ? torrePrincesaRestante : torreRey;
+        }
+
+        // Si no hay torres de princesa, el único objetivo es la torre del rey.
+        return torresEnemigas.stream()
+                .filter(t -> t instanceof TorreRey && t.estaViva())
+                .findFirst().orElse(null);
     }
 
     private boolean hayObstaculoEn(Posicion posicion, Tropa tropaActual) {
