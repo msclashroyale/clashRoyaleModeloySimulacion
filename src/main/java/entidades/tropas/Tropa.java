@@ -34,6 +34,7 @@ public class Tropa extends EntidadJuego {
     // Atributos de Movimiento
     private int ticksParaMover;
     private EntidadJuego objetivo;
+    private Posicion posicionAnterior;
 
     public Tropa(String nombre, int vidaMaxima, int danioAtaque, int ticksParaMover, int rangoAtaque, int costoElixir,
                  TipoAtaque tipoAtaque, TipoObjetivo tipoObjetivo, int radioArea, String imagenPath,
@@ -50,6 +51,7 @@ public class Tropa extends EntidadJuego {
         this.tipoObjetivo = tipoObjetivo;
         this.radioArea = radioArea;
         this.ticksParaMover = ticksParaMover;
+        this.posicionAnterior = posicion; // Inicializar posicionAnterior
     }
 
     // Clone constructor
@@ -144,4 +146,11 @@ public class Tropa extends EntidadJuego {
     public int getTicksParaMover() { return ticksParaMover; }
     public EntidadJuego getObjetivo() { return objetivo; }
     public void setObjetivo(EntidadJuego objetivo) { this.objetivo = objetivo; }
+    public Posicion getPosicionAnterior() { return posicionAnterior; }
+
+    @Override
+    public void setPosicion(Posicion nuevaPosicion) {
+        this.posicionAnterior = this.posicion;
+        super.setPosicion(nuevaPosicion);
+    }
 }

@@ -47,7 +47,7 @@ public class SistemaMovimiento {
 
         // Moverse hacia el objetivo según la velocidad de la tropa.
         if (tickActual % tropa.getTicksParaMover() == 0) {
-            Posicion siguientePaso = buscadorCaminos.encontrarSiguientePaso(tropa, tropa.getObjetivo());
+            Posicion siguientePaso = buscadorCaminos.encontrarSiguientePaso(tropa, tropa.getObjetivo(), tropa.getPosicionAnterior());
 
             if (siguientePaso != null && !hayObstaculoEn(siguientePaso, tropa)) {
                 tropa.setPosicion(siguientePaso);
