@@ -24,7 +24,7 @@ public class BuscadorCaminos {
      * Encuentra el siguiente paso óptimo para una tropa hacia su destino.
      * Mantiene la lógica original pero con nombres más claros.
      */
-    public Posicion encontrarSiguientePaso(Tropa tropa, EntidadJuego destino) {
+    public Posicion encontrarSiguientePaso(Tropa tropa, EntidadJuego destino, Posicion posicionAnterior) {
         Posicion posicionActual = tropa.getPosicion();
         Posicion posicionDestino = destino.getPosicion();
 
@@ -45,19 +45,19 @@ public class BuscadorCaminos {
 
             // Si no está en el puente, ir hacia él primero
             if (!posicionActual.equals(puente)) {
-                return calcularSiguientePasoHacia(posicionActual, puente);
+                return calcularSiguientePasoHacia(posicionActual, puente, posicionAnterior);
             }
         }
 
         // Movimiento normal hacia el destino
-        return calcularSiguientePasoHacia(posicionActual, posicionDestino);
+        return calcularSiguientePasoHacia(posicionActual, posicionDestino, posicionAnterior);
     }
 
     /**
      * Calcula el siguiente paso hacia un destino específico.
      * Prioriza movimiento diagonal, luego horizontal/vertical.
      */
-    private Posicion calcularSiguientePasoHacia(Posicion desde, Posicion hacia) {
+    private Posicion calcularSiguientePasoHacia(Posicion desde, Posicion hacia, Posicion posicionAnterior) {
         // Calcular dirección (signo de la diferencia)
         int deltaX = Integer.signum(hacia.getX() - desde.getX());
         int deltaY = Integer.signum(hacia.getY() - desde.getY());
@@ -80,6 +80,9 @@ public class BuscadorCaminos {
 
         // Buscar el primer candidato que sea válido
         for (Posicion candidato : candidatos) {
+            if (candidato.equals(posicionAnterior)) {
+                continue; // Evitar volver a la posición anterior inmediatamente
+            }
             if (esPosicionValidaParaMoverse(candidato)) {
                 return candidato;
             }
@@ -104,7 +107,16 @@ public class BuscadorCaminos {
         }
 
         // Verificar que no haya otra tropa en esa posición
-        return tablero.obtenerTropaEnPosicion(posicion) == null;
+        if (tablero.obtenerTropaEnPosicion(posicion) != null) {
+            return false;
+        }
+
+        // Verificar que no haya una torre en esa posición
+        if (tablero.obtenerTorreEnPosicion(posicion) != null) {
+            return false;
+        }
+
+        return true;
     }
 
     /**

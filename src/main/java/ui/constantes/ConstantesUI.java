@@ -3,11 +3,21 @@ package ui.constantes;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
+import ui.configuracionResponsive.ConfiguracionResponsive;
 
 /**
  * Constantes centralizadas para la interfaz de usuario
  */
 public class ConstantesUI {
+
+    private static final ConfiguracionResponsive.TipoPantalla TIPO_PANTALLA =
+            ConfiguracionResponsive.detectarTipoPantalla();
+    private static final ConfiguracionResponsive.DimensionesResponsive DIMENSIONES =
+            new ConfiguracionResponsive.DimensionesResponsive(TIPO_PANTALLA);
+
+    public static boolean esPantallaGrande() {
+        return TIPO_PANTALLA == ConfiguracionResponsive.TipoPantalla.MONITOR_GRANDE;
+    }
 
     // COLORES
     public static final class Colores {
@@ -22,11 +32,11 @@ public class ConstantesUI {
         public static final Color NEUTRAL = Color.web("#6b7280");
 
         // Colores del arena
-        public static final Color ARENA_ZONA_J1 = Color.LIGHTCYAN;
-        public static final Color ARENA_ZONA_J2 = Color.MISTYROSE;
-        public static final Color ARENA_ZONA_NEUTRAL = Color.LIGHTGREEN;
-        public static final Color ARENA_RIO = Color.LIGHTBLUE;
-        public static final Color ARENA_PUENTE = Color.BROWN;
+        public static final Color ARENA_ZONA_J1 = Color.web("#93C5FD");
+        public static final Color ARENA_ZONA_J2 = Color.web("#FCA5A5");
+        public static final Color ARENA_ZONA_NEUTRAL = Color.web("#86EFAC");
+        public static final Color ARENA_RIO = Color.web("#60A5FA");
+        public static final Color ARENA_PUENTE = Color.web("#A16207");
         public static final Color ARENA_BORDE = Color.WHITE;
 
         // Estados de vida
@@ -70,41 +80,237 @@ public class ConstantesUI {
                 "-fx-background-color: black; -fx-text-fill: white; -fx-padding: 5 10; -fx-background-radius: 5;";
 
         public static final String CARTA_DISPONIBLE =
-                "-fx-background-color: rgba(0, 255, 0, 0.3); -fx-background-radius: 3; -fx-padding: 2;";
+                "-fx-background-color: linear-gradient(to bottom, #4ADE80, #16A34A); " +
+                        "-fx-border-color: #22C55E; " +
+                        "-fx-border-width: 2; " +
+                        "-fx-background-radius: 10; " +
+                        "-fx-border-radius: 10;";
 
         public static final String CARTA_NO_DISPONIBLE =
-                "-fx-background-color: rgba(255, 0, 0, 0.3); -fx-background-radius: 3; -fx-padding: 2;";
+                "-fx-background-color: linear-gradient(to bottom, #6B7280, #4B5563); " +
+                        "-fx-border-color: #9CA3AF; " +
+                        "-fx-border-width: 2; " +
+                        "-fx-background-radius: 10; " +
+                        "-fx-border-radius: 10;";
 
         public static final String CONTENEDOR_LISTA =
                 "-fx-background-color: rgba(0, 0, 0, 0.4); -fx-background-radius: 5; -fx-padding: 5;";
 
         public static final String GRILLA_ARENA =
                 "-fx-border-color: white; -fx-border-width: 2; -fx-background-color: rgba(255, 255, 255, 0.1);";
+
+        public static final String PANEL_JUGADOR_1_NUEVO =
+                "-fx-background-color: linear-gradient(to bottom, #1e3b70, #2a5298); " +
+                        "-fx-background-radius: 20; " +
+                        "-fx-border-radius: 20; " +
+                        "-fx-border-color: linear-gradient(to bottom, #3b82f6, #1e40af); " +
+                        "-fx-border-width: 3; " +
+                        "-fx-effect: dropshadow(gaussian, rgba(59, 130, 246, 0.5), 20, 0.3, 0, 5); " +
+                        "-fx-padding: 15;";
+
+        public static final String PANEL_JUGADOR_2_NUEVO =
+                "-fx-background-color: linear-gradient(to bottom, #7f1d1d, #dc2626); " +
+                        "-fx-background-radius: 20; " +
+                        "-fx-border-radius: 20; " +
+                        "-fx-border-color: linear-gradient(to bottom, #ef4444, #b91c1c); " +
+                        "-fx-border-width: 3; " +
+                        "-fx-effect: dropshadow(gaussian, rgba(239, 68, 68, 0.5), 20, 0.3, 0, 5); " +
+                        "-fx-padding: 15;";
+
+        // NUEVOS ESTILOS PARA BOTONES - DISEÑO GAMER
+        public static final String BOTON_PRIMARIO_NUEVO =
+                "-fx-background-color: linear-gradient(to bottom, #10b981, #059669); " +
+                        "-fx-text-fill: white; " +
+                        "-fx-font-weight: bold; " +
+                        "-fx-padding: 12 24; " +
+                        "-fx-background-radius: 12; " +
+                        "-fx-border-radius: 12; " +
+                        "-fx-border-color: #34d399; " +
+                        "-fx-border-width: 2; " +
+                        "-fx-effect: dropshadow(gaussian, rgba(16, 185, 129, 0.4), 10, 0.3, 0, 3); " +
+                        "-fx-cursor: hand; " +
+                        "-fx-font-size: 13;";
+
+        public static final String BOTON_PRIMARIO_NUEVO_HOVER =
+                "-fx-background-color: linear-gradient(to bottom, #34d399, #10b981); " +
+                        "-fx-text-fill: white; " +
+                        "-fx-font-weight: bold; " +
+                        "-fx-padding: 12 24; " +
+                        "-fx-background-radius: 12; " +
+                        "-fx-border-radius: 12; " +
+                        "-fx-border-color: #6ee7b7; " +
+                        "-fx-border-width: 2; " +
+                        "-fx-effect: dropshadow(gaussian, rgba(16, 185, 129, 0.6), 15, 0.4, 0, 5); " +
+                        "-fx-cursor: hand; " +
+                        "-fx-font-size: 13;";
+
+        public static final String BOTON_SECUNDARIO_NUEVO =
+                "-fx-background-color: linear-gradient(to bottom, #6b7280, #4b5563); " +
+                        "-fx-text-fill: white; " +
+                        "-fx-font-weight: bold; " +
+                        "-fx-padding: 12 24; " +
+                        "-fx-background-radius: 12; " +
+                        "-fx-border-radius: 12; " +
+                        "-fx-border-color: #9ca3af; " +
+                        "-fx-border-width: 2; " +
+                        "-fx-effect: dropshadow(gaussian, rgba(107, 114, 128, 0.4), 10, 0.3, 0, 3); " +
+                        "-fx-cursor: hand; " +
+                        "-fx-font-size: 13;";
+
+        public static final String BOTON_SECUNDARIO_NUEVO_HOVER =
+                "-fx-background-color: linear-gradient(to bottom, #9ca3af, #6b7280); " +
+                        "-fx-text-fill: white; " +
+                        "-fx-font-weight: bold; " +
+                        "-fx-padding: 12 24; " +
+                        "-fx-background-radius: 12; " +
+                        "-fx-border-radius: 12; " +
+                        "-fx-border-color: #d1d5db; " +
+                        "-fx-border-width: 2; " +
+                        "-fx-effect: dropshadow(gaussian, rgba(107, 114, 128, 0.6), 15, 0.4, 0, 5); " +
+                        "-fx-cursor: hand; " +
+                        "-fx-font-size: 13;";
+
+        public static final String BOTON_PELIGRO_NUEVO =
+                "-fx-background-color: linear-gradient(to bottom, #ef4444, #dc2626); " +
+                        "-fx-text-fill: white; " +
+                        "-fx-font-weight: bold; " +
+                        "-fx-padding: 12 24; " +
+                        "-fx-background-radius: 12; " +
+                        "-fx-border-radius: 12; " +
+                        "-fx-border-color: #f87171; " +
+                        "-fx-border-width: 2; " +
+                        "-fx-effect: dropshadow(gaussian, rgba(239, 68, 68, 0.4), 10, 0.3, 0, 3); " +
+                        "-fx-cursor: hand; " +
+                        "-fx-font-size: 13;";
+
+        public static final String BOTON_PELIGRO_NUEVO_HOVER =
+                "-fx-background-color: linear-gradient(to bottom, #f87171, #ef4444); " +
+                        "-fx-text-fill: white; " +
+                        "-fx-font-weight: bold; " +
+                        "-fx-padding: 12 24; " +
+                        "-fx-background-radius: 12; " +
+                        "-fx-border-radius: 12; " +
+                        "-fx-border-color: #fca5a5; " +
+                        "-fx-border-width: 2; " +
+                        "-fx-effect: dropshadow(gaussian, rgba(239, 68, 68, 0.6), 15, 0.4, 0, 5); " +
+                        "-fx-cursor: hand; " +
+                        "-fx-font-size: 13;";
+
+        public static final String BOTON_INFORMACION_NUEVO =
+                "-fx-background-color: linear-gradient(to bottom, #3b82f6, #2563eb); " +
+                        "-fx-text-fill: white; " +
+                        "-fx-font-weight: bold; " +
+                        "-fx-padding: 12 24; " +
+                        "-fx-background-radius: 12; " +
+                        "-fx-border-radius: 12; " +
+                        "-fx-border-color: #60a5fa; " +
+                        "-fx-border-width: 2; " +
+                        "-fx-effect: dropshadow(gaussian, rgba(59, 130, 246, 0.4), 10, 0.3, 0, 3); " +
+                        "-fx-cursor: hand; " +
+                        "-fx-font-size: 13;";
+
+        public static final String BOTON_INFORMACION_NUEVO_HOVER =
+                "-fx-background-color: linear-gradient(to bottom, #60a5fa, #3b82f6); " +
+                        "-fx-text-fill: white; " +
+                        "-fx-font-weight: bold; " +
+                        "-fx-padding: 12 24; " +
+                        "-fx-background-radius: 12; " +
+                        "-fx-border-radius: 12; " +
+                        "-fx-border-color: #93c5fd; " +
+                        "-fx-border-width: 2; " +
+                        "-fx-effect: dropshadow(gaussian, rgba(59, 130, 246, 0.6), 15, 0.4, 0, 5); " +
+                        "-fx-cursor: hand; " +
+                        "-fx-font-size: 13;";
+
+        // NUEVO ESTILO PARA CONTENEDORES INTERNOS
+        public static final String CONTENEDOR_LISTA_NUEVO =
+                "-fx-background-color: rgba(0, 0, 0, 0.3); " +
+                        "-fx-background-radius: 12; " +
+                        "-fx-border-radius: 12; " +
+                        "-fx-border-color: rgba(255, 255, 255, 0.1); " +
+                        "-fx-border-width: 1; " +
+                        "-fx-padding: 10;";
+
+        // NUEVO ESTILO PARA BARRAS DE PROGRESO
+        public static final String BARRA_ELIXIR_NUEVA =
+                "-fx-background-radius: 20; " +
+                        "-fx-border-radius: 20; " +
+                        "-fx-background-color: #1e293b; " +
+                        "-fx-accent: #8b5cf6; " +
+                        "-fx-padding: 0;";
+
+        // NUEVO ESTILO PARA TÍTULOS
+        public static final String TITULO_PANEL_NUEVO =
+                "-fx-font-weight: bold; " +
+                        "-fx-text-fill: white; " +
+                        "-fx-effect: dropshadow(gaussian, rgba(0,0,0,0.8), 8, 0.5, 2, 2);";
     }
 
     // FUENTES
     public static final class Fuentes {
-        public static final Font TITULO_GRANDE = Font.font("Arial", FontWeight.BOLD, 24);
-        public static final Font TITULO_MEDIANO = Font.font("Arial", FontWeight.BOLD, 18);
-        public static final Font TITULO_PEQUENO = Font.font("Arial", FontWeight.BOLD, 16);
-        public static final Font SUBTITULO = Font.font("Arial", FontWeight.BOLD, 14);
-        public static final Font TEXTO_GRANDE = Font.font("Arial", 14);
-        public static final Font TEXTO_MEDIANO = Font.font("Arial", 12);
-        public static final Font TEXTO_PEQUENO = Font.font("Arial", 10);
-        public static final Font TEXTO_LEYENDA = Font.font("Arial", 9);
-        public static final Font TEXTO_DIMINUTO = Font.font("Arial", 8);
-        public static final Font TEXTO_MICRO = Font.font("Arial", 7);
+        public static final Font TITULO_GRANDE = Font.font("Arial", FontWeight.BOLD,
+                esPantallaGrande() ? 24 : 20);
+        public static final Font TITULO_MEDIANO = Font.font("Arial", FontWeight.BOLD,
+                esPantallaGrande() ? 18 : 16);
+        public static final Font TITULO_PEQUENO = Font.font("Arial", FontWeight.BOLD,
+                esPantallaGrande() ? 16 : 14);
+        public static final Font SUBTITULO = Font.font("Arial", FontWeight.BOLD,
+                esPantallaGrande() ? 14 : 12);
+        public static final Font TEXTO_GRANDE = Font.font("Arial",
+                esPantallaGrande() ? 14 : 12);
+        public static final Font TEXTO_MEDIANO = Font.font("Arial",
+                esPantallaGrande() ? 12 : 10);
+        public static final Font TEXTO_PEQUENO = Font.font("Arial",
+                esPantallaGrande() ? 10 : 9);
+        public static final Font TEXTO_LEYENDA = Font.font("Arial",
+                esPantallaGrande() ? 9 : 8);
+        public static final Font TEXTO_DIMINUTO = Font.font("Arial",
+                esPantallaGrande() ? 8 : 7);
+        public static final Font TEXTO_MICRO = Font.font("Arial",
+                esPantallaGrande() ? 7 : 6);
+        public static final Color TEXTO_OSCURO = Color.web("#1F2937");
+        public static final Color TEXTO_CLARO = Color.web("#F9FAFB");
     }
 
     // DIMENSIONES
     public static final class Dimensiones {
-        public static final double ANCHO_VENTANA = 1200;
-        public static final double ALTO_VENTANA = 800;
-        public static final double ANCHO_PANEL_JUGADOR = 400;
-        public static final double TAMANO_CELDA_ARENA = 20;
-        public static final double ESPACIADO_PANEL = 15;
-        public static final double ESPACIADO_PEQUENO = 8;
-        public static final double ESPACIADO_DIMINUTO = 3;
+        public static final double ANCHO_VENTANA = DIMENSIONES.ANCHO_VENTANA;
+        public static final double ALTO_VENTANA = DIMENSIONES.ALTO_VENTANA;
+        public static final double ANCHO_PANEL_JUGADOR = DIMENSIONES.ANCHO_PANEL_JUGADOR;
+        public static final double TAMANO_CELDA_ARENA = DIMENSIONES.TAMANO_CELDA_ARENA;
+        public static final double ESPACIADO_PANEL = DIMENSIONES.ESPACIADO_PANEL;
+        public static final double ESPACIADO_PEQUENO = esPantallaGrande() ? 8 : 6;
+        public static final double ESPACIADO_DIMINUTO = esPantallaGrande() ? 3 : 2;
+
+        public static double getAnchoPanelJugador() {
+            return esPantallaGrande() ? 380 : 300;
+        }
+
+        public static double getAnchoCarta() {
+            return esPantallaGrande() ? 80 : 65;
+        }
+
+        public static double getAltoCarta() {
+            return esPantallaGrande() ? 120 : 95;
+        }
+
+        // Métodos responsive para las alturas de secciones
+        public static double getAltoSeccionCartas() {
+            return esPantallaGrande() ? 220 : 180;
+        }
+
+        public static double getAltoSeccionTropas() {
+            return esPantallaGrande() ? 150 : 120;
+        }
+
+        public static double getAltoSeccionTorres() {
+            return esPantallaGrande() ? 100 : 80;
+        }
+
+        public static double getAltoScrollTropas() {
+            return esPantallaGrande() ? 120 : 90;
+        }
+
     }
 
     // TIMING Y ANIMACIONES
@@ -134,10 +340,10 @@ public class ConstantesUI {
         public static final String EMPATE = "🤝 EMPATE";
 
         // Botones
-        public static final String BOTON_INICIAR = "▶ INICIAR";
-        public static final String BOTON_PAUSAR = "⏸ PAUSAR";
-        public static final String BOTON_REINICIAR = "🔄 RESET";
-        public static final String BOTON_PASO = "➡️ STEP";
+        public static final String BOTON_INICIAR = " INICIAR";
+        public static final String BOTON_PAUSAR = " PAUSAR";
+        public static final String BOTON_REINICIAR = " REINICIAR";
+        public static final String BOTON_PASO = " PASO";
 
         // Ayuda
         public static final String AYUDA_CONTROLES = "Controles: ESPACIO=Play/Pause | ENTER=Step | R=Reset";

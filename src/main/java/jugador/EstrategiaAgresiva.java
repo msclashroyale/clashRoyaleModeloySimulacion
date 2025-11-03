@@ -10,6 +10,7 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Random;
+import java.util.stream.Collectors;
 
 /**
  * Estrategia de IA que prioriza el ataque y el uso de las tropas más fuertes.
@@ -59,15 +60,30 @@ public class EstrategiaAgresiva implements EstrategiaIA {
             return null;
         }
 
-        // Criterio de agresividad: encontrar el punto más "adelantado" en la zona de despliegue.
-        Posicion puntoMasAdelantado = Collections.max(zonasValidas, Comparator.comparingInt(p -> {
-            return (jugador.getId() == 1) ? p.getY() : -p.getY();
-        }));
+        // 1. Encontrar la coordenada 'y' de la fila más adelantada.
+        final int yAdelantada;
+        if (jugador.getId() == 1) { // Jugador 1 (abajo) busca la Y máxima.
+            yAdelantada = zonasValidas.stream().mapToInt(Posicion::getY).max().orElse(-1);
+        } else { // Jugador 2 (arriba) busca la Y mínima.
+            yAdelantada = zonasValidas.stream().mapToInt(Posicion::getY).min().orElse(-1);
+        }
 
-        // De todas las posiciones válidas, encontrar una que esté libre y sea la más cercana al punto adelantado.
-        return zonasValidas.stream()
+        if (yAdelantada == -1) {
+            return null; // No debería ocurrir si la lista no está vacía.
+        }
+
+        // 2. Obtener todas las posiciones en esa fila en una lista MODIFICABLE.
+        List<Posicion> lineaAdelantada = zonasValidas.stream()
+                .filter(p -> p.getY() == yAdelantada)
+                .collect(Collectors.toList());
+
+        // 3. Barajar las posiciones para elegir una al azar.
+        Collections.shuffle(lineaAdelantada, generadorAleatorio);
+
+        // 4. Encontrar la primera posición barajada que esté libre en el tablero.
+        return lineaAdelantada.stream()
                 .filter(p -> tablero.puedeDesplegarTropa(jugador, p))
-                .min(Comparator.comparingDouble(p -> p.calcularDistancia(puntoMasAdelantado)))
-                .orElse(null); // Si no hay ninguna posición libre, no se despliega nada.
+                .findFirst()
+                .orElse(null); // Si toda la fila está ocupada, no se despliega.
     }
 }

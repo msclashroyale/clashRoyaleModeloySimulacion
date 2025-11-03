@@ -10,6 +10,7 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Random;
+import java.util.stream.Collectors;
 
 /**
  * Estrategia de IA que prioriza la defensa y el uso de las tropas más resistentes.
@@ -58,14 +59,32 @@ public class EstrategiaDefensiva implements EstrategiaIA {
             return null;
         }
 
-        // Criterio de defensa: desplegar cerca de la torre del rey para protegerla.
-        // La posición de la torre del rey depende del jugador.
-        Posicion torreDelRey = (jugador.getId() == 1) ? new Posicion(8, 2) : new Posicion(8, 28);
+        // Criterio de defensa: desplegar en las 3 filas traseras.
+        final int yBase = (jugador.getId() == 1) ? 0 : Tablero.ALTO - 1;
+        final int yLimite = (jugador.getId() == 1) ? yBase + 3 : yBase - 3;
 
-        // De todas las posiciones válidas y libres, encontrar la más cercana a la torre del rey.
-        return zonasValidas.stream()
+        // 1. Filtrar posiciones en las filas traseras que estén libres.
+        List<Posicion> posicionesDefensivas = zonasValidas.stream()
+                .filter(p -> {
+                    if (jugador.getId() == 1) {
+                        return p.getY() < yLimite;
+                    } else {
+                        return p.getY() > yLimite;
+                    }
+                })
                 .filter(p -> tablero.puedeDesplegarTropa(jugador, p))
-                .min(Comparator.comparingDouble(p -> p.calcularDistancia(torreDelRey)))
-                .orElse(null);
+                .collect(Collectors.toList());
+
+        if (posicionesDefensivas.isEmpty()) {
+            // Fallback: si no hay espacio atrás, usar cualquier posición libre para no bloquear a la IA.
+            posicionesDefensivas = zonasValidas.stream()
+                    .filter(p -> tablero.puedeDesplegarTropa(jugador, p))
+                    .collect(Collectors.toList());
+            if (posicionesDefensivas.isEmpty()) return null;
+        }
+
+        // 2. Barajar las posiciones defensivas y elegir una al azar.
+        Collections.shuffle(posicionesDefensivas, generadorAleatorio);
+        return posicionesDefensivas.get(0);
     }
 }

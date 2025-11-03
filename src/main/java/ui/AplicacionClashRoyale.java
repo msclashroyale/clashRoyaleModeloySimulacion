@@ -42,8 +42,7 @@ public class AplicacionClashRoyale extends Application {
      * @param escenario Escenario a configurar
      */
     private void configurarEscenario(Stage escenario) {
-        // Configurar propiedades básicas de la ventana
-        escenario.setTitle(ConstantesUI.Etiquetas.TITULO_APP);
+        escenario.setTitle("Clash Royale Simulator");
         escenario.setResizable(true);
         escenario.setMinWidth(ConstantesUI.Dimensiones.ANCHO_VENTANA * 0.8);
         escenario.setMinHeight(ConstantesUI.Dimensiones.ALTO_VENTANA * 0.8);

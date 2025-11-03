@@ -25,6 +25,7 @@ public class Tropa extends EntidadJuego {
     // Atributos de Combate
     private int danioAtaque;
     private int rangoAtaque;
+    private int rangoDeteccion; // Rango para detectar enemigos y cambiar de objetivo
     private int cooldownAtaque;
     private int ticksUltimoAtaque;
     private TipoAtaque tipoAtaque;
@@ -34,6 +35,7 @@ public class Tropa extends EntidadJuego {
     // Atributos de Movimiento
     private int ticksParaMover;
     private EntidadJuego objetivo;
+    private Posicion posicionAnterior;
 
     public Tropa(String nombre, int vidaMaxima, int danioAtaque, int ticksParaMover, int rangoAtaque, int costoElixir,
                  TipoAtaque tipoAtaque, TipoObjetivo tipoObjetivo, int radioArea, String imagenPath,
@@ -44,12 +46,14 @@ public class Tropa extends EntidadJuego {
         this.imagenPath = imagenPath;
         this.danioAtaque = danioAtaque;
         this.rangoAtaque = rangoAtaque;
+        this.rangoDeteccion = rangoAtaque + 3; // Valor por defecto para el rango de detección
         this.cooldownAtaque = 1; // Default, can be changed
         this.ticksUltimoAtaque = 0;
         this.tipoAtaque = tipoAtaque;
         this.tipoObjetivo = tipoObjetivo;
         this.radioArea = radioArea;
         this.ticksParaMover = ticksParaMover;
+        this.posicionAnterior = posicion; // Inicializar posicionAnterior
     }
 
     // Clone constructor
@@ -60,6 +64,7 @@ public class Tropa extends EntidadJuego {
         this.imagenPath = otra.imagenPath;
         this.danioAtaque = otra.danioAtaque;
         this.rangoAtaque = otra.rangoAtaque;
+        this.rangoDeteccion = otra.rangoDeteccion;
         this.cooldownAtaque = otra.cooldownAtaque;
         this.ticksUltimoAtaque = 0;
         this.tipoAtaque = otra.tipoAtaque;
@@ -137,6 +142,7 @@ public class Tropa extends EntidadJuego {
     public String getImagenPath() { return imagenPath; }
     public int getDanioAtaque() { return danioAtaque; }
     public int getRangoAtaque() { return rangoAtaque; }
+    public int getRangoDeteccion() { return rangoDeteccion; }
     public int getCooldownAtaque() { return cooldownAtaque; }
     public TipoAtaque getTipoAtaque() { return tipoAtaque; }
     public TipoObjetivo getTipoObjetivo() { return tipoObjetivo; }
@@ -144,4 +150,11 @@ public class Tropa extends EntidadJuego {
     public int getTicksParaMover() { return ticksParaMover; }
     public EntidadJuego getObjetivo() { return objetivo; }
     public void setObjetivo(EntidadJuego objetivo) { this.objetivo = objetivo; }
+    public Posicion getPosicionAnterior() { return posicionAnterior; }
+
+    @Override
+    public void setPosicion(Posicion nuevaPosicion) {
+        this.posicionAnterior = this.posicion;
+        super.setPosicion(nuevaPosicion);
+    }
 }

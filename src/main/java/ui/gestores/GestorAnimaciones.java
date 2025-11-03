@@ -6,10 +6,12 @@ import entidades.edificios.Torre;
 import entidades.tropas.Tropa;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.StackPane;
+import javafx.scene.layout.Pane;
 import tablero.Tablero;
 import tablero.Posicion;
 import ui.AnimacionCombate;
 import ui.TipoAnimacion;
+import ui.efectos.SistemaParticulas;
 import ui.constantes.ConstantesUI;
 
 import java.util.ArrayList;
@@ -28,6 +30,8 @@ public class GestorAnimaciones {
     private final Map<Posicion, AnimacionCombate> animacionesActivas;
     private final GridPane grillaArena;
     private final Partida partida;
+    private final SistemaParticulas sistemaParticulas; // DECLARACIÓN AÑADIDA
+    private final Pane contenedorAnimaciones; // DECLARACIÓN AÑADIDA
 
     // Cache para optimizar el rendimiento
     private final Map<Tropa, Posicion> cachePosicionesAnterioresTropas;
@@ -46,6 +50,16 @@ public class GestorAnimaciones {
         this.cachePosicionesAnterioresTropas = new HashMap<>();
         this.posicionesLimpiandose = new HashSet<>();
         this.cacheEstadosTorres = new HashMap<>();
+
+        // INICIALIZACIÓN DEL SISTEMA DE PARTÍCULAS AÑADIDA
+        this.contenedorAnimaciones = new Pane();
+        this.contenedorAnimaciones.setMouseTransparent(true);
+        this.sistemaParticulas = new SistemaParticulas(contenedorAnimaciones);
+
+        // Añadir el contenedor de animaciones sobre la grilla
+        if (grillaArena.getParent() instanceof Pane) {
+            ((Pane) grillaArena.getParent()).getChildren().add(contenedorAnimaciones);
+        }
     }
 
     /**
@@ -67,8 +81,8 @@ public class GestorAnimaciones {
             return;
         }
 
-        // Crear y registrar nueva animación
-        AnimacionCombate nuevaAnimacion = new AnimacionCombate(celda, tipo);
+        // Crear y registrar nueva animación MEJORADA con sistema de partículas
+        AnimacionCombate nuevaAnimacion = new AnimacionCombate(celda, tipo, sistemaParticulas);
         animacionesActivas.put(crearCopiaPosicion(posicion), nuevaAnimacion);
     }
 
@@ -153,23 +167,43 @@ public class GestorAnimaciones {
 
     /**
      * Gestiona el movimiento de una tropa limpiando su posición anterior
-     * @param tropaBase Tropa que se movió
+     * @param tropa Tropa que se movió
      * @param posicionActual Nueva posición de la tropa
      */
     private void gestionarMovimientoTropa(Tropa tropa, Posicion posicionActual) {
         Posicion posicionAnterior = cachePosicionesAnterioresTropas.get(tropa);
 
         if (posicionAnterior != null && !posicionAnterior.equals(posicionActual)) {
-            limpiarAnimacionEnPosicion(posicionAnterior);
+            // Limpieza inmediata y forzada de la posición anterior
+            limpiarAnimacionEnPosicionForzado(posicionAnterior);
+
+            // También limpiar cualquier animación en la nueva posición que pueda ser obsoleta
+            if (animacionesActivas.containsKey(posicionActual)) {
+                AnimacionCombate animacion = animacionesActivas.get(posicionActual);
+                // Si la animación en la nueva posición no está activa, limpiarla
+                if (!animacion.estaActiva()) {
+                    limpiarAnimacionEnPosicionForzado(posicionActual);
+                }
+            }
         }
 
         // Actualizar cache
         cachePosicionesAnterioresTropas.put(tropa, crearCopiaPosicion(posicionActual));
     }
 
+    private void limpiarAnimacionEnPosicionForzado(Posicion posicion) {
+        AnimacionCombate animacion = animacionesActivas.get(posicion);
+        if (animacion != null) {
+            animacion.detener();
+            animacionesActivas.remove(posicion);
+        }
+        posicionesLimpiandose.add(posicion);
+    }
+
+
     /**
      * Evalúa el estado de combate de una tropa
-     * @param tropaBase Tropa a evaluar
+     * @param tropa Tropa a evaluar
      * @param tablero Tablero del juego
      * @return Estado de combate de la tropa
      */
@@ -193,9 +227,13 @@ public class GestorAnimaciones {
         return new EstadoCombate(estaAtacando, recibioDanio);
     }
 
+    public AnimacionCombate obtenerAnimacion(Posicion posicion) {
+        return animacionesActivas.get(posicion);
+    }
+
     /**
      * Verifica si una tropa está atacando actualmente
-     * @param tropaBase Tropa a verificar
+     * @param tropa Tropa a verificar
      * @param tablero Tablero del juego
      * @return true si está atacando
      */
@@ -206,7 +244,7 @@ public class GestorAnimaciones {
 
     /**
      * Verifica si una tropa recibió daño recientemente
-     * @param tropaBase Tropa a verificar
+     * @param tropa Tropa a verificar
      * @return true si recibió daño
      */
     private boolean verificarDanioReciente(Tropa tropa) {
@@ -273,17 +311,31 @@ public class GestorAnimaciones {
      * Limpia animaciones en posiciones donde ya no hay entidades válidas
      * @param tablero Tablero actual del juego
      */
-    private void limpiarAnimacionesObsoletas(Tablero tablero) {
+    public void limpiarAnimacionesObsoletas(Tablero tablero) {
         List<Posicion> posicionesALimpiar = new ArrayList<>();
 
         for (Posicion pos : animacionesActivas.keySet()) {
-            if (!hayEntidadValidaEnPosicion(pos, tablero)) {
+            boolean debeLimpiar = !hayEntidadValidaEnPosicion(pos, tablero) ||
+                    posicionesLimpiandose.contains(pos);
+
+            if (debeLimpiar) {
                 posicionesALimpiar.add(pos);
             }
         }
 
         for (Posicion pos : posicionesALimpiar) {
             limpiarAnimacionEnPosicion(pos);
+        }
+    }
+
+    public void limpiarAnimacionesEnPosicionForzado(Posicion posicion) {
+        if (animacionesActivas.containsKey(posicion)) {
+            AnimacionCombate animacion = animacionesActivas.get(posicion);
+            animacion.detener();
+            animacionesActivas.remove(posicion);
+
+            // Forzar actualización visual inmediata
+            posicionesLimpiandose.add(posicion);
         }
     }
 
@@ -386,6 +438,7 @@ public class GestorAnimaciones {
         cachePosicionesAnterioresTropas.clear();
         posicionesLimpiandose.clear();
         cacheEstadosTorres.clear();
+        sistemaParticulas.limpiar(); // Limpiar partículas también
     }
 
     /**
@@ -403,6 +456,7 @@ public class GestorAnimaciones {
     public String obtenerEstadoAnimaciones() {
         StringBuilder sb = new StringBuilder();
         sb.append("Animaciones activas: ").append(animacionesActivas.size()).append("\n");
+        sb.append("Partículas activas: ").append(sistemaParticulas.getNumeroParticulasActivas()).append("\n");
 
         for (Map.Entry<Posicion, AnimacionCombate> entrada : animacionesActivas.entrySet()) {
             Posicion pos = entrada.getKey();
@@ -413,5 +467,21 @@ public class GestorAnimaciones {
         }
 
         return sb.toString();
+    }
+
+    /**
+     * Obtiene el sistema de partículas para uso externo
+     * @return Sistema de partículas
+     */
+    public SistemaParticulas getSistemaParticulas() {
+        return sistemaParticulas;
+    }
+
+    /**
+     * Obtiene el contenedor de animaciones para posicionamiento
+     * @return Contenedor de animaciones
+     */
+    public Pane getContenedorAnimaciones() {
+        return contenedorAnimaciones;
     }
 }
